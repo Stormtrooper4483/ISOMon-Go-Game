@@ -1,0 +1,477 @@
+{
+"levels":[
+
+{
+"level":1,
+"questions":[
+
+{
+"question":"ISO 27002 fournit :",
+"options":[
+"Exigences certifiables",
+"Recommandations de sécurité",
+"Mesures de sécurité",
+"Référentiel de certification"
+],
+"answers":[1,2]
+},
+
+{
+"question":"Dans ISO 27001, les mesures de l’annexe A doivent :",
+"options":[
+"Toutes être appliquées",
+"Être analysées pour leur pertinence",
+"Être justifiées en cas d’exclusion",
+"Être appliquées uniquement pour les actifs critiques"
+],
+"answers":[1,2]
+},
+
+{
+"question":"Une vulnérabilité correspond à :",
+"options":[
+"Une faiblesse exploitable",
+"Une menace",
+"Une faiblesse organisationnelle ou technique",
+"Un incident"
+],
+"answers":[0,2]
+},
+
+{
+"question":"Parmi les éléments suivants, lesquels sont des menaces ?",
+"options":[
+"Attaquant exploitant une faille",
+"Panne électrique datacenter",
+"Mot de passe faible",
+"Ransomware"
+],
+"answers":[0,1,3]
+},
+
+{
+"question":"Le risque correspond :",
+"options":[
+"Une menace seule",
+"Combinaison menace vulnérabilité impact",
+"Exploitation vulnérabilité par menace",
+"Incident sécurité"
+],
+"answers":[1]
+},
+
+{
+"question":"Une perte d’intégrité correspond à :",
+"options":[
+"Modification non autorisée des données",
+"Donnée incorrecte",
+"Indisponibilité du système",
+"Altération de l’information"
+],
+"answers":[0,1,3]
+},
+
+{
+"question":"La sauvegarde contribue à :",
+"options":[
+"Disponibilité",
+"Restauration après incident",
+"Confidentialité",
+"Résilience"
+],
+"answers":[0,1,3]
+},
+
+{
+"question":"Le chiffrement contribue à :",
+"options":[
+"Confidentialité",
+"Intégrité",
+"Disponibilité",
+"Authentification"
+],
+"answers":[0,1,3]
+},
+
+{
+"question":"Une analyse SWOT : un SI obsolète est :",
+"options":[
+"Menace",
+"Faiblesse",
+"Opportunité",
+"Risque"
+],
+"answers":[1]
+},
+
+{
+"question":"Augmentation des cyberattaques dans SWOT :",
+"options":[
+"Menace",
+"Faiblesse",
+"Facteur externe",
+"Opportunité"
+],
+"answers":[0,2]
+},
+
+{
+"question":"Un actif peut être :",
+"options":[
+"Base de données",
+"Processus métier",
+"Collaborateur",
+"Logiciel"
+],
+"answers":[0,1,2,3]
+},
+
+{
+"question":"Identifier un propriétaire d’actif permet :",
+"options":[
+"Définir responsabilités",
+"Classifier information",
+"Gérer risques",
+"Gérer budget IT"
+],
+"answers":[0,1,2]
+},
+
+{
+"question":"Un administrateur réseau participe à :",
+"options":[
+"Mise en œuvre sécurité",
+"Gouvernance stratégique",
+"Réponse aux incidents",
+"Acceptation risques"
+],
+"answers":[0,2]
+},
+
+{
+"question":"Une formation après incident est :",
+"options":[
+"Corrective",
+"Préventive",
+"Détection",
+"Culture sécurité"
+],
+"answers":[0,1]
+},
+
+{
+"question":"La sensibilisation vise :",
+"options":[
+"Changer comportements",
+"Culture sécurité",
+"Compétence technique",
+"Réduire erreurs humaines"
+],
+"answers":[0,1,3]
+}
+
+]
+},
+
+{
+"level":2,
+"questions":[
+
+{
+"question":"La direction doit :",
+"options":[
+"Approuver politique sécurité",
+"Définir objectifs sécurité",
+"Réaliser tests intrusion",
+"Fournir ressources SMSI"
+],
+"answers":[0,1,3]
+},
+
+{
+"question":"La gouvernance SSI inclut :",
+"options":[
+"Stratégie sécurité",
+"Acceptation risques",
+"Configurer firewall",
+"Suivre performance SMSI"
+],
+"answers":[0,1,3]
+},
+
+{
+"question":"Objectifs de sécurité :",
+"options":[
+"Disponibilité SI",
+"Respect réglementaire",
+"Meilleure posture cyber",
+"Réduire incidents"
+],
+"answers":[0,1,3]
+},
+
+{
+"question":"Analyse risque basée sur actifs :",
+"options":[
+"Approche biens",
+"Approche événements",
+"Approche scénarios",
+"Approche hybride"
+],
+"answers":[0]
+},
+
+{
+"question":"Stratégies traitement risque :",
+"options":[
+"Réduire",
+"Transférer",
+"Accepter",
+"Ignorer"
+],
+"answers":[0,1,2]
+},
+
+{
+"question":"Exemples transfert risque :",
+"options":[
+"Cyber assurance",
+"Externalisation",
+"Antivirus",
+"Acceptation"
+],
+"answers":[0,1]
+},
+
+{
+"question":"Déclaration d’applicabilité :",
+"options":[
+"Justifie mesures retenues",
+"Explique exclusions",
+"Liste actifs",
+"Relie mesures risques"
+],
+"answers":[0,1,3]
+},
+
+{
+"question":"SMSI repose sur :",
+"options":[
+"Analyse risque",
+"Amélioration continue",
+"Documentation",
+"Outils techniques uniquement"
+],
+"answers":[0,1,2]
+},
+
+{
+"question":"Cycle SMSI :",
+"options":[
+"Plan",
+"Do",
+"Check",
+"Act"
+],
+"answers":[0,1,2,3]
+},
+
+{
+"question":"Périmètre SMSI inclut :",
+"options":[
+"Organisation",
+"Physique",
+"Technologique",
+"Uniquement réseau"
+],
+"answers":[0,1,2]
+},
+
+{
+"question":"Modification périmètre possible si :",
+"options":[
+"Evolution organisation",
+"Nouvelle application",
+"Validation direction",
+"Décision IT seule"
+],
+"answers":[0,1,2]
+},
+
+{
+"question":"KPI performance sécurité :",
+"options":[
+"Temps résolution incidents",
+"% employés formés",
+"Taux conformité procédures",
+"Nombre incidents"
+],
+"answers":[0,1,2]
+},
+
+{
+"question":"Indicateur conformité postes :",
+"options":[
+"Nombre postes audités",
+"% postes non conformes corrigés",
+"Nombre incidents postes",
+"Sessions sensibilisation"
+],
+"answers":[1]
+},
+
+{
+"question":"Audit interne constate procédure non appliquée :",
+"options":[
+"Non conformité",
+"Amélioration",
+"Incident",
+"Déviation"
+],
+"answers":[0]
+},
+
+{
+"question":"Non conformité nécessite :",
+"options":[
+"Correction",
+"Analyse causes",
+"Action corrective",
+"Ignorer"
+],
+"answers":[0,1,2]
+}
+
+]
+},
+
+{
+"level":3,
+"questions":[
+
+{
+"question":"Certification ISO 27001 exige :",
+"options":[
+"Audit interne",
+"Revue direction",
+"SMSI opérationnel",
+"Tous contrôles annexe A"
+],
+"answers":[0,1,2]
+},
+
+{
+"question":"Auditeur interne doit être :",
+"options":[
+"Compétent",
+"Indépendant",
+"Membre direction",
+"Externe"
+],
+"answers":[0,1]
+},
+
+{
+"question":"Entreprise applique ISO27002 sans SMSI :",
+"options":[
+"Certifiable",
+"Non certifiable",
+"Certifiable si contrôles efficaces",
+"Certifiable si audit réussi"
+],
+"answers":[1]
+},
+
+{
+"question":"Phase Check du PDCA :",
+"options":[
+"Audit interne",
+"Suivi indicateurs",
+"Analyse résultats",
+"Mise en œuvre contrôles"
+],
+"answers":[0,1,2]
+},
+
+{
+"question":"Phase Act du PDCA :",
+"options":[
+"Corriger non conformités",
+"Améliorer SMSI",
+"Mettre à jour mesures",
+"Surveiller incidents"
+],
+"answers":[0,1,2]
+},
+
+{
+"question":"Gestion incidents permet :",
+"options":[
+"Détecter",
+"Analyser",
+"Répondre",
+"Supprimer preuves"
+],
+"answers":[0,1,2]
+},
+
+{
+"question":"Après incident :",
+"options":[
+"Analyser causes",
+"Actions correctives",
+"Retour expérience",
+"Ignorer si service rétabli"
+],
+"answers":[0,1,2]
+},
+
+{
+"question":"Culture sécurité repose sur :",
+"options":[
+"Implication direction",
+"Sensibilisation",
+"Communication interne",
+"Outils uniquement"
+],
+"answers":[0,1,2]
+},
+
+{
+"question":"SMSI très documenté mais non appliqué :",
+"options":[
+"Conforme",
+"Non conforme",
+"Inefficace",
+"Acceptable"
+],
+"answers":[1,2]
+},
+
+{
+"question":"Organisation applique toutes mesures annexe A sans analyse risque :",
+"options":[
+"Conforme",
+"Non conforme",
+"Possible mais inefficace",
+"Conforme si direction valide"
+],
+"answers":[1]
+},
+
+{
+"question":"Externalisation cloud :",
+"options":[
+"Risques transférés",
+"Risques disparaissent",
+"Organisation reste responsable",
+"Responsabilité partagée"
+],
+"answers":[2,3]
+}
+
+]
+}
+
+]
+}
