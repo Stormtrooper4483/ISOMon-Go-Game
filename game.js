@@ -1,21 +1,12 @@
 let data;
-let currentLevel = 0;
-let levels = ["easy", "medium", "hard"];
+let levels = ["easy","medium","hard"];
+let levelIndex = 0;
 let questions = [];
-let index = 0;
+let i = 0;
 let score = 0;
 
 let playerHP = 100;
 let enemyHP = 100;
-
-let timer;
-let timeLeft = 40;
-
-const playerForms = [
-  "rssilet_back.png",
-  "rssirex_back.png",
-  "rssilex_back.png"
-];
 
 async function init() {
   const res = await fetch("questions.json");
@@ -24,104 +15,123 @@ async function init() {
 }
 
 function startLevel() {
-  let pool = [...data[levels[currentLevel]]];
-  questions = pool.sort(() => 0.5 - Math.random()).slice(0, 6);
-  index = 0;
+  let pool = [...data[levels[levelIndex]]];
+  questions = pool.sort(()=>0.5-Math.random()).slice(0,6);
+  i = 0;
   score = 0;
   nextQuestion();
 }
 
 function nextQuestion() {
-  if (index >= questions.length) {
-    if (score >= 5) {
-      levelUp();
-    } else {
-      gameOver();
-    }
+  if (i >= questions.length) {
+    if (score >= 5) levelUp();
+    else gameOver();
     return;
   }
 
-  let q = questions[index];
+  let q = questions[i];
   document.getElementById("question").innerText = q.question;
 
-  let answersDiv = document.getElementById("answers");
-  answersDiv.innerHTML = "";
+  let answers = document.getElementById("answers");
+  answers.innerHTML = "";
 
-  q.answers.forEach((a, i) => {
+  q.answers.forEach((a, idx)=>{
     let btn = document.createElement("button");
     btn.innerText = a;
-    btn.onclick = () => answer(i === q.correct);
-    answersDiv.appendChild(btn);
+    btn.onclick = ()=>answer(idx === q.correct);
+    answers.appendChild(btn);
   });
-
-  startTimer();
 }
 
-function answer(correct) {
-  clearInterval(timer);
-
-  if (correct) {
+function answer(correct){
+  if(correct){
+    enemyHP -= 20;
+    hit("enemy");
     score++;
-    enemyHP -= 15;
-    animate("enemy");
   } else {
-    playerHP -= 15;
-    animate("player");
+    playerHP -= 20;
+    hit("player");
   }
 
   updateHP();
 
-  index++;
-  setTimeout(nextQuestion, 1000);
+  i++;
+  setTimeout(nextQuestion,1000);
 }
 
-function updateHP() {
-  document.getElementById("enemy-hp").style.width = enemyHP + "%";
-  document.getElementById("player-hp").style.width = playerHP + "%";
-}
+function hit(target){
+  let el = document.getElementById(target+"-sprite");
+  el.classList.add("hit");
 
-function animate(target) {
-  let el = document.getElementById(target + "-sprite");
-  el.style.transform = "translateX(10px)";
-  setTimeout(() => el.style.transform = "translateX(0)", 200);
-}
-
-function levelUp() {
-  currentLevel++;
-
-  if (currentLevel >= 3) {
-    winGame();
-    return;
+  if(target==="enemy"){
+    el.src="sprites/isoku_hit.png";
+    setTimeout(()=>el.src="sprites/isoku.png",300);
+  } else {
+    el.src="sprites/rssilet_hit.png";
+    setTimeout(()=>el.src="sprites/rssilet_back.png",300);
   }
 
-  alert("Évolution !");
-  document.getElementById("player-sprite").src =
-    "sprites/" + playerForms[currentLevel];
+  setTimeout(()=>el.classList.remove("hit"),200);
+}
+
+function updateHP(){
+  document.getElementById("enemy-hp").style.width = enemyHP+"%";
+  document.getElementById("player-hp").style.width = playerHP+"%";
+
+  if(enemyHP<=0 && levelIndex===2){
+    captureSequence();
+  }
+}
+
+function levelUp(){
+  levelIndex++;
+  playerHP = 100;
+  enemyHP = 100;
+
+  if(levelIndex===1)
+    document.getElementById("player-sprite").src="sprites/rssirex_back.png";
+  if(levelIndex===2)
+    document.getElementById("player-sprite").src="sprites/rssilex_back.png";
 
   startLevel();
 }
 
-function startTimer() {
-  timeLeft = 40;
-  document.getElementById("timer").innerText = timeLeft;
+function captureSequence(){
+  showText("RSSIlex lance une Pokéball !");
 
-  timer = setInterval(() => {
-    timeLeft--;
-    document.getElementById("timer").innerText = timeLeft;
+  let ball = document.createElement("img");
+  ball.src="sprites/pokeball.png";
+  ball.className="pokeball";
+  document.getElementById("game").appendChild(ball);
 
-    if (timeLeft <= 0) {
-      clearInterval(timer);
-      answer(false);
-    }
-  }, 1000);
+  setTimeout(()=>{
+    ball.classList.add("capture");
+
+    setTimeout(()=>{
+      showText("...");
+    },500);
+
+    setTimeout(()=>{
+      showText("ISOKu est capturé !");
+    },1500);
+
+    setTimeout(()=>{
+      winGame();
+    },2500);
+
+  },800);
 }
 
-function gameOver() {
-  alert("Game Over !");
+function showText(text){
+  document.getElementById("battle-text").innerText = text;
 }
 
-function winGame() {
-  alert("Certification ISO 27001 obtenue !");
+function gameOver(){
+  showText("Game Over...");
+}
+
+function winGame(){
+  showText("🎓 Certification ISO 27001 obtenue !");
 }
 
 init();
