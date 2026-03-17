@@ -1,5 +1,5 @@
 // ============================
-// ISOmon GO - Game Engine FIXED
+// ISOmon GO - Game Engine (CORRIGÉ)
 // ============================
 
 const QUESTIONS_PER_LEVEL = 6
@@ -35,7 +35,7 @@ const enemySprite = document.getElementById("enemySprite")
 
 const playerName = document.getElementById("playerName")
 
-const pokeball = document.getElementById("pokeball") // 👈 nouveau
+const pokeball = document.getElementById("pokeball")
 
 // ============================
 // LOAD QUESTIONS
@@ -44,12 +44,9 @@ const pokeball = document.getElementById("pokeball") // 👈 nouveau
 fetch("./questions.json")
 .then(response => response.json())
 .then(data => {
-
     levels = data.levels
     gameReady = true
-
     console.log("Questions loaded")
-
 })
 .catch(err => {
     console.error("Erreur chargement JSON", err)
@@ -248,7 +245,6 @@ function levelCompleted(){
 
     dialogueText("Le RSSI lance une Pokeball !")
 
-    // 🎯 animation pokeball
     if(pokeball){
         pokeball.style.display = "block"
         pokeball.classList.add("throw")
@@ -346,7 +342,7 @@ function animateAttack(sprite){
 }
 
 // ============================
-// SHUFFLE (OK)
+// SHUFFLE (Fisher-Yates FIX)
 // ============================
 
 function shuffle(array){
