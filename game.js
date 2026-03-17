@@ -1,5 +1,5 @@
 // ============================
-// ISOmon GO - Game Engine (CORRIGÉ)
+// ISOmon GO - Game Engine (VERSION FINALE)
 // ============================
 
 const QUESTIONS_PER_LEVEL = 6
@@ -319,7 +319,7 @@ function animateAttack(sprite){
 }
 
 // ============================
-// SHUFFLE (Fisher-Yates FIX)
+// SHUFFLE (Fisher-Yates FINAL)
 // ============================
 
 function shuffle(array){
