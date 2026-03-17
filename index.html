@@ -3,53 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ISOMon Battle</title>
+  <title>ISOMon</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<div class="gameboy-frame">
-  <div class="battle-screen">
+<div id="game">
 
-    <!-- Enemy -->
+  <div id="battle">
+
     <div class="enemy">
-      <div class="enemy-info">
-        <span>ISOKu Lv.3</span>
-        <div class="hp-bar">
-          <div class="hp enemy-hp" style="width: 80%"></div>
-        </div>
-      </div>
-      <img src="sprites/isoku.png" class="sprite enemy-sprite" />
+      <div id="enemy-name"></div>
+      <div class="hp-bar"><div id="enemy-hp"></div></div>
+      <img id="enemy-sprite" />
     </div>
 
-    <!-- Player -->
     <div class="player">
-      <img src="sprites/rssi_trainer.png" class="trainer" />
-      <img src="sprites/rssilet_back.png" class="sprite player-sprite" />
-
-      <div class="player-info">
-        <span>RSSIlet Lv.3</span>
-        <div class="hp-bar">
-          <div class="hp player-hp" style="width: 90%"></div>
-        </div>
-      </div>
+      <img id="trainer" />
+      <img id="player-sprite" />
+      <div id="player-name"></div>
+      <div class="hp-bar"><div id="player-hp"></div></div>
     </div>
 
-    <!-- Dialog / Question -->
     <div class="dialog">
-      <p id="question">Que signifie SMSI ?</p>
-
-      <div class="answers">
-        <button onclick="answer(false)">A. Service Management</button>
-        <button onclick="answer(true)">B. Système de Management</button>
-        <button onclick="answer(false)">C. Standard Sécurité</button>
-        <button onclick="answer(false)">D. Service ISO</button>
-      </div>
-
+      <p id="question"></p>
+      <div id="answers"></div>
       <p id="feedback"></p>
+      <div id="timer"></div>
     </div>
 
   </div>
+
 </div>
 
 <script src="script.js"></script>
