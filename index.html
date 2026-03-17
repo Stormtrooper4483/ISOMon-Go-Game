@@ -1,67 +1,76 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>ISOMon Go</title>
-    <style>
-        body {
-            font-family: monospace;
-            background: #a8d5a2;
-            text-align: center;
-        }
+<meta charset="UTF-8">
+<title>ISOMon Go</title>
 
-        .battle {
-            display: flex;
-            justify-content: space-around;
-            margin: 20px;
-        }
+<style>
+body {
+    font-family: monospace;
+    background: #a8d5a2;
+    text-align: center;
+}
 
-        .pokemon {
-            width: 200px;
-        }
+.battle {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px;
+}
 
-        .hp-bar {
-            height: 20px;
-            background: green;
-            margin: 10px 0;
-        }
+.pokemon {
+    width: 200px;
+}
 
-        #question-box {
-            background: #ddd;
-            padding: 20px;
-            margin: 20px;
-            border: 3px solid black;
-        }
+.hp-bar {
+    height: 20px;
+    background: green;
+    margin: 10px 0;
+}
 
-        button {
-            margin: 5px;
-            padding: 10px;
-            cursor: pointer;
-        }
+#question-box {
+    background: #ddd;
+    padding: 20px;
+    margin: 20px;
+    border: 3px solid black;
+}
 
-        #timer {
-            font-size: 30px;
-            color: red;
-        }
-    </style>
+button {
+    margin: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+#timer {
+    font-size: 30px;
+    color: red;
+}
+</style>
 </head>
+
 <body>
 
 <h1>ISOMon Go</h1>
-<p>Réponds correctement aux questions ISO 27001 pour attaquer ISOKu !</p>
+
+<!-- ✅ BOUTON START (MANQUANT AVANT) -->
+<button id="startBtn">Démarrer</button>
+
+<!-- ✅ DIALOGUE -->
+<div id="dialogue">Clique sur démarrer</div>
 
 <div class="battle">
+
     <div class="pokemon">
         <h2>ISOKu</h2>
-        <div id="enemy-hp" class="hp-bar"></div>
-        <img src="./assets/isoku.png" width="100">
+        <div id="enemyHP" class="hp-bar"></div>
+        <img id="enemySprite" src="./assets/isoku.png" width="100">
     </div>
 
     <div class="pokemon">
-        <h2 id="player-name">RSSIlet</h2>
-        <div id="player-hp" class="hp-bar"></div>
-        <img id="player-img" src="./assets/rssilet.png" width="100">
+        <h2 id="playerName">RSSIlet</h2>
+        <div id="playerHP" class="hp-bar"></div>
+        <img id="playerSprite" src="./assets/rssilet.png" width="100">
     </div>
+
 </div>
 
 <div id="timer">40</div>
@@ -70,6 +79,10 @@
     <p id="question">Chargement...</p>
     <div id="answers"></div>
 </div>
+
+<!-- 🎯 Pokeball -->
+<img id="pokeball" src="./assets/pokeball.png"
+     style="display:none; width:50px; position:absolute; left:50%; top:50%;">
 
 <script src="game.js"></script>
 
