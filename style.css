@@ -1,72 +1,98 @@
-body{
-
-background:#d0f8d0;
-font-family:monospace;
-text-align:center;
-
+body {
+  background: #0f380f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: 'Courier New', monospace;
 }
 
-#game{
-
-max-width:700px;
-margin:auto;
-
+.gameboy-frame {
+  background: #9bbc0f;
+  border: 12px solid #306230;
+  border-radius: 20px;
+  padding: 10px;
+  width: 360px;
 }
 
-#battle{
-
-display:flex;
-justify-content:space-between;
-margin:20px;
-
+.battle-screen {
+  background: #8bac0f;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.enemy img{
-
-width:120px;
-
+/* Enemy */
+.enemy {
+  text-align: right;
 }
 
-.player img{
-
-width:120px;
-
+.enemy-info {
+  font-size: 12px;
 }
 
-.hp{
-
-width:120px;
-height:12px;
-border:2px solid black;
-margin:auto;
-
+.sprite {
+  image-rendering: pixelated;
+  width: 120px;
 }
 
-.hp div{
-
-height:100%;
-background:#33cc33;
-
+.enemy-sprite {
+  margin-left: auto;
 }
 
-#questionBox{
-
-background:white;
-border:3px solid black;
-padding:10px;
-
+/* Player */
+.player {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
 }
 
-button{
-
-margin:5px;
-padding:10px;
-
+.player-sprite {
+  width: 100px;
 }
 
-#timer{
+.trainer {
+  width: 60px;
+}
 
-font-size:24px;
-color:red;
+/* HP Bar */
+.hp-bar {
+  background: #0f380f;
+  height: 8px;
+  width: 100px;
+  margin-top: 4px;
+}
 
+.hp {
+  background: #306230;
+  height: 100%;
+  transition: width 0.3s;
+}
+
+/* Dialog */
+.dialog {
+  background: #e0f8d0;
+  border: 4px solid #0f380f;
+  padding: 10px;
+}
+
+.answers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+button {
+  background: #9bbc0f;
+  border: 2px solid #0f380f;
+  padding: 8px;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+button:active {
+  background: #306230;
+  color: white;
 }
