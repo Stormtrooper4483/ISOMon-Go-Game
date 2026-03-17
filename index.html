@@ -1,90 +1,57 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>ISOMon Go</title>
-
-<style>
-body {
-    font-family: monospace;
-    background: #a8d5a2;
-    text-align: center;
-}
-
-.battle {
-    display: flex;
-    justify-content: space-around;
-    margin: 20px;
-}
-
-.pokemon {
-    width: 200px;
-}
-
-.hp-bar {
-    height: 20px;
-    background: green;
-    margin: 10px 0;
-}
-
-#question-box {
-    background: #ddd;
-    padding: 20px;
-    margin: 20px;
-    border: 3px solid black;
-}
-
-button {
-    margin: 5px;
-    padding: 10px;
-    cursor: pointer;
-}
-
-#timer {
-    font-size: 30px;
-    color: red;
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ISOMon Battle</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
 
-<h1>ISOMon Go</h1>
+<div class="gameboy-frame">
+  <div class="battle-screen">
 
-<!-- ✅ BOUTON START (MANQUANT AVANT) -->
-<button id="startBtn">Démarrer</button>
-
-<!-- ✅ DIALOGUE -->
-<div id="dialogue">Clique sur démarrer</div>
-
-<div class="battle">
-
-    <div class="pokemon">
-        <h2>ISOKu</h2>
-        <div id="enemyHP" class="hp-bar"></div>
-        <img id="enemySprite" src="./assets/isoku.png" width="100">
+    <!-- Enemy -->
+    <div class="enemy">
+      <div class="enemy-info">
+        <span>ISOKu Lv.3</span>
+        <div class="hp-bar">
+          <div class="hp enemy-hp" style="width: 80%"></div>
+        </div>
+      </div>
+      <img src="sprites/isoku.png" class="sprite enemy-sprite" />
     </div>
 
-    <div class="pokemon">
-        <h2 id="playerName">RSSIlet</h2>
-        <div id="playerHP" class="hp-bar"></div>
-        <img id="playerSprite" src="./assets/rssilet.png" width="100">
+    <!-- Player -->
+    <div class="player">
+      <img src="sprites/rssi_trainer.png" class="trainer" />
+      <img src="sprites/rssilet_back.png" class="sprite player-sprite" />
+
+      <div class="player-info">
+        <span>RSSIlet Lv.3</span>
+        <div class="hp-bar">
+          <div class="hp player-hp" style="width: 90%"></div>
+        </div>
+      </div>
     </div>
 
+    <!-- Dialog / Question -->
+    <div class="dialog">
+      <p id="question">Que signifie SMSI ?</p>
+
+      <div class="answers">
+        <button onclick="answer(false)">A. Service Management</button>
+        <button onclick="answer(true)">B. Système de Management</button>
+        <button onclick="answer(false)">C. Standard Sécurité</button>
+        <button onclick="answer(false)">D. Service ISO</button>
+      </div>
+
+      <p id="feedback"></p>
+    </div>
+
+  </div>
 </div>
 
-<div id="timer">40</div>
-
-<div id="question-box">
-    <p id="question">Chargement...</p>
-    <div id="answers"></div>
-</div>
-
-<!-- 🎯 Pokeball -->
-<img id="pokeball" src="./assets/pokeball.png"
-     style="display:none; width:50px; position:absolute; left:50%; top:50%;">
-
-<script src="game.js"></script>
-
+<script src="script.js"></script>
 </body>
 </html>
