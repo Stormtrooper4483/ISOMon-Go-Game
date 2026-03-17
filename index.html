@@ -1,59 +1,77 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="UTF-8">
+    <title>ISOMon Go</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #a8d5a2;
+            text-align: center;
+        }
 
-<title>ISOmon Go</title>
+        .battle {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
+        }
 
-<link rel="stylesheet" href="style.css">
+        .pokemon {
+            width: 200px;
+        }
+
+        .hp-bar {
+            height: 20px;
+            background: green;
+            margin: 10px 0;
+        }
+
+        #question-box {
+            background: #ddd;
+            padding: 20px;
+            margin: 20px;
+            border: 3px solid black;
+        }
+
+        button {
+            margin: 5px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        #timer {
+            font-size: 30px;
+            color: red;
+        }
+    </style>
 </head>
-
 <body>
 
-<div id="game">
+<h1>ISOMon Go</h1>
+<p>Réponds correctement aux questions ISO 27001 pour attaquer ISOKu !</p>
 
-<h1>ISOmon Go</h1>
+<div class="battle">
+    <div class="pokemon">
+        <h2>ISOKu</h2>
+        <div id="enemy-hp" class="hp-bar"></div>
+        <img src="./assets/isoku.png" width="100">
+    </div>
 
-<div id="dialogue"></div>
-
-<div id="battle">
-
-<div class="enemy">
-<h2>ISOku</h2>
-<div class="hp">
-<div id="enemyHP"></div>
+    <div class="pokemon">
+        <h2 id="player-name">RSSIlet</h2>
+        <div id="player-hp" class="hp-bar"></div>
+        <img id="player-img" src="./assets/rssilet.png" width="100">
+    </div>
 </div>
-<img id="enemySprite" src="assets/isoku.png">
-</div>
-
-<div class="player">
-<h2 id="playerName">RSSIlet</h2>
-<div class="hp">
-<div id="playerHP"></div>
-</div>
-<img id="playerSprite" src="assets/rssilet.png">
-</div>
-
-</div>
-
-<div id="questionBox">
 
 <div id="timer">40</div>
 
-<div id="question"></div>
-
-<div id="answers"></div>
-
-</div>
-
-<button id="startBtn">Start Game</button>
-
+<div id="question-box">
+    <p id="question">Chargement...</p>
+    <div id="answers"></div>
 </div>
 
 <script src="game.js"></script>
 
 </body>
-
 </html>
