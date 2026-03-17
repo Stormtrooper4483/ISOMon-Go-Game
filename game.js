@@ -1,5 +1,5 @@
 // ============================
-// ISOmon GO - Game Engine
+// ISOmon GO - Game Engine FIXED
 // ============================
 
 const QUESTIONS_PER_LEVEL = 6
@@ -15,6 +15,9 @@ let enemyHP = 100
 
 let timerInterval
 let timeLeft = TIME_PER_QUESTION
+
+let gameReady = false
+let answering = false
 
 // DOM
 const startBtn = document.getElementById("startBtn")
@@ -32,18 +35,25 @@ const enemySprite = document.getElementById("enemySprite")
 
 const playerName = document.getElementById("playerName")
 
+const pokeball = document.getElementById("pokeball") // 👈 nouveau
+
 // ============================
 // LOAD QUESTIONS
 // ============================
 
-fetch("questions.json")
+fetch("./questions.json")
 .then(response => response.json())
 .then(data => {
 
-levels = data.levels
+    levels = data.levels
+    gameReady = true
 
-console.log("Questions loaded")
+    console.log("Questions loaded")
 
+})
+.catch(err => {
+    console.error("Erreur chargement JSON", err)
+    dialogueText("Erreur de chargement des questions 😢")
 })
 
 // ============================
@@ -52,29 +62,26 @@ console.log("Questions loaded")
 
 startBtn.onclick = () => {
 
-startBtn.style.display = "none"
+    if(!gameReady){
+        dialogueText("Chargement en cours...")
+        return
+    }
 
-dialogueText(
-"Prof Cyber : Bienvenue dresseur !\n" +
-"Pour obtenir la certification ISO 27001,\n" +
-"tu dois capturer le Pokémon légendaire ISOku."
-)
+    startBtn.style.display = "none"
 
-setTimeout(() => {
+    dialogueText(
+        "Prof Cyber : Bienvenue dresseur !\n" +
+        "Pour obtenir la certification ISO 27001,\n" +
+        "tu dois capturer ISOku."
+    )
 
-dialogueText(
-"Réponds correctement aux questions ISO 27001\n" +
-"pour attaquer ISOku !"
-)
+    setTimeout(() => {
+        dialogueText("Réponds correctement pour attaquer !")
+    },3000)
 
-},3000)
-
-setTimeout(() => {
-
-startLevel()
-
-},6000)
-
+    setTimeout(() => {
+        startLevel()
+    },5000)
 }
 
 // ============================
@@ -83,19 +90,24 @@ startLevel()
 
 function startLevel(){
 
-enemyHP = 100
-updateHP()
+    if(!levels[currentLevel]){
+        console.error("Level introuvable", currentLevel)
+        return
+    }
 
-questionIndex = 0
+    enemyHP = 100
+    playerHP = 100
+    updateHP()
 
-const levelQuestions = levels[currentLevel].questions
+    questionIndex = 0
 
-currentQuestions = shuffle(levelQuestions).slice(0, QUESTIONS_PER_LEVEL)
+    const levelQuestions = levels[currentLevel].questions
 
-dialogueText("ISOku apparaît !")
+    currentQuestions = shuffle([...levelQuestions]).slice(0, QUESTIONS_PER_LEVEL)
 
-setTimeout(loadQuestion,2000)
+    dialogueText("ISOku apparaît !")
 
+    setTimeout(loadQuestion,1500)
 }
 
 // ============================
@@ -104,35 +116,34 @@ setTimeout(loadQuestion,2000)
 
 function loadQuestion(){
 
-if(questionIndex >= currentQuestions.length){
+    answering = false
 
-levelCompleted()
-return
+    if(questionIndex >= currentQuestions.length){
+        levelCompleted()
+        return
+    }
 
-}
+    const q = currentQuestions[questionIndex]
 
-const q = currentQuestions[questionIndex]
+    questionBox.innerText = q.question
+    answersBox.innerHTML = ""
 
-questionBox.innerText = q.question
+    q.options.forEach((option,index)=>{
 
-answersBox.innerHTML = ""
+        const btn = document.createElement("button")
+        btn.innerText = option
+        btn.className = "answerButton"
 
-q.options.forEach((option,index)=>{
+        btn.onclick = () => {
+            if(answering) return
+            answering = true
+            checkAnswer(index)
+        }
 
-const btn = document.createElement("button")
+        answersBox.appendChild(btn)
+    })
 
-btn.innerText = option
-
-btn.className = "answerButton"
-
-btn.onclick = () => checkAnswer(index)
-
-answersBox.appendChild(btn)
-
-})
-
-startTimer()
-
+    startTimer()
 }
 
 // ============================
@@ -141,27 +152,22 @@ startTimer()
 
 function startTimer(){
 
-clearInterval(timerInterval)
+    clearInterval(timerInterval)
 
-timeLeft = TIME_PER_QUESTION
-timerDisplay.innerText = timeLeft
+    timeLeft = TIME_PER_QUESTION
+    timerDisplay.innerText = timeLeft
 
-timerInterval = setInterval(()=>{
+    timerInterval = setInterval(()=>{
 
-timeLeft--
+        timeLeft--
+        timerDisplay.innerText = timeLeft
 
-timerDisplay.innerText = timeLeft
+        if(timeLeft <= 0){
+            clearInterval(timerInterval)
+            enemyAttack()
+        }
 
-if(timeLeft <= 0){
-
-clearInterval(timerInterval)
-
-enemyAttack()
-
-}
-
-},1000)
-
+    },1000)
 }
 
 // ============================
@@ -170,20 +176,15 @@ enemyAttack()
 
 function checkAnswer(selected){
 
-clearInterval(timerInterval)
+    clearInterval(timerInterval)
 
-const q = currentQuestions[questionIndex]
+    const q = currentQuestions[questionIndex]
 
-if(q.answers.includes(selected)){
-
-playerAttack()
-
-}else{
-
-enemyAttack()
-
-}
-
+    if(q.answers.includes(selected)){
+        playerAttack()
+    }else{
+        enemyAttack()
+    }
 }
 
 // ============================
@@ -192,24 +193,19 @@ enemyAttack()
 
 function playerAttack(){
 
-animateAttack(playerSprite)
+    animateAttack(playerSprite)
 
-dialogueText(playerName.innerText + " utilise Firewall Strike !")
+    dialogueText(playerName.innerText + " utilise Firewall Strike !")
 
-enemyHP -= 20
+    enemyHP -= 20
+    updateHP()
 
-updateHP()
+    if(enemyHP <= 0){
+        setTimeout(levelCompleted,1200)
+        return
+    }
 
-if(enemyHP <= 0){
-
-setTimeout(levelCompleted,1500)
-
-return
-
-}
-
-nextQuestion()
-
+    nextQuestion()
 }
 
 // ============================
@@ -218,23 +214,19 @@ nextQuestion()
 
 function enemyAttack(){
 
-animateAttack(enemySprite)
+    animateAttack(enemySprite)
 
-dialogueText("ISOku utilise Procedure Blast !")
+    dialogueText("ISOku utilise Procedure Blast !")
 
-playerHP -= 20
+    playerHP -= 20
+    updateHP()
 
-updateHP()
+    if(playerHP <= 0){
+        gameOver()
+        return
+    }
 
-if(playerHP <= 0){
-
-gameOver()
-return
-
-}
-
-nextQuestion()
-
+    nextQuestion()
 }
 
 // ============================
@@ -242,11 +234,8 @@ nextQuestion()
 // ============================
 
 function nextQuestion(){
-
-questionIndex++
-
-setTimeout(loadQuestion,2000)
-
+    questionIndex++
+    setTimeout(loadQuestion,1200)
 }
 
 // ============================
@@ -255,35 +244,39 @@ setTimeout(loadQuestion,2000)
 
 function levelCompleted(){
 
-dialogueText("Le RSSI lance une Pokeball !")
+    clearInterval(timerInterval)
 
-setTimeout(()=>{
+    dialogueText("Le RSSI lance une Pokeball !")
 
-currentLevel++
+    // 🎯 animation pokeball
+    if(pokeball){
+        pokeball.style.display = "block"
+        pokeball.classList.add("throw")
 
-if(currentLevel === 1){
+        setTimeout(()=>{
+            pokeball.style.display = "none"
+            pokeball.classList.remove("throw")
+        },1500)
+    }
 
-evolve("RSSIrex","assets/rssirex.png")
+    setTimeout(()=>{
 
-}
+        currentLevel++
 
-else if(currentLevel === 2){
+        if(currentLevel === 1){
+            evolve("RSSIrex","./assets/rssirex.png")
+        }
+        else if(currentLevel === 2){
+            evolve("RSSIlex","./assets/rssilex.png")
+        }
+        else{
+            winGame()
+            return
+        }
 
-evolve("RSSIlex","assets/rssilex.png")
+        startLevel()
 
-}
-
-else{
-
-winGame()
-return
-
-}
-
-startLevel()
-
-},2500)
-
+    },2000)
 }
 
 // ============================
@@ -292,12 +285,10 @@ startLevel()
 
 function evolve(name,sprite){
 
-dialogueText(playerName.innerText + " évolue en " + name + " !")
+    dialogueText(playerName.innerText + " évolue en " + name + " !")
 
-playerName.innerText = name
-
-playerSprite.src = sprite
-
+    playerName.innerText = name
+    playerSprite.src = sprite
 }
 
 // ============================
@@ -306,14 +297,10 @@ playerSprite.src = sprite
 
 function winGame(){
 
-dialogueText(
-"ISOku a été capturé !\n" +
-"Certification ISO 27001 obtenue !"
-)
+    dialogueText("ISOku capturé ! Certification obtenue 🎉")
 
-questionBox.innerText = ""
-answersBox.innerHTML = ""
-
+    questionBox.innerText = ""
+    answersBox.innerHTML = ""
 }
 
 // ============================
@@ -322,11 +309,10 @@ answersBox.innerHTML = ""
 
 function gameOver(){
 
-dialogueText("RSSIlex est KO.\nGame Over.")
+    dialogueText("Ton Pokémon est KO... Game Over")
 
-questionBox.innerText = ""
-answersBox.innerHTML = ""
-
+    questionBox.innerText = ""
+    answersBox.innerHTML = ""
 }
 
 // ============================
@@ -334,10 +320,8 @@ answersBox.innerHTML = ""
 // ============================
 
 function updateHP(){
-
-playerHPbar.style.width = playerHP + "%"
-enemyHPbar.style.width = enemyHP + "%"
-
+    playerHPbar.style.width = playerHP + "%"
+    enemyHPbar.style.width = enemyHP + "%"
 }
 
 // ============================
@@ -345,9 +329,7 @@ enemyHPbar.style.width = enemyHP + "%"
 // ============================
 
 function dialogueText(text){
-
-dialogue.innerText = text
-
+    dialogue.innerText = text
 }
 
 // ============================
@@ -356,30 +338,25 @@ dialogue.innerText = text
 
 function animateAttack(sprite){
 
-sprite.style.transform = "translateX(-20px)"
+    sprite.style.transform = "translateX(-20px)"
 
-setTimeout(()=>{
-
-sprite.style.transform = "translateX(0px)"
-
-},200)
-
+    setTimeout(()=>{
+        sprite.style.transform = "translateX(0px)"
+    },200)
 }
 
 // ============================
-// SHUFFLE
+// SHUFFLE (OK)
 // ============================
 
 function shuffle(array){
 
-for(let i = array.length - 1; i > 0; i--){
+    for(let i = array.length - 1; i > 0; i--){
 
-const j = Math.floor(Math.random() * (i + 1))
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[array[i],array[j]] = [array[j],array[i]]
 
-[array[i],array[j]] = [array[j],array[i]]
+    }
 
-}
-
-return array
-
+    return array
 }
