@@ -10,18 +10,14 @@ body {
   background: #9bbc0f;
   border: 10px solid #306230;
   padding: 10px;
+  position: relative;
 }
 
-.enemy {
-  text-align: right;
-}
-
-.player {
-  display: flex;
-  align-items: flex-end;
-}
+.enemy { text-align: right; }
+.player { display: flex; align-items: flex-end; }
 
 img {
+  width: 100px;
   image-rendering: pixelated;
 }
 
@@ -42,7 +38,48 @@ img {
   padding: 10px;
 }
 
-#answers button {
+button {
   width: 48%;
   margin: 1%;
+}
+
+/* FX */
+.flash { animation: flash 0.2s; }
+@keyframes flash { from {background:white;} to {background:inherit;} }
+
+.shake { animation: shake 0.3s; }
+@keyframes shake {
+  0%{transform:translateX(0);}
+  50%{transform:translateX(5px);}
+  100%{transform:translateX(0);}
+}
+
+.hit { animation: hit 0.2s; }
+@keyframes hit {
+  50% { transform: translateX(10px); }
+}
+
+/* Pokeball */
+.pokeball {
+  position: absolute;
+  width: 30px;
+  top: 60%;
+  left: 20%;
+  animation: throw 0.8s forwards;
+}
+
+@keyframes throw {
+  to { top: 20%; left: 70%; }
+}
+
+.capture {
+  animation: shakeBall 1s ease;
+}
+
+@keyframes shakeBall {
+  0%{transform:translateX(0);}
+  25%{transform:translateX(-5px);}
+  50%{transform:translateX(5px);}
+  75%{transform:translateX(-5px);}
+  100%{transform:translateX(0);}
 }
