@@ -322,10 +322,10 @@ function animateAttack(sprite){
 // SHUFFLE (Fisher-Yates FINAL)
 // ============================
 
-function shuffle(array){
-    for(let i = array.length - 1; i > 0; i--){
-        const j = Math.floor(Math.random() * (i + 1)) // ✅ j défini avant usage
-        [array[i], array[j]] = [array[j], array[i]]
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1)); // ✅ correct
+        [array[i], array[j]] = [array[j], array[i]];
     }
-    return array
+    return array;
 }
