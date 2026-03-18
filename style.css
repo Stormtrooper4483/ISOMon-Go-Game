@@ -1,88 +1,222 @@
+/* Global */
 body {
-  background: #c4c4c4;
-  font-family: monospace;
+  margin: 0;
+  background: #d3d3d3;
+  font-family: monospace, monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+#game-container {
+  width: 100%;
+  max-width: 700px;
+  background: #eee;
+  border: 4px solid black;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Battle area */
+.battle {
+  position: relative;
+  height: 300px;
+  background: #f0f0f0;
+  border: 3px solid black;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 30px;
+  box-sizing: border-box;
+}
+
+.player, .enemy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 40%;
+}
+
+.player img#trainer-img {
+  width: 90px;
+  position: absolute;
+  bottom: 0;
+  left: -100px;
+}
+
+.player img#player-img,
+.enemy img#enemy-img {
+  width: 140px;
+  image-rendering: pixelated;
+}
+
+/* Info below each Pokémon */
+#player-info, #enemy-info {
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+#player-name, #enemy-name {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+
+.hp-label {
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+progress {
+  width: 100%;
+  height: 15px;
+  -webkit-appearance: none;
+  appearance: none;
+  border: 1px solid #000;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+progress::-webkit-progress-bar {
+  background-color: #ccc;
+}
+
+progress::-webkit-progress-value {
+  background-color: #4caf50;
+}
+
+progress::-moz-progress-bar {
+  background-color: #4caf50;
+}
+
+/* UI Box */
+#ui-box {
+  border: 4px solid black;
+  background: #f0f0f0;
+  padding: 15px 20px;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  position: relative;
+}
+
+#round, #timer, #evolution-text {
+  font-weight: bold;
+}
+
+#question {
+  font-size: 1.1rem;
+  min-height: 40px;
+}
+
+#answers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.answer {
+  padding: 8px 10px;
+  background: white;
+  border: 2px solid black;
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.answer:hover {
+  background-color: #d1d1d1;
 }
 
 .hidden {
   display: none;
 }
 
-.battle {
-  position: relative;
-  height: 300px;
-}
-
-.enemy {
-  position: absolute;
-  top: 20px;
-  right: 50px;
-  text-align: center;
-}
-
-.player {
-  position: absolute;
-  bottom: 20px;
-  left: 50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.player img, .enemy img {
-  width: 120px;
-  transition: transform 0.2s;
-}
-
-/* UI GameBoy */
-#ui-box {
-  border: 4px solid black;
-  background: #e8e8e8;
-  padding: 10px;
-  margin: 20px;
-}
-
-#round, #timer, #question, #evolution-text {
-  margin: 5px 0;
-}
-
-#answers {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5px;
-}
-
-.answer {
-  border: 2px solid black;
-  padding: 5px;
+/* Buttons */
+button {
+  width: 140px;
+  padding: 10px 0;
+  font-weight: bold;
+  font-family: monospace;
+  border: 3px solid black;
+  background-color: white;
   cursor: pointer;
-  background: white;
-  text-align: center;
+  border-radius: 5px;
+  margin-top: 8px;
+  align-self: flex-start;
+  user-select: none;
 }
 
-/* animation container */
-#projectile-container img {
+button:hover {
+  background-color: #ddd;
+}
+
+/* Projectile container */
+#projectile-container {
+  position: absolute;
+  width: 100%;
+  height: 300px;
+  top: 0;
+  left: 0;
   pointer-events: none;
   user-select: none;
-  z-index: 1000;
+  z-index: 10;
 }
 
-/* effets attaque */
-.attack { transform: translateX(-20px); }
-.hit { transform: translateX(20px); }
-
-/* responsive */
-@media (max-width: 768px) {
-  .battle {
-    flex-direction: column;
-    align-items: center;
+/* Responsive */
+@media (max-width: 500px) {
+  #game-container {
+    max-width: 100%;
+    padding: 5px;
   }
 
-  .player {
-    bottom: auto;
-    margin-top: 20px;
+  .battle {
+    flex-direction: column;
+    height: auto;
+    gap: 10px;
+    padding: 15px;
+  }
+
+  .player, .enemy {
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .player img#trainer-img {
+    position: static;
+    width: 60px;
+  }
+
+  .player img#player-img,
+  .enemy img#enemy-img {
+    width: 80px;
+  }
+
+  #player-info, #enemy-info {
+    text-align: left;
   }
 
   #answers {
     grid-template-columns: 1fr;
+  }
+
+  button {
+    width: 100%;
   }
 }
