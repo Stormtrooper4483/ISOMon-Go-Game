@@ -23,14 +23,14 @@ body {
   position: absolute;
   bottom: 20px;
   left: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.player img {
+.player img, .enemy img {
   width: 120px;
-}
-
-.enemy img {
-  width: 120px;
+  transition: transform 0.2s;
 }
 
 /* UI GameBoy */
@@ -39,6 +39,10 @@ body {
   background: #e8e8e8;
   padding: 10px;
   margin: 20px;
+}
+
+#round, #timer, #question, #evolution-text {
+  margin: 5px 0;
 }
 
 #answers {
@@ -51,13 +55,34 @@ body {
   border: 2px solid black;
   padding: 5px;
   cursor: pointer;
+  background: white;
+  text-align: center;
 }
 
-/* animation */
-.attack {
-  transform: translateX(-20px);
+/* animation container */
+#projectile-container img {
+  pointer-events: none;
+  user-select: none;
+  z-index: 1000;
 }
 
-.hit {
-  transform: translateX(20px);
+/* effets attaque */
+.attack { transform: translateX(-20px); }
+.hit { transform: translateX(20px); }
+
+/* responsive */
+@media (max-width: 768px) {
+  .battle {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .player {
+    bottom: auto;
+    margin-top: 20px;
+  }
+
+  #answers {
+    grid-template-columns: 1fr;
+  }
 }
