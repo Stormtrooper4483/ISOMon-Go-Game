@@ -21,49 +21,31 @@
 
 <div id="game" class="hidden">
 
-  <div id="top-bar">
-    <div id="round-display">Round 1</div>
-    <div id="timer">⏱️ 40s</div>
-  </div>
-
   <div class="battle">
 
-    <!-- JOUEUR -->
-    <div class="pokemon player-side">
-      <img class="trainer" src="assets/trainer.png">
-
-      <div class="pokemon-container">
-        <div id="player-name" class="name">RSSIlet</div>
-        <img id="player-img" src="assets/rssilet_back.png">
-
-        <div class="hp-container">
-          <span>PV :</span>
-          <div class="hp-bar">
-            <div id="player-hp" class="hp-fill"></div>
-          </div>
-        </div>
-      </div>
+    <!-- ENNEMI -->
+    <div class="enemy">
+      <div class="name">ISOku</div>
+      <div class="hp">PV: <span id="enemy-hp">100</span></div>
+      <img id="enemy-img" src="assets/isoku.png">
     </div>
 
-    <!-- ENNEMI -->
-    <div class="pokemon">
-      <div class="name">ISOku</div>
-      <img id="enemy-img" src="assets/isoku.png">
-
-      <div class="hp-container">
-        <span>PV :</span>
-        <div class="hp-bar">
-          <div id="enemy-hp" class="hp-fill"></div>
-        </div>
-      </div>
+    <!-- JOUEUR -->
+    <div class="player">
+      <img class="trainer" src="assets/trainer.png">
+      <img id="player-img" src="assets/rssilet_back.png">
     </div>
 
   </div>
 
-  <div id="evolution-text" class="hidden"></div>
-
-  <div id="question"></div>
-  <div class="answers" id="answers"></div>
+  <!-- UI GAMEBOY -->
+  <div id="ui-box">
+    <div id="round">Round 1</div>
+    <div id="timer">⏱️ 40</div>
+    <div id="question"></div>
+    <div id="answers"></div>
+    <div id="evolution-text"></div>
+  </div>
 
   <button onclick="restartGame()">Rejouer</button>
 
