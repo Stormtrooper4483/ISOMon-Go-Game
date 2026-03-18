@@ -1,85 +1,97 @@
 body {
-  background: #0f380f;
-  font-family: monospace;
-  display: flex;
-  justify-content: center;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f2f2f2;
 }
 
-#game {
-  width: 360px;
-  background: #9bbc0f;
-  border: 10px solid #306230;
-  padding: 10px;
-  position: relative;
+.hidden {
+  display: none;
 }
 
-.enemy { text-align: right; }
-.player { display: flex; align-items: flex-end; }
-
-img {
-  width: 100px;
-  image-rendering: pixelated;
-}
-
-.hp-bar {
-  width: 100px;
-  height: 8px;
-  background: black;
-}
-
-.hp-bar div {
-  height: 100%;
-  background: green;
-}
-
-.dialog {
-  background: #e0f8d0;
-  border: 3px solid black;
-  padding: 10px;
+#start-screen {
+  text-align: center;
+  margin-top: 100px;
 }
 
 button {
-  width: 48%;
-  margin: 1%;
+  padding: 10px 20px;
+  border: none;
+  background: #333;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-/* FX */
-.flash { animation: flash 0.2s; }
-@keyframes flash { from {background:white;} to {background:inherit;} }
-
-.shake { animation: shake 0.3s; }
-@keyframes shake {
-  0%{transform:translateX(0);}
-  50%{transform:translateX(5px);}
-  100%{transform:translateX(0);}
+#top-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  font-weight: bold;
 }
 
-.hit { animation: hit 0.2s; }
-@keyframes hit {
-  50% { transform: translateX(10px); }
+.battle {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px;
 }
 
-/* Pokeball */
-.pokeball {
-  position: absolute;
-  width: 30px;
-  top: 60%;
-  left: 20%;
-  animation: throw 0.8s forwards;
+.pokemon {
+  text-align: center;
 }
 
-@keyframes throw {
-  to { top: 20%; left: 70%; }
+.pokemon img {
+  width: 180px;
+  transition: transform 0.2s;
 }
 
-.capture {
-  animation: shakeBall 1s ease;
+.name {
+  font-size: 22px;
+  font-weight: bold;
 }
 
-@keyframes shakeBall {
-  0%{transform:translateX(0);}
-  25%{transform:translateX(-5px);}
-  50%{transform:translateX(5px);}
-  75%{transform:translateX(-5px);}
-  100%{transform:translateX(0);}
+.hp-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.hp-bar {
+  width: 120px;
+  height: 12px;
+  background: #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.hp-fill {
+  height: 100%;
+  background: #4caf50;
+}
+
+.answers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 20px;
+}
+
+.answer {
+  height: 60px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+}
+
+@media (max-width: 768px) {
+  .answers {
+    grid-template-columns: 1fr;
+  }
+
+  .pokemon img {
+    width: 120px;
+  }
 }
