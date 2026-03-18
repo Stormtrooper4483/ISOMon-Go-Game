@@ -2,55 +2,63 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>ISOMon GO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ISOMon-GO</title>
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+  <div class="game-container">
 
-<div id="start-screen">
-  <h1>ISOMon-GO</h1>
-  <p>
-    Bienvenue sur ISOMon-GO !<br>
-    Réponds correctement aux questions pour attraper le pokémon ISOku.<br>
-    Tu as 40 secondes par question.<br>
-    Survis aux 3 rounds et gagne ta certification ISO27001 !
-  </p>
-  <button onclick="startGame()">Démarrer</button>
-</div>
+    <!-- Encart style GameBoy -->
+    <div class="gamebox">
 
-<div id="game" class="hidden">
+      <!-- Round et timer -->
+      <div class="status-bar">
+        <div id="round">Round 1</div>
+        <div id="timer">⏱️ 40</div>
+      </div>
 
-  <div class="battle">
+      <!-- Zone Pokémon -->
+      <div class="battle-zone">
+        <div class="enemy-container">
+          <img id="enemy-img" src="assets/isoku.png" alt="ISOku" class="pokemon-img">
+          <progress id="enemy-hp-bar" value="100" max="100"></progress>
+          <div id="enemy-hp">100</div>
+        </div>
 
-    <!-- ENNEMI -->
-    <div class="enemy">
-      <div class="name">ISOku</div>
-      <div class="hp">PV: <span id="enemy-hp">100</span></div>
-      <img id="enemy-img" src="assets/isoku.png">
+        <div class="player-container">
+          <img id="player-img" src="assets/rssilet_back.png" alt="Player" class="pokemon-img">
+          <img id="trainer-img" src="assets/trainer.png" alt="Trainer" class="trainer-img">
+          <progress id="player-hp-bar" value="100" max="100"></progress>
+          <div id="player-hp">100</div>
+        </div>
+      </div>
+
+      <!-- Texte d'évolution / intro -->
+      <div id="evolution-text" class="evolution-text">
+        Bienvenu sur ISOMon-GO ! Réponds correctement aux questions pour attraper le pokémon ISOku<br>
+        Tu as 40 secondes par question. Survis aux 3 rounds et gagne ta certification ISO27001 !
+      </div>
+
+      <!-- Question et réponses -->
+      <div class="question-container">
+        <div id="question" class="question-text"></div>
+        <div id="answers" class="answers-grid"></div>
+      </div>
+
+      <!-- Boutons -->
+      <div class="buttons">
+        <button id="start-btn">Démarrer</button>
+        <button id="restart-btn" class="hidden">Rejouer</button>
+      </div>
+
+      <!-- Container pour sprites d'attaque -->
+      <div id="projectile-container"></div>
+
     </div>
-
-    <!-- JOUEUR -->
-    <div class="player">
-      <img class="trainer" src="assets/trainer.png">
-      <img id="player-img" src="assets/rssilet_back.png">
-    </div>
-
   </div>
 
-  <!-- UI GAMEBOY -->
-  <div id="ui-box">
-    <div id="round">Round 1</div>
-    <div id="timer">⏱️ 40</div>
-    <div id="question"></div>
-    <div id="answers"></div>
-    <div id="evolution-text"></div>
-  </div>
-
-  <button onclick="restartGame()">Rejouer</button>
-
-</div>
-
-<script src="game.js"></script>
+  <!-- Script -->
+  <script src="game.js"></script>
 </body>
 </html>
