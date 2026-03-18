@@ -57,7 +57,7 @@ function handleEvolution() {
     img.classList.add("evolve");
 
     setTimeout(() => {
-      img.src = "assets/rssilex.png";
+      img.src = "assets/rssilex_back.png";
       name.textContent = "RSSIlex";
       img.classList.remove("evolve");
     }, 300);
@@ -68,7 +68,7 @@ function handleEvolution() {
     img.classList.add("evolve");
 
     setTimeout(() => {
-      img.src = "assets/rssirex.png";
+      img.src = "assets/rssirex_back.png";
       name.textContent = "RSSIrex";
       img.classList.remove("evolve");
     }, 300);
@@ -79,7 +79,7 @@ function handleEvolution() {
 function getPlayerSprites() {
   if (currentRound === 1) {
     return {
-      idle: "assets/rssilet.png",
+      idle: "assets/rssilet_back.png",
       attack: "assets/rssilet_attack.png",
       hurt: "assets/rssilet_hurt.png"
     };
@@ -87,14 +87,14 @@ function getPlayerSprites() {
 
   if (currentRound === 2) {
     return {
-      idle: "assets/rssilex.png",
+      idle: "assets/rssilex_back.png",
       attack: "assets/rssilex_attack.png",
       hurt: "assets/rssilex_hurt.png"
     };
   }
 
   return {
-    idle: "assets/rssirex.png",
+    idle: "assets/rssirex_back.png",
     attack: "assets/rssirex_attack.png",
     hurt: "assets/rssirex_hurt.png"
   };
