@@ -1,38 +1,65 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ISOMon</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>ISOMon Go</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div id="game">
+<div id="start-screen">
+  <h1>ISOMon Go</h1>
+  <p>
+    Bienvenu sur ISOMon-GO ! Réponds correctement aux questions pour attraper le pokémon ISOku<br>
+    Tu as 40 secondes par question. Survis aux 3 rounds et gagne ta certification ISO27001 !
+  </p>
+  <button onclick="startGame()">Démarrer</button>
+</div>
 
-  <div class="enemy">
-    <div id="enemy-name">ISOKu</div>
-    <div class="hp-bar"><div id="enemy-hp"></div></div>
-    <img id="enemy-sprite" src="assets/isoku.png">
+<div id="game" class="hidden">
+
+  <div id="top-bar">
+    <div id="round-display">Round 1</div>
+    <div id="timer">⏱️ 40s</div>
   </div>
 
-  <div class="player">
-    <img id="trainer" src="assets/trainer.png">
-    <img id="player-sprite" src="assets/rssilet_back.png">
-    <div id="player-name">RSSIlet</div>
-    <div class="hp-bar"><div id="player-hp"></div></div>
+  <div class="battle">
+
+    <!-- JOUEUR -->
+    <div class="pokemon">
+      <div class="name">RSSIlet</div>
+      <img id="player-img" src="assets/rssilet.png">
+      <div class="hp-container">
+        <span>PV :</span>
+        <div class="hp-bar">
+          <div id="player-hp" class="hp-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ENNEMI -->
+    <div class="pokemon">
+      <div class="name">RSSIrex</div>
+      <img id="enemy-img" src="assets/rssirex.png">
+      <div class="hp-container">
+        <span>PV :</span>
+        <div class="hp-bar">
+          <div id="enemy-hp" class="hp-fill"></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <div id="battle-text"></div>
+  <div id="question"></div>
 
-  <div class="dialog">
-    <p id="question"></p>
-    <div id="answers"></div>
-    <div id="timer"></div>
-  </div>
+  <div class="answers" id="answers"></div>
+
+  <button id="restart-btn" onclick="restartGame()">Rejouer</button>
 
 </div>
 
-<script src="game.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
