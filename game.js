@@ -1,3 +1,4 @@
+// Variables globales
 let round = 1;
 let correctAnswers = 0;
 let questionIndex = 0;
@@ -9,73 +10,107 @@ let enemyHP = 100;
 let timer;
 let timeLeft = 40;
 
-/* conteneur projectiles */
-const gameDiv = document.getElementById("game");
-let projectileDiv = document.getElementById("projectile-container");
-if (!projectileDiv) {
-  projectileDiv = document.createElement("div");
-  projectileDiv.id = "projectile-container";
-  projectileDiv.style.position = "absolute";
-  projectileDiv.style.width = "100%";
-  projectileDiv.style.height = "300px";
-  projectileDiv.style.pointerEvents = "none";
-  projectileDiv.style.top = "0";
-  gameDiv.appendChild(projectileDiv);
-}
+const startBtn = document.getElementById("start-btn");
+const restartBtn = document.getElementById("restart-btn");
 
-/* 📥 charger JSON */
+const playerImg = document.getElementById("player-img");
+const trainerImg = document.getElementById("trainer-img");
+const enemyImg = document.getElementById("enemy-img");
+
+const playerHPBar = document.getElementById("player-hp-bar");
+const enemyHPBar = document.getElementById("enemy-hp-bar");
+
+const playerHPText = document.getElementById("player-hp");
+const enemyHPText = document.getElementById("enemy-hp");
+
+const roundText = document.getElementById("round");
+const timerText = document.getElementById("timer");
+const questionText = document.getElementById("question");
+const answersDiv = document.getElementById("answers");
+const evolutionText = document.getElementById("evolution-text");
+
+const projectileContainer = document.getElementById("projectile-container");
+
+// Charger questions JSON (niveau actuel)
 async function loadQuestions() {
   const res = await fetch("questions.json");
   const data = await res.json();
   questions = data["level" + round];
+  shuffleArray(questions);
 }
 
-/* 🚀 START */
+// Mélange tableau (Fisher-Yates)
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+// Démarrage du jeu
 async function startGame() {
-  document.getElementById("start-screen").classList.add("hidden");
-  document.getElementById("game").classList.remove("hidden");
+  startBtn.classList.add("hidden");
+  restartBtn.classList.add("hidden");
+  evolutionText.textContent = "";
+  playerHP = 100;
+  enemyHP = 100;
+  updateHPBars();
+  roundText.textContent = "Round " + round;
+  questionIndex = 0;
+  correctAnswers = 0;
   await loadQuestions();
   nextQuestion();
+  startTimer();
 }
 
-/* ⏱️ TIMER */
+// Timer
 function startTimer() {
   clearInterval(timer);
   timeLeft = 40;
-  document.getElementById("timer").textContent = "⏱️ " + timeLeft;
-
+  timerText.textContent = "⏱️ " + timeLeft;
   timer = setInterval(() => {
     timeLeft--;
-    document.getElementById("timer").textContent = "⏱️ " + timeLeft;
+    timerText.textContent = "⏱️ " + timeLeft;
     if (timeLeft <= 0) {
       clearInterval(timer);
-      wrongAnswer();
+      handleWrongAnswer();
     }
   }, 1000);
 }
 
-/* ❓ QUESTION */
+// Affiche la question et réponses
 function nextQuestion() {
+  if (questionIndex >= questions.length) {
+    endRound();
+    return;
+  }
   startTimer();
   const q = questions[questionIndex];
-  document.getElementById("question").textContent = q.question;
-
-  const answersDiv = document.getElementById("answers");
+  questionText.textContent = q.question;
   answersDiv.innerHTML = "";
 
-  q.answers.forEach(a => {
+  q.answers.forEach((ans) => {
     const btn = document.createElement("div");
-    btn.className = "answer";
-    btn.textContent = a.text;
+    btn.classList.add("answer");
+    btn.textContent = ans.text;
     btn.onclick = () => {
       clearInterval(timer);
-      a.correct ? goodAnswer() : wrongAnswer();
+      if (ans.correct) handleGoodAnswer();
+      else handleWrongAnswer();
     };
     answersDiv.appendChild(btn);
   });
 }
 
-/* ⚔️ ANIMATION ATTACK */
+// Mise à jour des barres PV
+function updateHPBars() {
+  playerHPBar.value = playerHP;
+  enemyHPBar.value = enemyHP;
+  playerHPText.textContent = playerHP;
+  enemyHPText.textContent = enemyHP;
+}
+
+// Animation attaque
 function animateAttack(attacker, defender, callback) {
   const projectile = document.createElement("img");
   projectile.src = "assets/attack_projectile_1.png";
@@ -83,7 +118,7 @@ function animateAttack(attacker, defender, callback) {
   projectile.style.width = "60px";
   projectile.style.top = attacker === "player" ? "230px" : "50px";
   projectile.style.left = attacker === "player" ? "180px" : "620px";
-  projectileDiv.appendChild(projectile);
+  projectileContainer.appendChild(projectile);
 
   let toggle = false;
   const animInterval = setInterval(() => {
@@ -97,127 +132,149 @@ function animateAttack(attacker, defender, callback) {
 
   setTimeout(() => {
     clearInterval(animInterval);
-    projectileDiv.removeChild(projectile);
+    projectileContainer.removeChild(projectile);
 
-    // flash
     const flash = document.createElement("img");
     flash.src = "assets/fx_flash_1.png";
     flash.style.position = "absolute";
     flash.style.width = "80px";
     flash.style.top = defender === "player" ? "210px" : "30px";
     flash.style.left = defender === "player" ? "150px" : "590px";
-    projectileDiv.appendChild(flash);
+    projectileContainer.appendChild(flash);
 
-    setTimeout(() => projectileDiv.removeChild(flash), 300);
+    setTimeout(() => projectileContainer.removeChild(flash), 300);
 
-    // hit
     const hit = document.createElement("img");
     hit.src = "assets/fx_hit_1.png";
     hit.style.position = "absolute";
     hit.style.width = "80px";
     hit.style.top = defender === "player" ? "210px" : "30px";
     hit.style.left = defender === "player" ? "150px" : "590px";
-    projectileDiv.appendChild(hit);
+    projectileContainer.appendChild(hit);
 
     setTimeout(() => {
-      projectileDiv.removeChild(hit);
+      projectileContainer.removeChild(hit);
       callback();
     }, 400);
   }, 600);
 }
 
-/* ⚔️ BONNE REPONSE */
-function goodAnswer() {
+// Gestion bonne réponse
+function handleGoodAnswer() {
   correctAnswers++;
-  const playerImg = document.getElementById("player-img");
   playerImg.src = getPlayerSprite("attack");
-
   animateAttack("player", "enemy", () => {
-    const enemyImg = document.getElementById("enemy-img");
     enemyImg.src = "assets/isoku_hurt.png";
-    setTimeout(() => enemyImg.src = "assets/isoku.png", 500);
+    setTimeout(() => (enemyImg.src = "assets/isoku.png"), 500);
 
     enemyHP -= 20;
-    updateHP();
+    if (enemyHP < 0) enemyHP = 0;
+    updateHPBars();
 
-    checkNext();
+    nextStep();
   });
 }
 
-/* ❌ MAUVAISE REPONSE */
-function wrongAnswer() {
-  const enemyImg = document.getElementById("enemy-img");
+// Gestion mauvaise réponse
+function handleWrongAnswer() {
   enemyImg.src = "assets/isoku_attack.png";
-
   animateAttack("enemy", "player", () => {
-    const playerImg = document.getElementById("player-img");
     playerImg.src = getPlayerSprite("hurt");
-    setTimeout(() => playerImg.src = getPlayerSprite("idle"), 500);
+    setTimeout(() => (playerImg.src = getPlayerSprite("idle")), 500);
 
     playerHP -= 20;
-    updateHP();
+    if (playerHP < 0) playerHP = 0;
+    updateHPBars();
 
-    checkNext();
+    nextStep();
   });
 }
 
-function checkNext() {
-  if (questionIndex + 1 >= questions.length) {
-    if (correctAnswers >= 5) {
-      nextRound();
-    } else {
-      nextQuestion(); // continue si moins de 5 bonnes réponses mais questions restantes
-    }
+// Avancer dans questions / rounds
+function nextStep() {
+  questionIndex++;
+  if (questionIndex >= questions.length) {
+    endRound();
   } else {
-    questionIndex++;
     nextQuestion();
   }
 }
 
-/* 🧬 SPRITES BACK */
-function getPlayerSprite(type) {
-  if (round === 1) return `assets/rssilet_${type === "idle" ? "back" : type}.png`;
-  if (round === 2) return `assets/rssilex_${type === "idle" ? "back" : type}.png`;
-  return `assets/rssirex_${type === "idle" ? "back" : type}.png`;
+// Fin de round
+function endRound() {
+  clearInterval(timer);
+  if (correctAnswers >= 5) {
+    evolutionText.textContent =
+      round === 1
+        ? "✨ RSSIlet évolue en RSSIlex !"
+        : round === 2
+        ? "🔥 RSSIlex évolue en RSSIrex !"
+        : "";
+    round++;
+    correctAnswers = 0;
+    questionIndex = 0;
+    if (round > 3) {
+      setTimeout(() => {
+        throwPokeball();
+      }, 1500);
+      return;
+    }
+    setTimeout(async () => {
+      evolutionText.textContent = "";
+      await loadQuestions();
+      nextQuestion();
+    }, 2500);
+  } else {
+    // Si échec, on rejoue même round
+    questionIndex = 0;
+    correctAnswers = 0;
+    setTimeout(() => {
+      nextQuestion();
+    }, 2000);
+  }
 }
 
-/* ⚡ POKEBALL FINALE */
+// Lance la pokéball finale
 function throwPokeball() {
-  const enemy = document.getElementById("enemy-img");
-  enemy.src = "assets/pokeball.png";
-
-  setTimeout(() => alert("🎉 ISOku capturé ! Certification obtenue !"), 1500);
+  enemyImg.src = "assets/pokeball.png";
+  evolutionText.textContent = "ISOku capturé ! Certification ISO27001 obtenue 🎉";
+  restartBtn.classList.remove("hidden");
 }
 
-/* 🧬 ÉVOLUTION */
-function nextRound() {
-  round++;
+// Sprites joueur selon état
+function getPlayerSprite(state) {
+  if (round === 1) {
+    if (state === "idle") return "assets/rssilet_back.png";
+    if (state === "attack") return "assets/rssilet_attack.png";
+    if (state === "hurt") return "assets/rssilet_hurt.png";
+  } else if (round === 2) {
+    if (state === "idle") return "assets/rssilex_back.png";
+    if (state === "attack") return "assets/rssilex_attack.png";
+    if (state === "hurt") return "assets/rssilex_hurt.png";
+  } else {
+    if (state === "idle") return "assets/rssirex_back.png";
+    if (state === "attack") return "assets/rssirex_attack.png";
+    if (state === "hurt") return "assets/rssirex_hurt.png";
+  }
+}
+
+// Redémarrer le jeu
+function restartGame() {
+  round = 1;
   correctAnswers = 0;
   questionIndex = 0;
-
-  if (round > 3) {
-    throwPokeball();
-    return;
-  }
-
-  const text = document.getElementById("evolution-text");
-  text.textContent =
-    round === 2 ? "✨ RSSIlet évolue en RSSIlex !" : "🔥 RSSIlex évolue en RSSIrex !";
-
-  document.getElementById("player-img").src = getPlayerSprite("idle");
-
-  setTimeout(async () => {
-    text.textContent = "";
-    await loadQuestions();
-    nextQuestion();
-  }, 2000);
+  playerHP = 100;
+  enemyHP = 100;
+  evolutionText.textContent = "";
+  restartBtn.classList.add("hidden");
+  startBtn.classList.remove("hidden");
+  playerImg.src = getPlayerSprite("idle");
+  enemyImg.src = "assets/isoku.png";
+  updateHPBars();
+  questionText.textContent = "";
+  answersDiv.innerHTML = "";
+  timerText.textContent = "⏱️ 40";
 }
 
-function updateHP() {
-  document.getElementById("player-hp").textContent = playerHP;
-  document.getElementById("enemy-hp").textContent = enemyHP;
-}
-
-function restartGame() {
-  location.reload();
-}
+startBtn.addEventListener("click", startGame);
+restartBtn.addEventListener("click", restartGame);
