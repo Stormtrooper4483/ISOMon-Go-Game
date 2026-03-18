@@ -1,183 +1,153 @@
-let currentRound = 1;
-let playerHP = 100;
-let enemyHP = 100;
+let round = 1;
+let correctAnswers = 0;
+let questionIndex = 0;
+let questions = [];
 
 let timer;
 let timeLeft = 40;
 
-function startGame() {
+/* 📥 LOAD JSON */
+async function loadQuestions() {
+  const res = await fetch("questions.json");
+  const data = await res.json();
+  questions = data["level" + round];
+}
+
+/* 🚀 START */
+async function startGame() {
   document.getElementById("start-screen").classList.add("hidden");
   document.getElementById("game").classList.remove("hidden");
-  startRound();
+
+  await loadQuestions();
+  nextQuestion();
 }
 
-function startRound() {
-  updateRound();
-  handleEvolution();
-  loadQuestion();
-  startTimer();
-}
-
-function updateRound() {
-  document.getElementById("round-display").textContent = "Round " + currentRound;
-}
-
+/* ⏱️ TIMER */
 function startTimer() {
   clearInterval(timer);
   timeLeft = 40;
 
   timer = setInterval(() => {
     timeLeft--;
-    document.getElementById("timer").textContent = "⏱️ " + timeLeft + "s";
+    document.getElementById("timer").textContent = "⏱️ " + timeLeft;
 
     if (timeLeft <= 0) {
       clearInterval(timer);
-      enemyAttack();
+      wrongAnswer();
     }
   }, 1000);
 }
 
-/* 🧬 EVOLUTION */
-function handleEvolution() {
-  const img = document.getElementById("player-img");
-  const name = document.getElementById("player-name");
-  const text = document.getElementById("evolution-text");
+/* ❓ QUESTION */
+function nextQuestion() {
+  startTimer();
 
-  text.classList.remove("hidden");
+  const q = questions[questionIndex];
+  document.getElementById("question").textContent = q.question;
 
-  if (currentRound === 1) {
-    img.src = "assets/rssilet.png";
-    name.textContent = "RSSIlet";
-    text.classList.add("hidden");
-    return;
-  }
-
-  if (currentRound === 2) {
-    text.textContent = "✨ RSSIlet évolue en RSSIlex !";
-    img.classList.add("evolve");
-
-    setTimeout(() => {
-      img.src = "assets/rssilex_back.png";
-      name.textContent = "RSSIlex";
-      img.classList.remove("evolve");
-    }, 300);
-  }
-
-  if (currentRound === 3) {
-    text.textContent = "🔥 RSSIlex évolue en RSSIrex !";
-    img.classList.add("evolve");
-
-    setTimeout(() => {
-      img.src = "assets/rssirex_back.png";
-      name.textContent = "RSSIrex";
-      img.classList.remove("evolve");
-    }, 300);
-  }
-}
-
-/* ⚔️ SPRITES dynamiques */
-function getPlayerSprites() {
-  if (currentRound === 1) {
-    return {
-      idle: "assets/rssilet_back.png",
-      attack: "assets/rssilet_attack.png",
-      hurt: "assets/rssilet_hurt.png"
-    };
-  }
-
-  if (currentRound === 2) {
-    return {
-      idle: "assets/rssilex_back.png",
-      attack: "assets/rssilex_attack.png",
-      hurt: "assets/rssilex_hurt.png"
-    };
-  }
-
-  return {
-    idle: "assets/rssirex_back.png",
-    attack: "assets/rssirex_attack.png",
-    hurt: "assets/rssirex_hurt.png"
-  };
-}
-
-const enemySprites = {
-  idle: "assets/isoku.png",
-  attack: "assets/isoku_attack.png",
-  hurt: "assets/isoku_hurt.png"
-};
-
-function playAnimation(target, type) {
-  const img = document.getElementById(target + "-img");
-
-  if (target === "player") {
-    const sprites = getPlayerSprites();
-    img.src = sprites[type];
-    setTimeout(() => img.src = sprites.idle, 500);
-  } else {
-    img.src = enemySprites[type];
-    setTimeout(() => img.src = enemySprites.idle, 500);
-  }
-}
-
-/* ⚔️ COMBAT */
-function playerAttack() {
-  playAnimation("player", "attack");
-  playAnimation("enemy", "hurt");
-
-  enemyHP -= 20;
-  updateHP();
-}
-
-function enemyAttack() {
-  playAnimation("enemy", "attack");
-  playAnimation("player", "hurt");
-
-  playerHP -= 20;
-  updateHP();
-}
-
-function updateHP() {
-  document.getElementById("player-hp").style.width = playerHP + "%";
-  document.getElementById("enemy-hp").style.width = enemyHP + "%";
-
-  if (playerHP <= 0 || enemyHP <= 0) {
-    endGame();
-  }
-}
-
-/* ❓ QUESTIONS */
-function loadQuestion() {
   const answersDiv = document.getElementById("answers");
   answersDiv.innerHTML = "";
 
-  ["A", "B", "C", "D"].forEach(ans => {
+  q.answers.forEach(a => {
     const btn = document.createElement("div");
     btn.className = "answer";
-    btn.textContent = ans;
+    btn.textContent = a.text;
 
     btn.onclick = () => {
       clearInterval(timer);
-      playerAttack();
-      nextTurn();
+      a.correct ? goodAnswer() : wrongAnswer();
     };
 
     answersDiv.appendChild(btn);
   });
 }
 
-function nextTurn() {
-  setTimeout(() => {
-    currentRound++;
-    if (currentRound <= 3) {
-      startRound();
-    } else {
-      endGame();
-    }
-  }, 1000);
+/* ⚔️ BONNE REPONSE */
+function goodAnswer() {
+  correctAnswers++;
+  attackEnemy();
+
+  if (correctAnswers >= 5) {
+    nextRound();
+  } else {
+    questionIndex++;
+    nextQuestion();
+  }
 }
 
-function endGame() {
-  alert(playerHP <= 0 ? "Perdu !" : "🎉 Certification ISO27001 obtenue !");
+/* ❌ MAUVAISE */
+function wrongAnswer() {
+  attackPlayer();
+  questionIndex++;
+  nextQuestion();
+}
+
+/* ⚔️ ANIMATIONS */
+function attackEnemy() {
+  const enemy = document.getElementById("enemy-img");
+  enemy.src = "assets/isoku_attack.png";
+
+  setTimeout(() => {
+    enemy.src = "assets/isoku.png";
+  }, 500);
+}
+
+function attackPlayer() {
+  const player = document.getElementById("player-img");
+  player.src = getPlayerSprite("hurt");
+
+  setTimeout(() => {
+    player.src = getPlayerSprite("idle");
+  }, 500);
+}
+
+/* 🧬 EVOLUTION */
+function getPlayerSprite(type) {
+  if (round === 1) return `assets/rssilet_${type === "idle" ? "back" : type}.png`;
+  if (round === 2) return `assets/rssilex_${type === "idle" ? "back" : type}.png`;
+  return `assets/rssirex_${type === "idle" ? "back" : type}.png`;
+}
+
+function nextRound() {
+  round++;
+  correctAnswers = 0;
+  questionIndex = 0;
+
+  if (round > 3) {
+    throwPokeball();
+    return;
+  }
+
+  showEvolution();
+}
+
+/* 💬 EVOLUTION */
+function showEvolution() {
+  const text = document.getElementById("evolution-text");
+
+  text.textContent =
+    round === 2
+      ? "✨ RSSIlet évolue en RSSIlex !"
+      : "🔥 RSSIlex évolue en RSSIrex !";
+
+  document.getElementById("player-img").src = getPlayerSprite("idle");
+
+  setTimeout(async () => {
+    text.textContent = "";
+    await loadQuestions();
+    nextQuestion();
+  }, 2000);
+}
+
+/* 🎯 POKEBALL */
+function throwPokeball() {
+  const enemy = document.getElementById("enemy-img");
+
+  enemy.src = "assets/pokeball.png";
+
+  setTimeout(() => {
+    alert("🎉 ISOku capturé ! Certification obtenue !");
+  }, 1500);
 }
 
 function restartGame() {
