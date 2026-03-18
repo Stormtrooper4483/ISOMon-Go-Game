@@ -1,222 +1,113 @@
-/* Global */
 body {
-  margin: 0;
-  background: #d3d3d3;
-  font-family: monospace, monospace;
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f0f0;
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+  padding: 20px;
 }
 
-#game-container {
-  width: 100%;
+.game-container {
   max-width: 700px;
-  background: #eee;
-  border: 4px solid black;
-  padding: 10px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  width: 100%;
 }
 
-/* Battle area */
-.battle {
+.gamebox {
+  background: #ffffff;
+  border: 4px solid #000;
+  padding: 10px;
   position: relative;
-  height: 300px;
-  background: #f0f0f0;
-  border: 3px solid black;
-  border-radius: 6px;
+}
+
+.status-bar {
   display: flex;
   justify-content: space-between;
-  padding: 15px 30px;
-  box-sizing: border-box;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
-.player, .enemy {
+.battle-zone {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
   position: relative;
-  width: 40%;
 }
 
-.player img#trainer-img {
-  width: 90px;
+.enemy-container, .player-container {
+  text-align: center;
+  position: relative;
+}
+
+.pokemon-img {
+  width: 120px;
+  height: auto;
+}
+
+.trainer-img {
+  width: 60px;
+  height: auto;
   position: absolute;
   bottom: 0;
-  left: -100px;
-}
-
-.player img#player-img,
-.enemy img#enemy-img {
-  width: 140px;
-  image-rendering: pixelated;
-}
-
-/* Info below each Pokémon */
-#player-info, #enemy-info {
-  margin-top: 10px;
-  width: 100%;
-  text-align: center;
-}
-
-#player-name, #enemy-name {
-  font-weight: bold;
-  font-size: 1.2rem;
-  margin-bottom: 4px;
-}
-
-.hp-label {
-  font-size: 0.9rem;
-  font-weight: bold;
-  margin-bottom: 2px;
+  left: -60px;
 }
 
 progress {
   width: 100%;
   height: 15px;
-  -webkit-appearance: none;
-  appearance: none;
-  border: 1px solid #000;
-  border-radius: 4px;
-  overflow: hidden;
+  margin-top: 5px;
 }
 
-progress::-webkit-progress-bar {
-  background-color: #ccc;
-}
-
-progress::-webkit-progress-value {
-  background-color: #4caf50;
-}
-
-progress::-moz-progress-bar {
-  background-color: #4caf50;
-}
-
-/* UI Box */
-#ui-box {
-  border: 4px solid black;
-  background: #f0f0f0;
-  padding: 15px 20px;
-  min-height: 140px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  font-size: 1rem;
-  box-sizing: border-box;
-  position: relative;
-}
-
-#round, #timer, #evolution-text {
+.evolution-text {
+  margin: 10px 0;
+  text-align: center;
   font-weight: bold;
+  color: #333;
 }
 
-#question {
-  font-size: 1.1rem;
-  min-height: 40px;
+.question-container {
+  margin-top: 20px;
 }
 
-#answers {
+.question-text {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.answers-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
 
 .answer {
-  padding: 8px 10px;
-  background: white;
-  border: 2px solid black;
-  cursor: pointer;
-  user-select: none;
+  background: #ddd;
+  padding: 10px;
   text-align: center;
-  font-weight: 600;
-  font-size: 1rem;
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
 }
 
 .answer:hover {
-  background-color: #d1d1d1;
+  background: #ccc;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 0 5px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .hidden {
   display: none;
 }
 
-/* Buttons */
-button {
-  width: 140px;
-  padding: 10px 0;
-  font-weight: bold;
-  font-family: monospace;
-  border: 3px solid black;
-  background-color: white;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-top: 8px;
-  align-self: flex-start;
-  user-select: none;
-}
-
-button:hover {
-  background-color: #ddd;
-}
-
-/* Projectile container */
-#projectile-container {
-  position: absolute;
-  width: 100%;
-  height: 300px;
-  top: 0;
-  left: 0;
+#projectile-container img {
   pointer-events: none;
-  user-select: none;
-  z-index: 10;
-}
-
-/* Responsive */
-@media (max-width: 500px) {
-  #game-container {
-    max-width: 100%;
-    padding: 5px;
-  }
-
-  .battle {
-    flex-direction: column;
-    height: auto;
-    gap: 10px;
-    padding: 15px;
-  }
-
-  .player, .enemy {
-    width: 100%;
-    flex-direction: row;
-    justify-content: center;
-    gap: 15px;
-  }
-
-  .player img#trainer-img {
-    position: static;
-    width: 60px;
-  }
-
-  .player img#player-img,
-  .enemy img#enemy-img {
-    width: 80px;
-  }
-
-  #player-info, #enemy-info {
-    text-align: left;
-  }
-
-  #answers {
-    grid-template-columns: 1fr;
-  }
-
-  button {
-    width: 100%;
-  }
 }
