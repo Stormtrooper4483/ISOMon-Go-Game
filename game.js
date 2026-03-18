@@ -65,10 +65,10 @@ function hit(target){
 
   if(target==="enemy"){
     el.src="sprites/isoku_hit.png";
-    setTimeout(()=>el.src="sprites/isoku.png",300);
+    setTimeout(()=>el.src="assets/isoku.png",300);
   } else {
     el.src="sprites/rssilet_hit.png";
-    setTimeout(()=>el.src="sprites/rssilet_back.png",300);
+    setTimeout(()=>el.src="assets/rssilet_back.png",300);
   }
 
   setTimeout(()=>el.classList.remove("hit"),200);
@@ -89,9 +89,9 @@ function levelUp(){
   enemyHP = 100;
 
   if(levelIndex===1)
-    document.getElementById("player-sprite").src="sprites/rssirex_back.png";
+    document.getElementById("player-sprite").src="assets/rssirex_back.png";
   if(levelIndex===2)
-    document.getElementById("player-sprite").src="sprites/rssilex_back.png";
+    document.getElementById("player-sprite").src="assets/rssilex_back.png";
 
   startLevel();
 }
@@ -100,7 +100,7 @@ function captureSequence(){
   showText("RSSIlex lance une Pokéball !");
 
   let ball = document.createElement("img");
-  ball.src="sprites/pokeball.png";
+  ball.src="assets/pokeball.png";
   ball.className="pokeball";
   document.getElementById("game").appendChild(ball);
 
