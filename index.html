@@ -11,16 +11,18 @@
 <div class="game-container">
   <div class="gamebox" id="capture-area">
 
-    <!-- ✅ LOGO -->
+    <!-- LOGO -->
     <div class="title">
       <img src="assets/isomon_logo.png" alt="ISOMon GO" class="logo">
     </div>
 
+    <!-- STATUS -->
     <div class="status-bar">
       <div id="round">Round 1</div>
       <div id="timer">⏱️ 40</div>
     </div>
 
+    <!-- COMBAT -->
     <div class="battle-zone">
 
       <div class="enemy-block">
@@ -47,20 +49,25 @@
       </div>
 
       <div id="projectile-container"></div>
-
     </div>
 
+    <!-- TEXTE -->
     <div class="question-container">
-      <div id="question"></div>
+      <div id="question" class="intro">
+        🎯 Réponds correctement aux questions.<br>
+        🛡️ Passe les 3 rounds pour capturer ISOKu !
+      </div>
       <div id="answers"></div>
       <div id="explanation"></div>
     </div>
 
+    <!-- BOUTONS -->
     <div class="buttons">
       <button id="start-btn">Démarrer</button>
       <button id="restart-btn" class="hidden">Rejouer</button>
     </div>
 
+    <!-- RESULT -->
     <div id="result-screen" class="hidden result-screen">
       <h2>🎯 Certification ISO 27001 obtenue !</h2>
       <div class="badge">🛡️ ISO CERTIFIED 🛡️</div>
