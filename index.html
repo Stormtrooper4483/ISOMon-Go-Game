@@ -18,48 +18,54 @@
       <div id="timer">⏱️ 40</div>
     </div>
 
-    <div class="round-info">Objectif : 5/6 bonnes réponses</div>
+    <!-- COMBAT -->
+    <div class="battle-zone">
 
-    <div class="battle-zone" id="battle-zone">
-
-      <div class="enemy-container">
-        <img id="enemy-img" src="assets/isoku.png" class="pokemon-img">
-        <div class="hp-label">PV</div>
-        <progress id="enemy-hp-bar" value="100" max="100"></progress>
-        <div id="enemy-hp">100</div>
+      <!-- ENNEMI -->
+      <div class="enemy-block">
+        <div class="enemy-hud">
+          ISOKU ♂ Lv3
+          <div class="hp-bar">
+            PV <progress id="enemy-hp-bar" value="100" max="100"></progress>
+          </div>
+        </div>
+        <img id="enemy-img" src="assets/isoku.png" class="enemy-sprite">
       </div>
 
-      <div class="player-container">
-        <img id="player-img" src="assets/rssilet_back.png" class="pokemon-img">
-        <img src="assets/trainer.png" class="trainer-img">
-        <div class="hp-label">PV</div>
-        <progress id="player-hp-bar" value="100" max="100"></progress>
-        <div id="player-hp">100</div>
+      <!-- JOUEUR -->
+      <div class="player-block">
+        <img id="player-img" src="assets/rssilet_back.png" class="player-sprite">
+
+        <div class="player-hud">
+          RSSIlet ♂ Lv1
+          <div class="hp-bar">
+            PV <progress id="player-hp-bar" value="100" max="100"></progress>
+          </div>
+          <div id="player-hp">100</div>
+        </div>
       </div>
 
     </div>
 
-    <div id="evolution-text" class="evolution-text">
-      🎮 Capture ISOKu en 3 rounds
-    </div>
-
+    <!-- TEXTE -->
     <div class="question-container">
       <div id="question"></div>
       <div id="answers"></div>
       <div id="explanation"></div>
     </div>
 
+    <!-- BOUTONS -->
     <div class="buttons">
       <button id="start-btn">Démarrer</button>
       <button id="restart-btn" class="hidden">Rejouer</button>
     </div>
 
-    <!-- RESULT SCREEN -->
+    <!-- RESULT -->
     <div id="result-screen" class="hidden result-screen">
       <h2>🎯 Certification ISO 27001 obtenue !</h2>
       <div class="badge">🛡️ ISO CERTIFIED 🛡️</div>
-      <div id="final-score" class="score"></div>
-      <button onclick="downloadImage()">📸 Télécharger mon score</button>
+      <div id="final-score"></div>
+      <button onclick="downloadImage()">📸 Télécharger</button>
     </div>
 
   </div>
