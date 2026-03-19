@@ -15,18 +15,20 @@ body {
 .gamebox {
   background: #d8d8d8;
   border: 6px solid black;
-  padding: 10px;
+  padding: 8px; /* 🔥 réduit */
 }
 
-/* ✅ LOGO */
+/* ✅ LOGO (corrigé) */
 .title {
   text-align: center;
-  margin-bottom: 8px;
+  margin-bottom: 4px; /* 🔥 réduit */
 }
 
 .logo {
+  max-width: 240px; /* 🔥 réduit */
   width: 100%;
-  max-width: 320px;
+  display: block;
+  margin: 0 auto;
   image-rendering: pixelated;
 }
 
@@ -37,12 +39,14 @@ body {
   font-size: 12px;
 }
 
-/* COMBAT */
+/* ================= COMBAT ================= */
+
 .battle-zone {
   position: relative;
-  height: 280px;
+  height: 240px; /* 🔥 réduit */
   border: 4px solid black;
   background: linear-gradient(#e0e0e0, #cfcfcf);
+  margin-top: 4px;
 }
 
 /* ENNEMI */
@@ -54,9 +58,9 @@ body {
 
 .enemy-sprite {
   position: absolute;
-  top: 30px;
-  left: 220px;
-  width: 170px;
+  top: 20px;
+  left: 200px;
+  width: 150px; /* 🔥 réduit */
   image-rendering: pixelated;
 }
 
@@ -70,8 +74,8 @@ body {
 .player-sprite {
   position: absolute;
   bottom: 0;
-  right: 200px;
-  width: 170px;
+  right: 180px;
+  width: 150px; /* 🔥 réduit */
   image-rendering: pixelated;
 }
 
@@ -97,7 +101,6 @@ body {
 progress {
   width: 80px;
   height: 6px;
-  transition: all 0.3s ease;
 }
 
 /* PROJECTILES */
@@ -111,13 +114,14 @@ progress {
   z-index: 10;
 }
 
-/* TEXTE */
+/* ================= TEXTE ================= */
+
 .question-container {
-  margin-top: 10px;
-  border: 4px solid black;
+  margin-top: 8px;
+  border: 3px solid black; /* 🔥 plus fin */
   background: white;
-  padding: 10px;
-  min-height: 130px;
+  padding: 8px;
+  min-height: 120px;
 }
 
 /* REPONSES */
