@@ -11,20 +11,16 @@
 <div class="game-container">
   <div class="gamebox" id="capture-area">
 
-    <!-- LOGO -->
-    <div class="title">
-      <img src="assets/isomon_logo.png" alt="ISOMon GO" class="logo">
-    </div>
+    <div class="title">ISOMon - GO : gagnez l'ISO 27001 !</div>
 
-    <!-- STATUS -->
     <div class="status-bar">
       <div id="round">Round 1</div>
       <div id="timer">⏱️ 40</div>
     </div>
 
-    <!-- COMBAT -->
     <div class="battle-zone">
 
+      <!-- ENNEMI -->
       <div class="enemy-block">
         <div class="enemy-hud">
           ISOKU ♂ Lv3
@@ -36,11 +32,12 @@
         <img id="enemy-img" src="assets/isoku.png" class="enemy-sprite">
       </div>
 
+      <!-- JOUEUR -->
       <div class="player-block">
         <img id="player-img" src="assets/rssilet_back.png" class="player-sprite">
 
         <div class="player-hud">
-          RSSIlet ♂ Lv1
+          <div id="player-name">RSSIlet ♂ Lv1</div>
           <div class="hp-bar">
             PV <progress id="player-hp-bar" value="100" max="100"></progress>
           </div>
@@ -49,14 +46,12 @@
       </div>
 
       <div id="projectile-container"></div>
+
     </div>
 
     <!-- TEXTE -->
     <div class="question-container">
-      <div id="question" class="intro">
-        🎯 Réponds correctement aux questions.<br>
-        🛡️ Passe les 3 rounds pour capturer ISOKu !
-      </div>
+      <div id="question"></div>
       <div id="answers"></div>
       <div id="explanation"></div>
     </div>
