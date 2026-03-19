@@ -12,10 +12,11 @@ let enemyHP = 100;
 let timer;
 let timeLeft = 40;
 
+/* DOM */
 const startBtn = document.getElementById("start-btn");
 const restartBtn = document.getElementById("restart-btn");
-
 const timerText = document.getElementById("timer");
+const roundText = document.getElementById("round");
 
 const playerImg = document.getElementById("player-img");
 const enemyImg = document.getElementById("enemy-img");
@@ -26,17 +27,11 @@ const enemyHPBar = document.getElementById("enemy-hp-bar");
 const playerHPText = document.getElementById("player-hp");
 const enemyHPText = document.getElementById("enemy-hp");
 
-const projectileContainer = document.createElement("div");
-document.body.appendChild(projectileContainer);
-
-/* SPRITES */
-function getPlayerSprite(state) {
-  const map = {
-    1: { idle: "assets/rssilet_back.png", hurt: "assets/rssilet_hit.png" },
-    2: { idle: "assets/rssilex_back.png", hurt: "assets/rssilex_hit.png" },
-    3: { idle: "assets/rssirex_back.png", hurt: "assets/rssirex_hit.png" }
-  };
-  return map[round][state] || map[round].idle;
+/* SPRITES RSSI */
+function getPlayerSprite() {
+  if (round === 1) return "assets/rssilet_back.png";
+  if (round === 2) return "assets/rssirex_back.png";
+  return "assets/rssilex_back.png";
 }
 
 /* LOAD QUESTIONS */
@@ -50,6 +45,25 @@ async function loadQuestions() {
     .slice(0, 6);
 }
 
+/* RESET ROUND */
+function resetHP() {
+  playerHP = 100;
+  enemyHP = 100;
+  updateHP();
+}
+
+/* UPDATE HP */
+function updateHP() {
+  playerHP = Math.max(0, playerHP);
+  enemyHP = Math.max(0, enemyHP);
+
+  playerHPBar.value = playerHP;
+  enemyHPBar.value = enemyHP;
+
+  playerHPText.textContent = playerHP;
+  enemyHPText.textContent = enemyHP;
+}
+
 /* START */
 async function startGame() {
   round = 1;
@@ -57,21 +71,22 @@ async function startGame() {
   totalCorrect = 0;
   questionIndex = 0;
 
-  playerHP = 100;
-  enemyHP = 100;
-
   startBtn.classList.add("hidden");
   restartBtn.classList.add("hidden");
 
   document.getElementById("result-screen").classList.add("hidden");
 
-  playerImg.src = getPlayerSprite("idle");
-  enemyImg.src = "assets/isoku.png";
-
-  updateHP();
+  playerImg.src = getPlayerSprite();
+  resetHP();
 
   await loadQuestions();
+  updateRoundUI();
   nextQuestion();
+}
+
+/* ROUND UI */
+function updateRoundUI() {
+  roundText.textContent = "Round " + round;
 }
 
 /* TIMER */
@@ -90,28 +105,6 @@ function startTimer() {
       handleWrong();
     }
   }, 1000);
-}
-
-/* PROJECTILE */
-function animateProjectile(fromPlayer, callback) {
-  const proj = document.createElement("img");
-  proj.src = "assets/attack_projectile_1.png";
-  proj.style.position = "absolute";
-  proj.style.width = "50px";
-  proj.style.top = fromPlayer ? "220px" : "80px";
-  proj.style.left = fromPlayer ? "120px" : "300px";
-
-  projectileContainer.appendChild(proj);
-
-  setTimeout(() => {
-    proj.src = "assets/attack_projectile_2.png";
-    proj.style.left = fromPlayer ? "300px" : "120px";
-  }, 100);
-
-  setTimeout(() => {
-    projectileContainer.removeChild(proj);
-    callback();
-  }, 400);
 }
 
 /* QUESTION */
@@ -134,79 +127,71 @@ function nextQuestion() {
     btn.onclick = () => {
       clearInterval(timer);
 
-      if (ans.correct) handleGood(q);
-      else handleWrong(q);
+      if (ans.correct) {
+        handleGood(q);
+      } else {
+        handleWrong(q);
+      }
     };
 
     answersDiv.appendChild(btn);
   });
 }
 
-/* GOOD */
+/* GOOD ANSWER */
 function handleGood(q) {
   correctAnswers++;
   totalCorrect++;
 
-  animateProjectile(true, () => {
-    enemyImg.src = "assets/isoku_hit.png";
+  enemyHP -= 20;
+  updateHP();
 
-    setTimeout(() => {
-      enemyImg.src = "assets/isoku.png";
-    }, 300);
+  enemyImg.src = "assets/isoku_hit.png";
+  setTimeout(() => enemyImg.src = "assets/isoku.png", 300);
 
-    enemyHP -= 20;
-    updateHP();
+  document.getElementById("explanation").textContent = q.explanation;
 
-    document.getElementById("explanation").textContent = q.explanation;
-
-    nextStep();
-  });
+  nextStep();
 }
 
-/* WRONG */
+/* WRONG ANSWER */
 function handleWrong(q) {
-  animateProjectile(false, () => {
-    playerImg.src = getPlayerSprite("hurt");
+  playerHP -= 20;
+  updateHP();
 
-    setTimeout(() => {
-      playerImg.src = getPlayerSprite("idle");
-    }, 300);
+  playerImg.src = "assets/rssilet_hit.png";
+  setTimeout(() => playerImg.src = getPlayerSprite(), 300);
 
-    playerHP -= 20;
-    updateHP();
+  if (q) {
+    document.getElementById("explanation").textContent = q.explanation;
+  }
 
-    if (q) document.getElementById("explanation").textContent = q.explanation;
-
-    nextStep();
-  });
+  nextStep();
 }
 
-/* UPDATE HP */
-function updateHP() {
-  playerHPBar.value = playerHP;
-  enemyHPBar.value = enemyHP;
-
-  playerHPText.textContent = playerHP;
-  enemyHPText.textContent = enemyHP;
-}
-
-/* STEP */
+/* NEXT STEP */
 function nextStep() {
   questionIndex++;
 
   if (playerHP <= 0) return lose();
+  if (enemyHP <= 0) return winRound();
 
   setTimeout(nextQuestion, 800);
 }
 
-/* ROUND */
-async function endRound() {
+/* WIN ROUND */
+async function winRound() {
   if (correctAnswers >= 5) {
     round++;
+
+    if (round > 3) return winGame();
+
     correctAnswers = 0;
     questionIndex = 0;
 
-    if (round > 3) return win();
+    playerImg.src = getPlayerSprite();
+    resetHP();
+    updateRoundUI();
 
     await loadQuestions();
     nextQuestion();
@@ -215,8 +200,17 @@ async function endRound() {
   }
 }
 
-/* WIN */
-function win() {
+/* END ROUND */
+function endRound() {
+  if (correctAnswers >= 5) {
+    winRound();
+  } else {
+    lose();
+  }
+}
+
+/* WIN GAME */
+function winGame() {
   enemyImg.src = "assets/pokeball.png";
 
   document.getElementById("final-score").textContent =
@@ -228,7 +222,7 @@ function win() {
 
 /* LOSE */
 function lose() {
-  alert("Perdu !");
+  alert("💀 ISOKu t’a battu !");
   restartBtn.classList.remove("hidden");
 }
 
