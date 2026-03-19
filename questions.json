@@ -1,175 +1,202 @@
-{
-  "easy": [
-    {
-      "question": "ISO 27002 fournit :",
-      "answers": [
-        "Exigences certifiables",
-        "Recommandations de sécurité",
-        "Référentiel de certification",
-        "Audit obligatoire"
-      ],
-      "correct": 1,
-      "explanation": "ISO 27002 fournit des recommandations (bonnes pratiques), pas des exigences certifiables."
-    },
-    {
-      "question": "Une vulnérabilité correspond à :",
-      "answers": [
-        "Une menace",
-        "Une faiblesse exploitable",
-        "Un incident",
-        "Une alerte"
-      ],
-      "correct": 1,
-      "explanation": "Une vulnérabilité est une faiblesse exploitable par une menace."
-    },
-    {
-      "question": "Le risque correspond à :",
-      "answers": [
-        "Une menace seule",
-        "Un incident",
-        "Combinaison menace + vulnérabilité + impact",
-        "Une faille technique"
-      ],
-      "correct": 2,
-      "explanation": "Le risque combine menace, vulnérabilité et impact."
-    },
-    {
-      "question": "La sauvegarde contribue principalement à :",
-      "answers": [
-        "Confidentialité",
-        "Disponibilité",
-        "Authentification",
-        "Audit"
-      ],
-      "correct": 1,
-      "explanation": "Les sauvegardes permettent de restaurer les données → disponibilité."
-    },
-    {
-      "question": "Le chiffrement permet surtout :",
-      "answers": [
-        "Disponibilité",
-        "Confidentialité",
-        "Performance",
-        "Sauvegarde"
-      ],
-      "correct": 1,
-      "explanation": "Le chiffrement protège la confidentialité des données."
-    }
-  ],
+[
+  {
+    "question": "ISO 27002 fournit :",
+    "difficulty": 1,
+    "answers": [
+      { "text": "Exigences certifiables", "correct": false },
+      { "text": "Recommandations de sécurité", "correct": true },
+      { "text": "Référentiel de certification", "correct": false },
+      { "text": "Audit obligatoire", "correct": false }
+    ],
+    "explanation": "ISO 27002 fournit des bonnes pratiques, pas des exigences certifiables."
+  },
+  {
+    "question": "Une vulnérabilité correspond à :",
+    "difficulty": 1,
+    "answers": [
+      { "text": "Une menace", "correct": false },
+      { "text": "Une faiblesse exploitable", "correct": true },
+      { "text": "Un incident", "correct": false },
+      { "text": "Une alerte", "correct": false }
+    ],
+    "explanation": "Une vulnérabilité est une faiblesse exploitable."
+  },
+  {
+    "question": "Le risque correspond à :",
+    "difficulty": 1,
+    "answers": [
+      { "text": "Une menace seule", "correct": false },
+      { "text": "Un incident", "correct": false },
+      { "text": "Combinaison menace + vulnérabilité + impact", "correct": true },
+      { "text": "Une faille technique", "correct": false }
+    ],
+    "explanation": "Le risque combine menace, vulnérabilité et impact."
+  },
+  {
+    "question": "La sauvegarde contribue principalement à :",
+    "difficulty": 1,
+    "answers": [
+      { "text": "Confidentialité", "correct": false },
+      { "text": "Disponibilité", "correct": true },
+      { "text": "Authentification", "correct": false },
+      { "text": "Audit", "correct": false }
+    ],
+    "explanation": "Les sauvegardes assurent la disponibilité."
+  },
+  {
+    "question": "Le chiffrement permet surtout :",
+    "difficulty": 1,
+    "answers": [
+      { "text": "Disponibilité", "correct": false },
+      { "text": "Confidentialité", "correct": true },
+      { "text": "Performance", "correct": false },
+      { "text": "Sauvegarde", "correct": false }
+    ],
+    "explanation": "Le chiffrement protège la confidentialité."
+  },
+  {
+    "question": "Un mot de passe fort doit :",
+    "difficulty": 1,
+    "answers": [
+      { "text": "Être court", "correct": false },
+      { "text": "Être complexe et long", "correct": true },
+      { "text": "Être simple", "correct": false },
+      { "text": "Être partagé", "correct": false }
+    ],
+    "explanation": "Un mot de passe doit être complexe et long."
+  },
 
-  "medium": [
-    {
-      "question": "La direction doit :",
-      "answers": [
-        "Configurer les serveurs",
-        "Approuver la politique de sécurité",
-        "Faire les audits techniques",
-        "Installer les antivirus"
-      ],
-      "correct": 1,
-      "explanation": "La direction est responsable de la gouvernance et des orientations."
-    },
-    {
-      "question": "Stratégie de traitement du risque :",
-      "answers": [
-        "Ignorer",
-        "Réduire",
-        "Supprimer tous les risques",
-        "Éviter toute activité"
-      ],
-      "correct": 1,
-      "explanation": "Réduire est une stratégie classique. Ignorer est incorrect."
-    },
-    {
-      "question": "Le SMSI repose sur :",
-      "answers": [
-        "Outils techniques uniquement",
-        "Analyse de risque et amélioration continue",
-        "Firewall uniquement",
-        "Audit externe uniquement"
-      ],
-      "correct": 1,
-      "explanation": "Le SMSI repose sur une approche globale incluant analyse de risque et amélioration continue."
-    },
-    {
-      "question": "Cycle du SMSI :",
-      "answers": [
-        "Build / Run",
-        "Plan / Do / Check / Act",
-        "Test / Deploy",
-        "Audit / Fix"
-      ],
-      "correct": 1,
-      "explanation": "Le SMSI suit le cycle PDCA."
-    },
-    {
-      "question": "Une non-conformité nécessite :",
-      "answers": [
-        "Ignorer",
-        "Correction uniquement",
-        "Correction + analyse des causes",
-        "Audit externe"
-      ],
-      "correct": 2,
-      "explanation": "Il faut corriger ET analyser les causes."
-    }
-  ],
+  {
+    "question": "La direction doit :",
+    "difficulty": 2,
+    "answers": [
+      { "text": "Configurer les serveurs", "correct": false },
+      { "text": "Approuver la politique de sécurité", "correct": true },
+      { "text": "Faire les audits techniques", "correct": false },
+      { "text": "Installer antivirus", "correct": false }
+    ],
+    "explanation": "La direction valide les orientations sécurité."
+  },
+  {
+    "question": "Stratégie de traitement du risque :",
+    "difficulty": 2,
+    "answers": [
+      { "text": "Ignorer", "correct": false },
+      { "text": "Réduire", "correct": true },
+      { "text": "Supprimer tous les risques", "correct": false },
+      { "text": "Arrêter activité", "correct": false }
+    ],
+    "explanation": "Réduire est une stratégie classique."
+  },
+  {
+    "question": "Le SMSI repose sur :",
+    "difficulty": 2,
+    "answers": [
+      { "text": "Outils uniquement", "correct": false },
+      { "text": "Analyse de risque + amélioration continue", "correct": true },
+      { "text": "Firewall", "correct": false },
+      { "text": "Audit externe", "correct": false }
+    ],
+    "explanation": "Le SMSI est une approche globale."
+  },
+  {
+    "question": "Cycle du SMSI :",
+    "difficulty": 2,
+    "answers": [
+      { "text": "Build / Run", "correct": false },
+      { "text": "Plan Do Check Act", "correct": true },
+      { "text": "Test Deploy", "correct": false },
+      { "text": "Audit Fix", "correct": false }
+    ],
+    "explanation": "Le SMSI suit le cycle PDCA."
+  },
+  {
+    "question": "Une non-conformité nécessite :",
+    "difficulty": 2,
+    "answers": [
+      { "text": "Ignorer", "correct": false },
+      { "text": "Correction uniquement", "correct": false },
+      { "text": "Correction + analyse cause", "correct": true },
+      { "text": "Audit externe", "correct": false }
+    ],
+    "explanation": "Il faut corriger et analyser la cause."
+  },
+  {
+    "question": "Un actif est :",
+    "difficulty": 2,
+    "answers": [
+      { "text": "Un serveur uniquement", "correct": false },
+      { "text": "Tout élément ayant de la valeur", "correct": true },
+      { "text": "Un logiciel", "correct": false },
+      { "text": "Un firewall", "correct": false }
+    ],
+    "explanation": "Un actif peut être matériel, logiciel ou humain."
+  },
 
-  "hard": [
-    {
-      "question": "Certification ISO 27001 exige :",
-      "answers": [
-        "Tous les contrôles ISO 27002",
-        "SMSI opérationnel",
-        "Firewall obligatoire",
-        "Pentest annuel obligatoire"
-      ],
-      "correct": 1,
-      "explanation": "Le SMSI doit être opérationnel, pas tous les contrôles."
-    },
-    {
-      "question": "Un auditeur interne doit être :",
-      "answers": [
-        "Externe",
-        "Indépendant et compétent",
-        "Membre IT",
-        "Manager"
-      ],
-      "correct": 1,
-      "explanation": "Il doit être compétent et indépendant."
-    },
-    {
-      "question": "Appliquer ISO 27002 sans SMSI :",
-      "answers": [
-        "Certifiable",
-        "Non certifiable",
-        "Valide si sécurisé",
-        "Accepté par l’auditeur"
-      ],
-      "correct": 1,
-      "explanation": "Sans SMSI, pas de certification ISO 27001."
-    },
-    {
-      "question": "Phase Check du PDCA :",
-      "answers": [
-        "Mettre en place les contrôles",
-        "Auditer et analyser",
-        "Corriger",
-        "Déployer"
-      ],
-      "correct": 1,
-      "explanation": "Check = audit + analyse."
-    },
-    {
-      "question": "Après un incident, il faut :",
-      "answers": [
-        "Ignorer",
-        "Analyser et corriger",
-        "Redémarrer système",
-        "Notifier uniquement"
-      ],
-      "correct": 1,
-      "explanation": "Retour d’expérience + actions correctives sont essentiels."
-    }
-  ]
-}
+  {
+    "question": "Certification ISO 27001 exige :",
+    "difficulty": 3,
+    "answers": [
+      { "text": "Tous les contrôles ISO 27002", "correct": false },
+      { "text": "SMSI opérationnel", "correct": true },
+      { "text": "Firewall obligatoire", "correct": false },
+      { "text": "Pentest annuel", "correct": false }
+    ],
+    "explanation": "Le SMSI doit être en place et efficace."
+  },
+  {
+    "question": "Un auditeur interne doit être :",
+    "difficulty": 3,
+    "answers": [
+      { "text": "Externe", "correct": false },
+      { "text": "Indépendant et compétent", "correct": true },
+      { "text": "IT", "correct": false },
+      { "text": "Manager", "correct": false }
+    ],
+    "explanation": "Indépendance et compétence sont essentielles."
+  },
+  {
+    "question": "Sans SMSI, ISO 27001 est :",
+    "difficulty": 3,
+    "answers": [
+      { "text": "Certifiable", "correct": false },
+      { "text": "Non certifiable", "correct": true },
+      { "text": "Valide", "correct": false },
+      { "text": "Accepté", "correct": false }
+    ],
+    "explanation": "Le SMSI est obligatoire."
+  },
+  {
+    "question": "Phase Check du PDCA :",
+    "difficulty": 3,
+    "answers": [
+      { "text": "Mettre en place", "correct": false },
+      { "text": "Auditer et analyser", "correct": true },
+      { "text": "Corriger", "correct": false },
+      { "text": "Déployer", "correct": false }
+    ],
+    "explanation": "Check = audit + analyse."
+  },
+  {
+    "question": "Après un incident :",
+    "difficulty": 3,
+    "answers": [
+      { "text": "Ignorer", "correct": false },
+      { "text": "Analyser et corriger", "correct": true },
+      { "text": "Redémarrer", "correct": false },
+      { "text": "Notifier", "correct": false }
+    ],
+    "explanation": "Retour d'expérience indispensable."
+  },
+  {
+    "question": "Le Statement of Applicability sert à :",
+    "difficulty": 3,
+    "answers": [
+      { "text": "Lister les risques", "correct": false },
+      { "text": "Justifier les contrôles", "correct": true },
+      { "text": "Faire un audit", "correct": false },
+      { "text": "Installer sécurité", "correct": false }
+    ],
+    "explanation": "Le SoA justifie les contrôles choisis."
+  }
+]
