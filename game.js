@@ -34,7 +34,7 @@ function getPlayerSprite() {
   return "assets/rssilex_back.png";
 }
 
-/* ✅ AJOUT NOM DYNAMIQUE */
+/* NOM DYNAMIQUE */
 function getPlayerName() {
   if (round === 1) return "RSSIlet ♂ Lv1";
   if (round === 2) return "RSSIrex ♂ Lv2";
@@ -89,7 +89,7 @@ async function startGame() {
   document.getElementById("result-screen").classList.add("hidden");
 
   playerImg.src = getPlayerSprite();
-  updatePlayerName(); // ✅ AJOUT
+  updatePlayerName();
 
   resetHP();
 
@@ -124,6 +124,9 @@ function startTimer() {
 /* QUESTION */
 function nextQuestion() {
   if (questionIndex >= questions.length) return endRound();
+
+  // ✅ PATCH : reset explication
+  document.getElementById("explanation").textContent = "";
 
   startTimer();
 
@@ -197,7 +200,7 @@ async function winRound() {
     questionIndex = 0;
 
     playerImg.src = getPlayerSprite();
-    updatePlayerName(); // ✅ AJOUT
+    updatePlayerName();
 
     resetHP();
     updateRoundUI();
