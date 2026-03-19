@@ -6,8 +6,13 @@ let totalCorrect = 0;
 let questionIndex = 0;
 let questions = [];
 
+let timer;
+let timeLeft = 40;
+
 const startBtn = document.getElementById("start-btn");
 const restartBtn = document.getElementById("restart-btn");
+
+const timerText = document.getElementById("timer");
 
 async function loadQuestions() {
   const res = await fetch("questions.json");
@@ -25,14 +30,37 @@ async function startGame() {
   totalCorrect = 0;
   questionIndex = 0;
 
+  startBtn.classList.add("hidden");
+  restartBtn.classList.add("hidden");
+
   document.getElementById("result-screen").classList.add("hidden");
 
   await loadQuestions();
   nextQuestion();
 }
 
+function startTimer() {
+  clearInterval(timer);
+  timeLeft = 40;
+
+  timerText.textContent = "⏱️ " + timeLeft;
+
+  timer = setInterval(() => {
+    timeLeft--;
+    timerText.textContent = "⏱️ " + timeLeft;
+
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      questionIndex++;
+      nextQuestion();
+    }
+  }, 1000);
+}
+
 function nextQuestion() {
   if (questionIndex >= questions.length) return endRound();
+
+  startTimer();
 
   const q = questions[questionIndex];
 
@@ -46,12 +74,16 @@ function nextQuestion() {
     btn.textContent = ans.text;
 
     btn.onclick = () => {
+      clearInterval(timer);
+
       if (ans.correct) {
         correctAnswers++;
         totalCorrect++;
       }
+
       document.getElementById("explanation").textContent = q.explanation;
       questionIndex++;
+
       setTimeout(nextQuestion, 800);
     };
 
@@ -70,7 +102,7 @@ async function endRound() {
     await loadQuestions();
     nextQuestion();
   } else {
-    alert("Perdu !");
+    lose();
   }
 }
 
@@ -79,6 +111,12 @@ function win() {
     "Score : " + totalCorrect + "/18";
 
   document.getElementById("result-screen").classList.remove("hidden");
+  restartBtn.classList.remove("hidden");
+}
+
+function lose() {
+  alert("Perdu !");
+  restartBtn.classList.remove("hidden");
 }
 
 startBtn.onclick = startGame;
