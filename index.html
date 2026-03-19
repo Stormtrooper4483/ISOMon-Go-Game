@@ -9,16 +9,16 @@
 <body>
 
 <div class="game-container">
-  <div class="gamebox">
+  <div class="gamebox" id="capture-area">
 
-    <div class="title">
-      ISOMon - GO : gagnez l'ISO 27001 !
-    </div>
+    <div class="title">ISOMon - GO : gagnez l'ISO 27001 !</div>
 
     <div class="status-bar">
       <div id="round">Round 1</div>
       <div id="timer">⏱️ 40</div>
     </div>
+
+    <div class="round-info">Objectif : 5/6 bonnes réponses</div>
 
     <div class="battle-zone" id="battle-zone">
 
@@ -31,7 +31,7 @@
 
       <div class="player-container">
         <img id="player-img" src="assets/rssilet_back.png" class="pokemon-img">
-        <img id="trainer-img" src="assets/trainer.png" class="trainer-img">
+        <img src="assets/trainer.png" class="trainer-img">
         <div class="hp-label">PV</div>
         <progress id="player-hp-bar" value="100" max="100"></progress>
         <div id="player-hp">100</div>
@@ -40,14 +40,13 @@
     </div>
 
     <div id="evolution-text" class="evolution-text">
-      🎮 Capture ISOKu en 3 rounds.<br>
-      5 bonnes réponses minimum pour passer !
+      🎮 Capture ISOKu en 3 rounds
     </div>
 
     <div class="question-container">
-      <div id="question" class="question-text"></div>
-      <div id="answers" class="answers-grid"></div>
-      <div id="explanation" class="explanation"></div>
+      <div id="question"></div>
+      <div id="answers"></div>
+      <div id="explanation"></div>
     </div>
 
     <div class="buttons">
@@ -55,11 +54,18 @@
       <button id="restart-btn" class="hidden">Rejouer</button>
     </div>
 
-    <div id="projectile-container"></div>
+    <!-- RESULT SCREEN -->
+    <div id="result-screen" class="hidden result-screen">
+      <h2>🎯 Certification ISO 27001 obtenue !</h2>
+      <div class="badge">🛡️ ISO CERTIFIED 🛡️</div>
+      <div id="final-score" class="score"></div>
+      <button onclick="downloadImage()">📸 Télécharger mon score</button>
+    </div>
 
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="game.js"></script>
 </body>
 </html>
