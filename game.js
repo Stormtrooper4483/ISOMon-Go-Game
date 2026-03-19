@@ -34,6 +34,18 @@ function getPlayerSprite() {
   return "assets/rssilex_back.png";
 }
 
+/* ✅ AJOUT NOM DYNAMIQUE */
+function getPlayerName() {
+  if (round === 1) return "RSSIlet ♂ Lv1";
+  if (round === 2) return "RSSIrex ♂ Lv2";
+  return "RSSIlex ♂ Lv3";
+}
+
+function updatePlayerName() {
+  const el = document.getElementById("player-name");
+  if (el) el.textContent = getPlayerName();
+}
+
 /* LOAD QUESTIONS */
 async function loadQuestions() {
   const res = await fetch("questions.json");
@@ -77,6 +89,8 @@ async function startGame() {
   document.getElementById("result-screen").classList.add("hidden");
 
   playerImg.src = getPlayerSprite();
+  updatePlayerName(); // ✅ AJOUT
+
   resetHP();
 
   await loadQuestions();
@@ -126,19 +140,14 @@ function nextQuestion() {
 
     btn.onclick = () => {
       clearInterval(timer);
-
-      if (ans.correct) {
-        handleGood(q);
-      } else {
-        handleWrong(q);
-      }
+      ans.correct ? handleGood(q) : handleWrong(q);
     };
 
     answersDiv.appendChild(btn);
   });
 }
 
-/* GOOD ANSWER */
+/* GOOD */
 function handleGood(q) {
   correctAnswers++;
   totalCorrect++;
@@ -154,7 +163,7 @@ function handleGood(q) {
   nextStep();
 }
 
-/* WRONG ANSWER */
+/* WRONG */
 function handleWrong(q) {
   playerHP -= 20;
   updateHP();
@@ -162,14 +171,12 @@ function handleWrong(q) {
   playerImg.src = "assets/rssilet_hit.png";
   setTimeout(() => playerImg.src = getPlayerSprite(), 300);
 
-  if (q) {
-    document.getElementById("explanation").textContent = q.explanation;
-  }
+  if (q) document.getElementById("explanation").textContent = q.explanation;
 
   nextStep();
 }
 
-/* NEXT STEP */
+/* STEP */
 function nextStep() {
   questionIndex++;
 
@@ -190,6 +197,8 @@ async function winRound() {
     questionIndex = 0;
 
     playerImg.src = getPlayerSprite();
+    updatePlayerName(); // ✅ AJOUT
+
     resetHP();
     updateRoundUI();
 
@@ -202,11 +211,7 @@ async function winRound() {
 
 /* END ROUND */
 function endRound() {
-  if (correctAnswers >= 5) {
-    winRound();
-  } else {
-    lose();
-  }
+  correctAnswers >= 5 ? winRound() : lose();
 }
 
 /* WIN GAME */
