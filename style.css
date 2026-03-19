@@ -5,19 +5,17 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: radial-gradient(circle, #2c2c2c, #0f0f0f);
+  background: #888;
 }
 
 .game-container {
-  max-width: 420px;
-  width: 100%;
+  width: 420px;
 }
 
 .gamebox {
-  background: #f8f8f8;
+  background: #d8d8d8;
   border: 6px solid black;
-  padding: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+  padding: 10px;
 }
 
 .status-bar {
@@ -26,48 +24,92 @@ body {
   font-size: 12px;
 }
 
+/* COMBAT */
 .battle-zone {
   position: relative;
-  height: 240px;
-  background: #ddd;
-  border: 2px solid #aaa;
+  height: 260px;
+  border: 4px solid black;
+  background: #cfcfcf;
 }
 
-.enemy-container {
+/* ENNEMI */
+.enemy-block {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 10px;
+  left: 10px;
 }
 
-.player-container {
+.enemy-hud {
+  background: white;
+  border: 2px solid black;
+  padding: 5px;
+  font-size: 10px;
+  width: 120px;
+}
+
+.enemy-sprite {
+  position: absolute;
+  top: 50px;
+  left: 160px;
+  width: 120px;
+}
+
+/* JOUEUR */
+.player-block {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.player-sprite {
   position: absolute;
   bottom: 0;
-  left: 0;
+  right: 160px;
+  width: 120px;
 }
 
-.pokemon-img {
-  width: 110px;
+.player-hud {
+  background: white;
+  border: 2px solid black;
+  padding: 5px;
+  font-size: 10px;
+  width: 140px;
 }
 
+.hp-bar {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+progress {
+  width: 80px;
+  height: 6px;
+}
+
+/* TEXTE */
 .question-container {
-  border: 1px solid #ccc;
-  padding: 8px;
   margin-top: 10px;
+  border: 4px solid black;
+  background: white;
+  padding: 10px;
+  height: 130px;
 }
 
 .answer {
-  background: #ddd;
-  padding: 6px;
-  margin: 4px 0;
+  border: 2px solid black;
+  padding: 5px;
+  margin: 3px 0;
   cursor: pointer;
 }
 
+/* BOUTONS */
 button {
-  background: #ddd;
-  border: 1px solid #aaa;
-  padding: 8px;
   width: 100%;
   margin-top: 5px;
+  padding: 8px;
+  border: 2px solid black;
+  background: white;
 }
 
 .hidden {
@@ -76,16 +118,11 @@ button {
 
 /* RESULT */
 .result-screen {
-  margin-top: 10px;
   text-align: center;
+  margin-top: 10px;
 }
 
 .badge {
   border: 2px dashed black;
   padding: 10px;
-  margin: 10px 0;
-}
-
-.score {
-  font-weight: bold;
 }
