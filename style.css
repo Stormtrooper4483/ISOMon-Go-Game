@@ -18,15 +18,19 @@ body {
   padding: 10px;
 }
 
-/* ✅ TITRE */
+/* ✅ LOGO */
 .title {
   text-align: center;
-  font-weight: bold;
-  font-size: 16px;
-  color: #2e7d32;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
+.logo {
+  width: 100%;
+  max-width: 320px;
+  image-rendering: pixelated;
+}
+
+/* STATUS */
 .status-bar {
   display: flex;
   justify-content: space-between;
@@ -50,7 +54,7 @@ body {
 
 .enemy-sprite {
   position: absolute;
-  top: 30px; /* ✅ PLUS HAUT */
+  top: 30px;
   left: 220px;
   width: 170px;
   image-rendering: pixelated;
@@ -80,7 +84,7 @@ body {
   font-size: 10px;
   width: 140px;
   position: relative;
-  z-index: 2; /* ✅ FIX OVERLAY */
+  z-index: 2;
 }
 
 /* BARRE PV */
