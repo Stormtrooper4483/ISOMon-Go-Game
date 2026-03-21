@@ -27,14 +27,22 @@ const enemyHPBar = document.getElementById("enemy-hp-bar");
 const playerHPText = document.getElementById("player-hp");
 const enemyHPText = document.getElementById("enemy-hp");
 
-/* SPRITES RSSI */
+/* ================= SPRITES ================= */
+
 function getPlayerSprite() {
   if (round === 1) return "assets/rssilet_back.png";
   if (round === 2) return "assets/rssirex_back.png";
   return "assets/rssilex_back.png";
 }
 
-/* NOM DYNAMIQUE */
+function getPlayerHitSprite() {
+  if (round === 1) return "assets/rssilet_hit.png";
+  if (round === 2) return "assets/rssirex_hit.png";
+  return "assets/rssilex_hit.png";
+}
+
+/* ================= NOM ================= */
+
 function getPlayerName() {
   if (round === 1) return "RSSIlet ♂ Lv1";
   if (round === 2) return "RSSIrex ♂ Lv2";
@@ -46,7 +54,8 @@ function updatePlayerName() {
   if (el) el.textContent = getPlayerName();
 }
 
-/* LOAD QUESTIONS */
+/* ================= QUESTIONS ================= */
+
 async function loadQuestions() {
   const res = await fetch("questions.json");
   const data = await res.json();
@@ -57,14 +66,14 @@ async function loadQuestions() {
     .slice(0, 6);
 }
 
-/* RESET ROUND */
+/* ================= HP ================= */
+
 function resetHP() {
   playerHP = 100;
   enemyHP = 100;
   updateHP();
 }
 
-/* UPDATE HP */
 function updateHP() {
   playerHP = Math.max(0, playerHP);
   enemyHP = Math.max(0, enemyHP);
@@ -76,7 +85,8 @@ function updateHP() {
   enemyHPText.textContent = enemyHP;
 }
 
-/* START */
+/* ================= GAME START ================= */
+
 async function startGame() {
   round = 1;
   correctAnswers = 0;
@@ -98,12 +108,12 @@ async function startGame() {
   nextQuestion();
 }
 
-/* ROUND UI */
 function updateRoundUI() {
   roundText.textContent = "Round " + round;
 }
 
-/* TIMER */
+/* ================= TIMER ================= */
+
 function startTimer() {
   clearInterval(timer);
   timeLeft = 40;
@@ -121,11 +131,68 @@ function startTimer() {
   }, 1000);
 }
 
-/* QUESTION */
+/* ================= FX COMBAT ================= */
+
+function launchAttack(fromPlayer = true) {
+
+  const container = document.getElementById("projectile-container");
+
+  const projectile = document.createElement("img");
+  projectile.src = "assets/attack_projectile_1.png";
+  projectile.className = "projectile";
+
+  const startX = fromPlayer ? 260 : 80;
+  const endX = fromPlayer ? 80 : 260;
+  const y = fromPlayer ? 160 : 60;
+
+  projectile.style.left = startX + "px";
+  projectile.style.top = y + "px";
+
+  container.appendChild(projectile);
+
+  setTimeout(() => {
+    projectile.style.transform = `translateX(${endX - startX}px)`;
+  }, 10);
+
+  setTimeout(() => {
+    projectile.remove();
+    showImpact(endX, y);
+  }, 400);
+}
+
+function showImpact(x, y) {
+  const container = document.getElementById("projectile-container");
+
+  const hit = document.createElement("img");
+  hit.src = "assets/fx_hit_1.png";
+  hit.className = "fx";
+  hit.style.left = x + "px";
+  hit.style.top = y + "px";
+
+  const flash = document.createElement("img");
+  flash.src = "assets/fx_flash_1.png";
+  flash.className = "fx";
+  flash.style.left = x + "px";
+  flash.style.top = y + "px";
+
+  container.appendChild(hit);
+  container.appendChild(flash);
+
+  setTimeout(() => {
+    hit.remove();
+    flash.remove();
+  }, 400);
+}
+
+/* ================= QUESTION ================= */
+
 function nextQuestion() {
+
+  if (playerHP <= 0) return lose();
+  if (enemyHP <= 0) return winRound();
+
   if (questionIndex >= questions.length) return endRound();
 
-  // ✅ PATCH : reset explication
   document.getElementById("explanation").textContent = "";
 
   startTimer();
@@ -150,10 +217,13 @@ function nextQuestion() {
   });
 }
 
-/* GOOD */
+/* ================= BONNE REPONSE ================= */
+
 function handleGood(q) {
   correctAnswers++;
   totalCorrect++;
+
+  launchAttack(true);
 
   enemyHP -= 20;
   updateHP();
@@ -166,58 +236,65 @@ function handleGood(q) {
   nextStep();
 }
 
-/* WRONG */
+/* ================= MAUVAISE REPONSE ================= */
+
 function handleWrong(q) {
+
+  launchAttack(false);
+
   playerHP -= 20;
   updateHP();
 
-  playerImg.src = "assets/rssilet_hit.png";
+  playerImg.src = getPlayerHitSprite();
   setTimeout(() => playerImg.src = getPlayerSprite(), 300);
 
-  if (q) document.getElementById("explanation").textContent = q.explanation;
+  if (q) {
+    document.getElementById("explanation").textContent = q.explanation;
+  }
 
   nextStep();
 }
 
-/* STEP */
+/* ================= STEP ================= */
+
 function nextStep() {
   questionIndex++;
 
-  if (playerHP <= 0) return lose();
   if (enemyHP <= 0) return winRound();
+  if (playerHP <= 0) return lose();
 
   setTimeout(nextQuestion, 800);
 }
 
-/* WIN ROUND */
+/* ================= WIN ROUND ================= */
+
 async function winRound() {
-  if (correctAnswers >= 5) {
-    round++;
 
-    if (round > 3) return winGame();
+  round++;
 
-    correctAnswers = 0;
-    questionIndex = 0;
+  if (round > 3) return winGame();
 
-    playerImg.src = getPlayerSprite();
-    updatePlayerName();
+  correctAnswers = 0;
+  questionIndex = 0;
 
-    resetHP();
-    updateRoundUI();
+  playerImg.src = getPlayerSprite();
+  updatePlayerName();
 
-    await loadQuestions();
-    nextQuestion();
-  } else {
-    lose();
-  }
+  resetHP();
+  updateRoundUI();
+
+  await loadQuestions();
+  nextQuestion();
 }
 
-/* END ROUND */
+/* ================= END ROUND ================= */
+
 function endRound() {
-  correctAnswers >= 5 ? winRound() : lose();
+  lose();
 }
 
-/* WIN GAME */
+/* ================= WIN GAME ================= */
+
 function winGame() {
   enemyImg.src = "assets/pokeball.png";
 
@@ -228,11 +305,14 @@ function winGame() {
   restartBtn.classList.remove("hidden");
 }
 
-/* LOSE */
+/* ================= LOSE ================= */
+
 function lose() {
   alert("💀 ISOKu t’a battu !");
   restartBtn.classList.remove("hidden");
 }
+
+/* ================= EVENTS ================= */
 
 startBtn.onclick = startGame;
 restartBtn.onclick = startGame;
