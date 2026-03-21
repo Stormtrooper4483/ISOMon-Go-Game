@@ -27,7 +27,7 @@ body {
 }
 
 .logo {
-  max-width: 200px;
+  max-width: 180px;
   width: 100%;
   display: block;
   margin: 0 auto;
@@ -41,13 +41,15 @@ body {
   font-size: 12px;
 }
 
-/* COMBAT */
+/* ================= COMBAT ================= */
+
 .battle-zone {
   position: relative;
   height: 230px;
   border: 4px solid black;
   background: linear-gradient(#e0e0e0, #cfcfcf);
   margin-top: 4px;
+  overflow: hidden;
 }
 
 /* ENNEMI */
@@ -59,9 +61,9 @@ body {
 
 .enemy-sprite {
   position: absolute;
-  top: 20px;
-  left: 190px;
-  width: 140px;
+  top: 10px;
+  left: 200px;
+  width: 150px;
   image-rendering: pixelated;
 }
 
@@ -75,19 +77,24 @@ body {
 .player-sprite {
   position: absolute;
   bottom: 0;
-  right: 170px;
-  width: 140px;
+  right: 180px;
+  width: 150px;
   image-rendering: pixelated;
 }
 
 /* HUD */
 .enemy-hud,
 .player-hud {
-  background: white;
-  border: 2px solid black;
-  padding: 5px;
+  background: #f8f8f8;
+  border: 3px solid black;
+  padding: 6px;
   font-size: 10px;
-  width: 140px;
+  width: 150px;
+
+  box-shadow:
+    inset -2px -2px 0 #aaa,
+    inset 2px 2px 0 #fff;
+
   position: relative;
   z-index: 2;
 }
@@ -104,18 +111,42 @@ progress {
   height: 6px;
 }
 
-/* PROJECTILES */
+/* ================= FX COMBAT ================= */
+
 #projectile-container {
   position: absolute;
   top: 0;
   left: 0;
-  width: 420px;
+  width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 10;
+  z-index: 20;
 }
 
-/* TEXTE */
+.projectile {
+  position: absolute;
+  width: 40px;
+  image-rendering: pixelated;
+  z-index: 30;
+  transition: transform 0.4s linear;
+}
+
+.fx {
+  position: absolute;
+  width: 60px;
+  image-rendering: pixelated;
+  z-index: 40;
+  pointer-events: none;
+  animation: fxFade 0.4s forwards;
+}
+
+@keyframes fxFade {
+  0% { opacity: 1; transform: scale(0.8); }
+  100% { opacity: 0; transform: scale(1.4); }
+}
+
+/* ================= TEXTE ================= */
+
 .question-container {
   margin-top: 8px;
   border: 3px solid black;
@@ -124,7 +155,7 @@ progress {
   min-height: 120px;
 }
 
-/* ✅ CONSIGNE VERTE */
+/* CONSIGNE */
 .intro {
   color: #2e7d32;
   font-weight: bold;
@@ -138,10 +169,15 @@ progress {
   margin: 4px 0;
   cursor: pointer;
   background: #f5f5f5;
+  transition: all 0.15s ease;
 }
 
 .answer:hover {
   background: #d0e8ff;
+}
+
+.answer:active {
+  transform: scale(0.96);
 }
 
 /* BOUTONS */
@@ -153,6 +189,11 @@ button {
   background: linear-gradient(#4CAF50, #2e7d32);
   color: white;
   font-weight: bold;
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(0.97);
 }
 
 /* RESULT */
