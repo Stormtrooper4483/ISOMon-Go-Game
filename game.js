@@ -85,10 +85,18 @@ function playCaptureAnimation() {
 
   container.appendChild(ball);
 
+  /* 📍 position dynamique sur ISOKU */
+  const enemyRect = enemyImg.getBoundingClientRect();
+  const containerRect = container.getBoundingClientRect();
+
+  ball.style.left = (enemyRect.left - containerRect.left + 60) + "px";
+  ball.style.top = (enemyRect.top - containerRect.top + 60) + "px";
+
+  const FRAME_WIDTH = 64;
   let frame = 0;
 
   const anim = setInterval(() => {
-    ball.style.objectPosition = `-${frame * 64}px 0`;
+    ball.style.objectPosition = `-${frame * FRAME_WIDTH}px 0`;
 
     if (frame === 2) {
       spawnSparkles(ball);
@@ -198,6 +206,8 @@ async function startGame() {
   restartBtn.classList.add("hidden");
   document.getElementById("result-screen").classList.add("hidden");
 
+  enemyImg.style.opacity = "1";
+
   playerImg.src = getPlayerSprite();
   updatePlayerName();
 
@@ -211,25 +221,6 @@ async function startGame() {
 
 function updateRoundUI() {
   roundText.textContent = "Round " + round;
-}
-
-/* ================= TIMER ================= */
-
-function startTimer() {
-  clearInterval(timer);
-  timeLeft = 40;
-
-  timerText.textContent = "⏱️ " + timeLeft;
-
-  timer = setInterval(() => {
-    timeLeft--;
-    timerText.textContent = "⏱️ " + timeLeft;
-
-    if (timeLeft <= 0) {
-      clearInterval(timer);
-      handleWrong();
-    }
-  }, 1000);
 }
 
 /* ================= QUESTION ================= */
@@ -299,11 +290,7 @@ function handleWrong(q) {
 
 function nextStep() {
   questionIndex++;
-
-  if (questionIndex >= questions.length) {
-    questionIndex = 0;
-  }
-
+  if (questionIndex >= questions.length) questionIndex = 0;
   setTimeout(nextQuestion, 500);
 }
 
@@ -331,11 +318,11 @@ async function winRound() {
 
 function winGame() {
 
+  enemyImg.style.opacity = "0";
+
   playCaptureAnimation();
 
   setTimeout(() => {
-    enemyImg.style.display = "none";
-
     document.getElementById("final-score").textContent =
       "Score : " + totalCorrect;
 
@@ -347,6 +334,25 @@ function winGame() {
 function lose() {
   alert("💀 ISOKu t’a battu !");
   restartBtn.classList.remove("hidden");
+}
+
+/* ================= TIMER ================= */
+
+function startTimer() {
+  clearInterval(timer);
+  timeLeft = 40;
+
+  timerText.textContent = "⏱️ " + timeLeft;
+
+  timer = setInterval(() => {
+    timeLeft--;
+    timerText.textContent = "⏱️ " + timeLeft;
+
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      handleWrong();
+    }
+  }, 1000);
 }
 
 /* ================= EVENTS ================= */
