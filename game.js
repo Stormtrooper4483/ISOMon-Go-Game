@@ -11,10 +11,6 @@ let enemyHP = 100;
 let timer;
 let timeLeft = 40;
 
-/* 🔒 Animation locks */
-let playerAnimating = false;
-let enemyAnimating = false;
-
 /* DOM */
 const startBtn = document.getElementById("start-btn");
 const restartBtn = document.getElementById("restart-btn");
@@ -45,6 +41,29 @@ function showRoundTransition() {
 function playEvolutionAnimation() {
   playerImg.classList.add("evolve");
   setTimeout(() => playerImg.classList.remove("evolve"), 800);
+}
+
+/* ================= TYPEWRITER ================= */
+
+function typeWriter(text, speed = 40) {
+  const el = document.getElementById("explanation");
+  el.textContent = "";
+  let i = 0;
+
+  function type() {
+    if (i < text.length) {
+      el.textContent += text.charAt(i);
+      i++;
+      setTimeout(type, speed);
+    }
+  }
+
+  type();
+}
+
+function showEvolutionText() {
+  const name = getPlayerName().split(" ")[0];
+  typeWriter("✨ " + name + " évolue !");
 }
 
 /* ================= SPRITES ================= */
@@ -283,15 +302,23 @@ async function winRound() {
   playerImg.src = getPlayerSprite();
   updatePlayerName();
 
+  /* 🧬 évolution */
   playEvolutionAnimation();
+
+  /* ✨ texte */
+  showEvolutionText();
 
   resetHP();
   updateRoundUI();
 
   await loadQuestions();
 
-  showRoundTransition();
+  /* ⏱️ délai avant overlay */
+  setTimeout(() => {
+    showRoundTransition();
+  }, 600);
 
+  /* ⏱️ lancement combat */
   setTimeout(() => {
     nextQuestion();
   }, 1200);
