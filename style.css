@@ -52,7 +52,7 @@ body {
   overflow: hidden;
 }
 
-/* neutralise les anciens blocs */
+/* neutralise les blocs */
 .enemy-block,
 .player-block {
   position: static;
@@ -86,12 +86,12 @@ body {
 
 /* ================= SPRITES ================= */
 
-/* 🟢 ISOKU → HAUT DROITE */
+/* 🟢 ISOKU → HAUT DROITE (FIX APPLIQUÉ) */
 .enemy-sprite {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 150px;
+  top: 0px;        /* 🔥 corrigé */
+  right: 10px;     /* 🔥 ajusté */
+  width: 170px;    /* 🔥 meilleure présence */
   image-rendering: pixelated;
 }
 
