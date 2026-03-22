@@ -11,6 +11,8 @@ let enemyHP = 100;
 let timer;
 let timeLeft = 40;
 
+let typing = true;
+
 /* DOM */
 const startBtn = document.getElementById("start-btn");
 const restartBtn = document.getElementById("restart-btn");
@@ -26,71 +28,68 @@ const enemyHPBar = document.getElementById("enemy-hp-bar");
 const playerHPText = document.getElementById("player-hp");
 const enemyHPText = document.getElementById("enemy-hp");
 
-/* ================= INTRO TEXTE ================= */
+const questionEl = document.getElementById("question");
+const answersDiv = document.getElementById("answers");
+
+/* ================= INTRO ================= */
 
 const introText = `
-🎮 Un ISOKu sauvage apparaît !
+🎮 ISOKu apparaît !
 
-🎯 Réponds aux questions ISO 27001 pour attaquer.
-⚔️ 5 bonnes réponses par round pour le mettre KO.
+⚔️ Réponds aux questions pour l’attaquer  
+🏆 Gagne les 3 rounds pour le capturer  
 
-❌ Chaque erreur te fait subir des dégâts !
-
-🧬 Ton Pokémon RSSI évolue à chaque round.
-
-🏆 Gagne les 3 rounds pour capturer ISOKu
-et décrocher le badge ISO27001 de la Ligue Conformité !
+🛡️ Remporte le badge ISO27001 !
 `;
 
 /* ================= TYPEWRITER ================= */
 
-function typeWriter(text, speed = 25, callback) {
-  const el = document.getElementById("question");
-  el.innerHTML = "";
+function typeWriter(text, speed = 18) {
+  questionEl.innerHTML = "";
+  typing = true;
 
   let i = 0;
 
   function type() {
+    if (!typing) return;
+
     if (i < text.length) {
       const char = text.charAt(i);
 
       if (char === "\n") {
-        el.innerHTML += "<br>";
+        questionEl.innerHTML += "<br>";
       } else {
-        el.innerHTML += char;
+        questionEl.innerHTML += char;
       }
 
       i++;
       setTimeout(type, speed);
-    } else if (callback) {
-      callback();
+    } else {
+      typing = false;
     }
   }
 
   type();
 }
 
-function showEvolutionText() {
-  const name = getPlayerName().split(" ")[0];
-  typeWriter("✨ " + name + " évolue !");
+/* ================= SKIP BUTTON ================= */
+
+function createSkipButton() {
+  const btn = document.createElement("button");
+  btn.textContent = "⏭️ Skip";
+  btn.style.marginTop = "5px";
+
+  btn.onclick = () => {
+    typing = false;
+    questionEl.innerHTML = introText.replace(/\n/g, "<br>");
+  };
+
+  answersDiv.appendChild(btn);
 }
 
-/* ================= TRANSITIONS ================= */
-
-function showRoundTransition() {
-  const overlay = document.createElement("div");
-  overlay.className = "round-overlay";
-  overlay.textContent = "⚔️ ROUND " + round;
-
-  document.body.appendChild(overlay);
-
-  setTimeout(() => overlay.remove(), 1200);
-}
-
-function playEvolutionAnimation() {
-  playerImg.classList.add("evolve");
-  setTimeout(() => playerImg.classList.remove("evolve"), 800);
-}
+/* 👉 LANCEMENT INTRO DIRECT */
+typeWriter(introText);
+createSkipButton();
 
 /* ================= SPRITES ================= */
 
@@ -156,6 +155,8 @@ async function startGame() {
   totalCorrect = 0;
   questionIndex = 0;
 
+  answersDiv.innerHTML = ""; // 🔥 supprime bouton skip
+
   startBtn.classList.add("hidden");
   restartBtn.classList.add("hidden");
 
@@ -169,12 +170,7 @@ async function startGame() {
   await loadQuestions();
   updateRoundUI();
 
-  /* 🎬 INTRO */
-  typeWriter(introText, 20, () => {
-    setTimeout(() => {
-      nextQuestion();
-    }, 800);
-  });
+  nextQuestion();
 }
 
 function updateRoundUI() {
@@ -223,24 +219,7 @@ function launchAttack(fromPlayer = true) {
     projectile.style.transform = `translateX(${endX - startX}px)`;
   }, 10);
 
-  setTimeout(() => {
-    projectile.remove();
-    showImpact(endX, y);
-  }, 400);
-}
-
-function showImpact(x, y) {
-  const container = document.getElementById("projectile-container");
-
-  const hit = document.createElement("img");
-  hit.src = "assets/fx_hit_1.png";
-  hit.className = "fx";
-  hit.style.left = x + "px";
-  hit.style.top = y + "px";
-
-  container.appendChild(hit);
-
-  setTimeout(() => hit.remove(), 400);
+  setTimeout(() => projectile.remove(), 400);
 }
 
 /* ================= QUESTION ================= */
@@ -256,8 +235,7 @@ function nextQuestion() {
 
   const q = questions[questionIndex];
 
-  document.getElementById("question").textContent = q.question;
-  const answersDiv = document.getElementById("answers");
+  questionEl.textContent = q.question;
   answersDiv.innerHTML = "";
 
   q.answers.forEach(ans => {
@@ -284,9 +262,6 @@ function handleGood(q) {
   enemyHP -= 20;
   updateHP();
 
-  enemyImg.src = "assets/isoku_hit.png";
-  setTimeout(() => enemyImg.src = "assets/isoku.png", 300);
-
   document.getElementById("explanation").textContent = q.explanation;
 
   const delay = Math.max(3000, q.explanation.length * 45);
@@ -299,9 +274,6 @@ function handleWrong(q) {
 
   playerHP -= 20;
   updateHP();
-
-  playerImg.src = getPlayerHitSprite();
-  setTimeout(() => playerImg.src = getPlayerSprite(), 300);
 
   if (q) {
     document.getElementById("explanation").textContent = q.explanation;
@@ -336,23 +308,17 @@ async function winRound() {
   playerImg.src = getPlayerSprite();
   updatePlayerName();
 
-  playEvolutionAnimation();
-  showEvolutionText();
-
   resetHP();
   updateRoundUI();
 
   await loadQuestions();
 
-  setTimeout(() => showRoundTransition(), 600);
-  setTimeout(() => nextQuestion(), 1200);
+  setTimeout(() => nextQuestion(), 800);
 }
 
 /* ================= WIN GAME ================= */
 
 function winGame() {
-  enemyImg.src = "assets/pokeball.png";
-
   document.getElementById("final-score").textContent =
     "Score : " + totalCorrect;
 
