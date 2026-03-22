@@ -56,8 +56,34 @@ function typeWriter(text, speed = 18) {
   type();
 }
 
-/* 👉 affichage immédiat */
 typeWriter(introText);
+
+/* ================= CAPTURE ANIMATION ================= */
+
+function playCaptureAnimation() {
+  const container = document.getElementById("projectile-container");
+
+  const ball = document.createElement("img");
+  ball.src = "assets/pokeball.png";
+  ball.className = "capture-ball";
+
+  container.appendChild(ball);
+
+  let frame = 0;
+
+  const anim = setInterval(() => {
+    ball.style.objectPosition = `-${frame * 64}px 0`;
+    frame++;
+
+    if (frame > 3) {
+      clearInterval(anim);
+
+      setTimeout(() => {
+        ball.remove();
+      }, 400);
+    }
+  }, 120);
+}
 
 /* ================= TRANSITIONS ================= */
 
@@ -179,32 +205,6 @@ function startTimer() {
   }, 1000);
 }
 
-/* ================= FX ================= */
-
-function launchAttack(fromPlayer = true) {
-
-  const container = document.getElementById("projectile-container");
-
-  const projectile = document.createElement("img");
-  projectile.src = "assets/attack_projectile_1.png";
-  projectile.className = "projectile";
-
-  const startX = fromPlayer ? 260 : 80;
-  const endX = fromPlayer ? 80 : 260;
-  const y = fromPlayer ? 160 : 60;
-
-  projectile.style.left = startX + "px";
-  projectile.style.top = y + "px";
-
-  container.appendChild(projectile);
-
-  setTimeout(() => {
-    projectile.style.transform = `translateX(${endX - startX}px)`;
-  }, 10);
-
-  setTimeout(() => projectile.remove(), 400);
-}
-
 /* ================= QUESTION ================= */
 
 function nextQuestion() {
@@ -240,12 +240,9 @@ function nextQuestion() {
 function handleGood(q) {
   totalCorrect++;
 
-  launchAttack(true);
-
   enemyHP -= 20;
   updateHP();
 
-  /* 💥 HIT ENNEMI */
   enemyImg.src = "assets/isoku_hit.png";
   setTimeout(() => enemyImg.src = "assets/isoku.png", 300);
 
@@ -257,12 +254,9 @@ function handleGood(q) {
 
 function handleWrong(q) {
 
-  launchAttack(false);
-
   playerHP -= 20;
   updateHP();
 
-  /* 💥 HIT JOUEUR */
   playerImg.src = getPlayerHitSprite();
   setTimeout(() => playerImg.src = getPlayerSprite(), 300);
 
@@ -299,7 +293,6 @@ async function winRound() {
   playerImg.src = getPlayerSprite();
   updatePlayerName();
 
-  /* 🧬 évolution */
   playEvolutionAnimation();
 
   resetHP();
@@ -307,7 +300,6 @@ async function winRound() {
 
   await loadQuestions();
 
-  /* 🎬 transition */
   setTimeout(() => showRoundTransition(), 600);
   setTimeout(() => nextQuestion(), 1200);
 }
@@ -315,13 +307,18 @@ async function winRound() {
 /* ================= WIN GAME ================= */
 
 function winGame() {
-  enemyImg.src = "assets/pokeball.png";
 
-  document.getElementById("final-score").textContent =
-    "Score : " + totalCorrect;
+  playCaptureAnimation();
 
-  document.getElementById("result-screen").classList.remove("hidden");
-  restartBtn.classList.remove("hidden");
+  setTimeout(() => {
+    enemyImg.style.display = "none";
+
+    document.getElementById("final-score").textContent =
+      "Score : " + totalCorrect;
+
+    document.getElementById("result-screen").classList.remove("hidden");
+    restartBtn.classList.remove("hidden");
+  }, 1500);
 }
 
 /* ================= LOSE ================= */
