@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
 let round = 1;
-let correctAnswers = 0;
 let totalCorrect = 0;
 let questionIndex = 0;
 let questions = [];
@@ -66,8 +65,7 @@ async function loadQuestions() {
 
   questions = data
     .filter(q => q.difficulty === round)
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 6);
+    .sort(() => Math.random() - 0.5);
 }
 
 /* ================= HP ================= */
@@ -93,7 +91,6 @@ function updateHP() {
 
 async function startGame() {
   round = 1;
-  correctAnswers = 0;
   totalCorrect = 0;
   questionIndex = 0;
 
@@ -135,7 +132,7 @@ function startTimer() {
   }, 1000);
 }
 
-/* ================= FX COMBAT ================= */
+/* ================= FX ================= */
 
 function launchAttack(fromPlayer = true) {
 
@@ -175,9 +172,7 @@ function showImpact(x, y) {
 
   container.appendChild(hit);
 
-  setTimeout(() => {
-    hit.remove();
-  }, 400);
+  setTimeout(() => hit.remove(), 400);
 }
 
 /* ================= QUESTION ================= */
@@ -186,8 +181,6 @@ function nextQuestion() {
 
   if (playerHP <= 0) return lose();
   if (enemyHP <= 0) return winRound();
-
-  if (questionIndex >= questions.length) return endRound();
 
   document.getElementById("explanation").textContent = "";
 
@@ -216,7 +209,6 @@ function nextQuestion() {
 /* ================= BONNE REPONSE ================= */
 
 function handleGood(q) {
-  correctAnswers++;
   totalCorrect++;
 
   launchAttack(true);
@@ -226,7 +218,6 @@ function handleGood(q) {
 
   if (!enemyAnimating) {
     enemyAnimating = true;
-
     enemyImg.src = "assets/isoku_hit.png";
 
     setTimeout(() => {
@@ -251,7 +242,6 @@ function handleWrong(q) {
 
   if (!playerAnimating) {
     playerAnimating = true;
-
     playerImg.src = getPlayerHitSprite();
 
     setTimeout(() => {
@@ -272,8 +262,10 @@ function handleWrong(q) {
 function nextStep() {
   questionIndex++;
 
-  if (enemyHP <= 0) return winRound();
-  if (playerHP <= 0) return lose();
+  /* 🔁 boucle infinie des questions */
+  if (questionIndex >= questions.length) {
+    questionIndex = 0;
+  }
 
   setTimeout(nextQuestion, 500);
 }
@@ -286,23 +278,17 @@ async function winRound() {
 
   if (round > 3) return winGame();
 
-  correctAnswers = 0;
   questionIndex = 0;
 
   playerImg.src = getPlayerSprite();
   updatePlayerName();
 
-  resetHP();
-  updateRoundUI();
+  resetHP(); /* ❤️ reset PV */
 
   await loadQuestions();
+  updateRoundUI();
+
   nextQuestion();
-}
-
-/* ================= END ROUND ================= */
-
-function endRound() {
-  lose();
 }
 
 /* ================= WIN GAME ================= */
@@ -311,7 +297,7 @@ function winGame() {
   enemyImg.src = "assets/pokeball.png";
 
   document.getElementById("final-score").textContent =
-    "Score : " + totalCorrect + "/18";
+    "Score : " + totalCorrect;
 
   document.getElementById("result-screen").classList.remove("hidden");
   restartBtn.classList.remove("hidden");
