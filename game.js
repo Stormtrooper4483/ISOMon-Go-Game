@@ -58,33 +58,6 @@ function typeWriter(text, speed = 18) {
 
 typeWriter(introText);
 
-/* ================= CAPTURE ANIMATION ================= */
-
-function playCaptureAnimation() {
-  const container = document.getElementById("projectile-container");
-
-  const ball = document.createElement("img");
-  ball.src = "assets/pokeball.png";
-  ball.className = "capture-ball";
-
-  container.appendChild(ball);
-
-  let frame = 0;
-
-  const anim = setInterval(() => {
-    ball.style.objectPosition = `-${frame * 64}px 0`;
-    frame++;
-
-    if (frame > 3) {
-      clearInterval(anim);
-
-      setTimeout(() => {
-        ball.remove();
-      }, 400);
-    }
-  }, 120);
-}
-
 /* ================= TRANSITIONS ================= */
 
 function showRoundTransition() {
@@ -99,6 +72,60 @@ function showRoundTransition() {
 function playEvolutionAnimation() {
   playerImg.classList.add("evolve");
   setTimeout(() => playerImg.classList.remove("evolve"), 800);
+}
+
+/* ================= CAPTURE ================= */
+
+function playCaptureAnimation() {
+  const container = document.getElementById("projectile-container");
+
+  const ball = document.createElement("img");
+  ball.src = "assets/pokeball.png";
+  ball.className = "capture-ball";
+
+  container.appendChild(ball);
+
+  let frame = 0;
+
+  const anim = setInterval(() => {
+    ball.style.objectPosition = `-${frame * 64}px 0`;
+
+    if (frame === 2) {
+      spawnSparkles(ball);
+    }
+
+    frame++;
+
+    if (frame > 3) {
+      clearInterval(anim);
+      setTimeout(() => ball.remove(), 400);
+    }
+  }, 120);
+}
+
+function spawnSparkles(ball) {
+  const container = document.getElementById("projectile-container");
+
+  for (let i = 0; i < 8; i++) {
+    const spark = document.createElement("div");
+    spark.className = "spark";
+
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 30 + Math.random() * 20;
+
+    const x = Math.cos(angle) * distance;
+    const y = Math.sin(angle) * distance;
+
+    spark.style.left = ball.offsetLeft + 32 + "px";
+    spark.style.top = ball.offsetTop + 32 + "px";
+
+    spark.style.setProperty("--dx", x + "px");
+    spark.style.setProperty("--dy", y + "px");
+
+    container.appendChild(spark);
+
+    setTimeout(() => spark.remove(), 600);
+  }
 }
 
 /* ================= SPRITES ================= */
@@ -158,7 +185,7 @@ function updateHP() {
   enemyHPText.textContent = enemyHP;
 }
 
-/* ================= GAME START ================= */
+/* ================= GAME ================= */
 
 async function startGame() {
   round = 1;
@@ -268,7 +295,7 @@ function handleWrong(q) {
   setTimeout(nextStep, delay);
 }
 
-/* ================= STEP ================= */
+/* ================= FLOW ================= */
 
 function nextStep() {
   questionIndex++;
@@ -279,8 +306,6 @@ function nextStep() {
 
   setTimeout(nextQuestion, 500);
 }
-
-/* ================= WIN ROUND ================= */
 
 async function winRound() {
 
@@ -304,8 +329,6 @@ async function winRound() {
   setTimeout(() => nextQuestion(), 1200);
 }
 
-/* ================= WIN GAME ================= */
-
 function winGame() {
 
   playCaptureAnimation();
@@ -320,8 +343,6 @@ function winGame() {
     restartBtn.classList.remove("hidden");
   }, 1500);
 }
-
-/* ================= LOSE ================= */
 
 function lose() {
   alert("💀 ISOKu t’a battu !");
