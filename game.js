@@ -11,8 +11,6 @@ let enemyHP = 100;
 let timer;
 let timeLeft = 40;
 
-let typing = true;
-
 /* DOM */
 const startBtn = document.getElementById("start-btn");
 const restartBtn = document.getElementById("restart-btn");
@@ -39,20 +37,17 @@ const introText = `
 ⚔️ Réponds aux questions pour l’attaquer  
 🏆 Gagne les 3 rounds pour le capturer  
 
-🛡️ Remporte le badge ISO27001 !
+🛡️ Remporte le badge ISO27001 de la ligue Conformité !
 `;
 
 /* ================= TYPEWRITER ================= */
 
 function typeWriter(text, speed = 18) {
   questionEl.innerHTML = "";
-  typing = true;
 
   let i = 0;
 
   function type() {
-    if (!typing) return;
-
     if (i < text.length) {
       const char = text.charAt(i);
 
@@ -64,32 +59,14 @@ function typeWriter(text, speed = 18) {
 
       i++;
       setTimeout(type, speed);
-    } else {
-      typing = false;
     }
   }
 
   type();
 }
 
-/* ================= SKIP BUTTON ================= */
-
-function createSkipButton() {
-  const btn = document.createElement("button");
-  btn.textContent = "⏭️ Skip";
-  btn.style.marginTop = "5px";
-
-  btn.onclick = () => {
-    typing = false;
-    questionEl.innerHTML = introText.replace(/\n/g, "<br>");
-  };
-
-  answersDiv.appendChild(btn);
-}
-
-/* 👉 LANCEMENT INTRO DIRECT */
+/* 👉 affichage immédiat */
 typeWriter(introText);
-createSkipButton();
 
 /* ================= SPRITES ================= */
 
@@ -155,7 +132,7 @@ async function startGame() {
   totalCorrect = 0;
   questionIndex = 0;
 
-  answersDiv.innerHTML = ""; // 🔥 supprime bouton skip
+  answersDiv.innerHTML = "";
 
   startBtn.classList.add("hidden");
   restartBtn.classList.add("hidden");
