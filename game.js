@@ -33,11 +33,6 @@ const enemyHPText = document.getElementById("enemy-hp");
 
 /* ================= FX VISUELS ================= */
 
-function shakeElement(el) {
-  el.classList.add("shake");
-  setTimeout(() => el.classList.remove("shake"), 300);
-}
-
 function flashHit(el) {
   el.classList.add("hit-flash");
   setTimeout(() => el.classList.remove("hit-flash"), 200);
@@ -201,10 +196,8 @@ function showImpact(x, y, fromPlayer) {
 
   /* 🔥 effet sur cible */
   if (fromPlayer) {
-    shakeElement(enemyImg);
     flashHit(enemyImg);
   } else {
-    shakeElement(playerImg);
     flashHit(playerImg);
   }
 }
