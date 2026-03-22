@@ -52,70 +52,61 @@ body {
   overflow: hidden;
 }
 
-/* 🔴 ENNEMI */
-.enemy-block {
+/* ================= ENNEMI ================= */
+
+/* HUD → haut gauche */
+.enemy-hud {
   position: absolute;
   top: 15px;
-  right: 20px;
+  left: 15px;
   width: 150px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
+/* SPRITE → haut droite */
 .enemy-sprite {
-  position: relative;
-  width: 100%;
+  position: absolute;
+  top: 40px;
+  right: 30px;
+  width: 150px;
   image-rendering: pixelated;
   will-change: transform, filter;
+  filter: drop-shadow(0 6px 0 rgba(0,0,0,0.25));
 }
 
-/* 🔵 JOUEUR */
-.player-block {
+/* ================= JOUEUR ================= */
+
+/* SPRITE → bas gauche */
+.player-sprite {
+  position: absolute;
+  bottom: 20px;
+  left: 30px;
+  width: 150px;
+  image-rendering: pixelated;
+  will-change: transform, filter;
+  filter: drop-shadow(0 6px 0 rgba(0,0,0,0.25));
+}
+
+/* HUD → bas droite */
+.player-hud {
   position: absolute;
   bottom: 15px;
-  left: 20px;
+  right: 15px;
   width: 150px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
-.player-sprite {
-  position: relative;
-  width: 100%;
-  image-rendering: pixelated;
-  will-change: transform, filter;
-}
+/* ================= HUD ================= */
 
-/* 🌑 OMBRE AU SOL (effet Pokémon) */
-.enemy-sprite::after,
-.player-sprite::after {
-  content: "";
-  display: block;
-  width: 60%;
-  height: 8px;
-  background: rgba(0,0,0,0.25);
-  border-radius: 50%;
-  margin: 4px auto 0;
-}
-
-/* HUD */
 .enemy-hud,
 .player-hud {
   background: #f8f8f8;
   border: 3px solid black;
   padding: 6px;
   font-size: 10px;
-  width: 150px;
 
   box-shadow:
     inset -2px -2px 0 #aaa,
     inset 2px 2px 0 #fff;
 
-  position: relative;
   z-index: 2;
 }
 
@@ -165,7 +156,7 @@ progress {
   100% { opacity: 0; transform: scale(1.4); }
 }
 
-/* ================= 🎮 HIT FX ================= */
+/* ================= HIT FX ================= */
 
 .shake {
   animation: shake 0.3s;
