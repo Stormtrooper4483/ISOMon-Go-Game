@@ -52,13 +52,14 @@ body {
   overflow: hidden;
 }
 
-/* ignore blocks */
+/* neutralise les anciens blocs */
 .enemy-block,
 .player-block {
   position: static;
 }
 
-/* HUD ENNEMI */
+/* ================= HUD ================= */
+
 .enemy-hud {
   position: absolute;
   top: 15px;
@@ -71,19 +72,6 @@ body {
   z-index: 2;
 }
 
-/* 🟢 ENNEMI (zone haut droite) */
-.enemy-sprite {
-  position: absolute;
-  top: 30px;
-  right: 20px;
-  width: 160px;
-
-  /* 🔥 correction ancrage */
-  transform: translateY(20px);
-  image-rendering: pixelated;
-}
-
-/* HUD JOUEUR */
 .player-hud {
   position: absolute;
   bottom: 15px;
@@ -96,19 +84,28 @@ body {
   z-index: 2;
 }
 
-/* 🔵 JOUEUR (zone bas gauche) */
-.player-sprite {
-  position: absolute;
-  bottom: 10px;
-  left: 20px;
-  width: 140px;
+/* ================= SPRITES ================= */
 
-  /* 🔥 correction ancrage */
-  transform: translateY(-10px);
+/* 🟢 ISOKU → HAUT DROITE */
+.enemy-sprite {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 150px;
   image-rendering: pixelated;
 }
 
-/* BARRE PV */
+/* 🔵 RSSI → BAS GAUCHE */
+.player-sprite {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: 130px;
+  image-rendering: pixelated;
+}
+
+/* ================= BARRE PV ================= */
+
 .hp-bar {
   display: flex;
   gap: 5px;
@@ -120,7 +117,8 @@ progress {
   height: 6px;
 }
 
-/* FX */
+/* ================= FX COMBAT ================= */
+
 #projectile-container {
   position: absolute;
   top: 0;
@@ -153,7 +151,8 @@ progress {
   100% { opacity: 0; transform: scale(1.4); }
 }
 
-/* HIT FX */
+/* ================= HIT FX ================= */
+
 .shake {
   animation: shake 0.3s;
 }
@@ -171,7 +170,8 @@ progress {
   filter: brightness(2) saturate(2) hue-rotate(-25deg);
 }
 
-/* TEXTE */
+/* ================= TEXTE ================= */
+
 .question-container {
   margin-top: 8px;
   border: 3px solid black;
