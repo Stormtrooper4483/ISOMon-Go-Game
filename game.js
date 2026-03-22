@@ -257,7 +257,8 @@ function handleGood(q) {
 
   document.getElementById("explanation").textContent = q.explanation;
 
-  setTimeout(nextStep, 350);
+  const delay = Math.max(2000, q.explanation.length * 30);
+  setTimeout(nextStep, delay);
 }
 
 function handleWrong(q) {
@@ -274,7 +275,8 @@ function handleWrong(q) {
     document.getElementById("explanation").textContent = q.explanation;
   }
 
-  setTimeout(nextStep, 350);
+  const delay = q ? Math.max(2000, q.explanation.length * 30) : 2000;
+  setTimeout(nextStep, delay);
 }
 
 /* ================= STEP ================= */
@@ -302,10 +304,7 @@ async function winRound() {
   playerImg.src = getPlayerSprite();
   updatePlayerName();
 
-  /* 🧬 évolution */
   playEvolutionAnimation();
-
-  /* ✨ texte */
   showEvolutionText();
 
   resetHP();
@@ -313,15 +312,9 @@ async function winRound() {
 
   await loadQuestions();
 
-  /* ⏱️ délai avant overlay */
-  setTimeout(() => {
-    showRoundTransition();
-  }, 600);
+  setTimeout(() => showRoundTransition(), 600);
 
-  /* ⏱️ lancement combat */
-  setTimeout(() => {
-    nextQuestion();
-  }, 1200);
+  setTimeout(() => nextQuestion(), 1200);
 }
 
 /* ================= WIN GAME ================= */
