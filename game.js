@@ -31,13 +31,6 @@ const enemyHPBar = document.getElementById("enemy-hp-bar");
 const playerHPText = document.getElementById("player-hp");
 const enemyHPText = document.getElementById("enemy-hp");
 
-/* ================= FX VISUELS ================= */
-
-function flashHit(el) {
-  el.classList.add("hit-flash");
-  setTimeout(() => el.classList.remove("hit-flash"), 200);
-}
-
 /* ================= SPRITES ================= */
 
 function getPlayerSprite() {
@@ -167,11 +160,11 @@ function launchAttack(fromPlayer = true) {
 
   setTimeout(() => {
     projectile.remove();
-    showImpact(endX, y, fromPlayer);
+    showImpact(endX, y);
   }, 400);
 }
 
-function showImpact(x, y, fromPlayer) {
+function showImpact(x, y) {
   const container = document.getElementById("projectile-container");
 
   const hit = document.createElement("img");
@@ -180,26 +173,11 @@ function showImpact(x, y, fromPlayer) {
   hit.style.left = x + "px";
   hit.style.top = y + "px";
 
-  const flash = document.createElement("img");
-  flash.src = "assets/fx_flash_1.png";
-  flash.className = "fx";
-  flash.style.left = x + "px";
-  flash.style.top = y + "px";
-
   container.appendChild(hit);
-  container.appendChild(flash);
 
   setTimeout(() => {
     hit.remove();
-    flash.remove();
   }, 400);
-
-  /* 🔥 effet sur cible */
-  if (fromPlayer) {
-    flashHit(enemyImg);
-  } else {
-    flashHit(playerImg);
-  }
 }
 
 /* ================= QUESTION ================= */
