@@ -52,7 +52,6 @@ body {
   overflow: hidden;
 }
 
-/* neutralise anciens blocs */
 .enemy-block,
 .player-block {
   position: static;
@@ -86,23 +85,22 @@ body {
 
 /* ================= SPRITES ================= */
 
-/* 🟢 ISOKU → HAUT DROITE */
+/* 🟢 ISOKU */
 .enemy-sprite {
   position: absolute;
   top: 0;
   right: 10px;
   width: 170px;
   image-rendering: pixelated;
-
-  transform: translateY(-40px); /* ajustement visuel validé */
+  transform: translateY(-40px);
 }
 
-/* 🔵 RSSI → BAS GAUCHE */
+/* 🔵 RSSI (FIX AGRANDI) */
 .player-sprite {
   position: absolute;
-  bottom: 20px;
-  left: 20px;
-  width: 130px;
+  bottom: 5px;   /* 🔥 ajusté pour compenser la taille */
+  left: 0px;     /* 🔥 légèrement décalé */
+  width: 180px;  /* 🔥 taille corrigée */
   image-rendering: pixelated;
 }
 
@@ -119,7 +117,7 @@ progress {
   height: 6px;
 }
 
-/* ================= FX COMBAT ================= */
+/* ================= FX ================= */
 
 #projectile-container {
   position: absolute;
@@ -167,6 +165,12 @@ progress {
   color: #2e7d32;
   font-weight: bold;
   margin-bottom: 6px;
+}
+
+#explanation {
+  font-style: italic;
+  color: #333;
+  min-height: 20px;
 }
 
 .answer {
@@ -219,7 +223,7 @@ button:active {
   padding: 10px;
 }
 
-/* ================= ROUND TRANSITION ================= */
+/* ================= ROUND ================= */
 
 .round-overlay {
   position: fixed;
@@ -234,7 +238,6 @@ button:active {
   justify-content: center;
   align-items: center;
   z-index: 999;
-
   animation: fadeInOut 1.2s;
 }
 
@@ -252,16 +255,7 @@ button:active {
 }
 
 @keyframes evolve {
-  0% {
-    transform: scale(1);
-    filter: brightness(1);
-  }
-  50% {
-    transform: scale(1.3);
-    filter: brightness(3);
-  }
-  100% {
-    transform: scale(1);
-    filter: brightness(1);
-  }
+  0% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.3); filter: brightness(3); }
+  100% { transform: scale(1); filter: brightness(1); }
 }
