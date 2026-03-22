@@ -26,6 +26,55 @@ const enemyHPBar = document.getElementById("enemy-hp-bar");
 const playerHPText = document.getElementById("player-hp");
 const enemyHPText = document.getElementById("enemy-hp");
 
+/* ================= INTRO TEXTE ================= */
+
+const introText = `
+🎮 Un ISOKu sauvage apparaît !
+
+🎯 Réponds aux questions ISO 27001 pour attaquer.
+⚔️ 5 bonnes réponses par round pour le mettre KO.
+
+❌ Chaque erreur te fait subir des dégâts !
+
+🧬 Ton Pokémon RSSI évolue à chaque round.
+
+🏆 Gagne les 3 rounds pour capturer ISOKu
+et décrocher le badge ISO27001 de la Ligue Conformité !
+`;
+
+/* ================= TYPEWRITER ================= */
+
+function typeWriter(text, speed = 25, callback) {
+  const el = document.getElementById("question");
+  el.innerHTML = "";
+
+  let i = 0;
+
+  function type() {
+    if (i < text.length) {
+      const char = text.charAt(i);
+
+      if (char === "\n") {
+        el.innerHTML += "<br>";
+      } else {
+        el.innerHTML += char;
+      }
+
+      i++;
+      setTimeout(type, speed);
+    } else if (callback) {
+      callback();
+    }
+  }
+
+  type();
+}
+
+function showEvolutionText() {
+  const name = getPlayerName().split(" ")[0];
+  typeWriter("✨ " + name + " évolue !");
+}
+
 /* ================= TRANSITIONS ================= */
 
 function showRoundTransition() {
@@ -41,29 +90,6 @@ function showRoundTransition() {
 function playEvolutionAnimation() {
   playerImg.classList.add("evolve");
   setTimeout(() => playerImg.classList.remove("evolve"), 800);
-}
-
-/* ================= TYPEWRITER ================= */
-
-function typeWriter(text, speed = 40) {
-  const el = document.getElementById("explanation");
-  el.textContent = "";
-  let i = 0;
-
-  function type() {
-    if (i < text.length) {
-      el.textContent += text.charAt(i);
-      i++;
-      setTimeout(type, speed);
-    }
-  }
-
-  type();
-}
-
-function showEvolutionText() {
-  const name = getPlayerName().split(" ")[0];
-  typeWriter("✨ " + name + " évolue !");
 }
 
 /* ================= SPRITES ================= */
@@ -142,7 +168,13 @@ async function startGame() {
 
   await loadQuestions();
   updateRoundUI();
-  nextQuestion();
+
+  /* 🎬 INTRO */
+  typeWriter(introText, 20, () => {
+    setTimeout(() => {
+      nextQuestion();
+    }, 800);
+  });
 }
 
 function updateRoundUI() {
@@ -275,7 +307,7 @@ function handleWrong(q) {
     document.getElementById("explanation").textContent = q.explanation;
   }
 
-  const delay = q ? Math.max(2000, q.explanation.length * 30) : 2000;
+  const delay = q ? Math.max(3000, q.explanation.length * 45) : 3000;
   setTimeout(nextStep, delay);
 }
 
@@ -313,7 +345,6 @@ async function winRound() {
   await loadQuestions();
 
   setTimeout(() => showRoundTransition(), 600);
-
   setTimeout(() => nextQuestion(), 1200);
 }
 
