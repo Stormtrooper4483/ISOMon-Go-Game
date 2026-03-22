@@ -52,7 +52,7 @@ body {
   overflow: hidden;
 }
 
-/* neutralise les blocks */
+/* ignore blocks */
 .enemy-block,
 .player-block {
   position: static;
@@ -71,12 +71,15 @@ body {
   z-index: 2;
 }
 
-/* 🟢 ISOKU → HAUT DROITE */
+/* 🟢 ENNEMI (zone haut droite) */
 .enemy-sprite {
   position: absolute;
-  top: 60px;      /* descend un peu */
-  right: 30px;    /* colle à droite */
-  width: 140px;
+  top: 30px;
+  right: 20px;
+  width: 160px;
+
+  /* 🔥 correction ancrage */
+  transform: translateY(20px);
   image-rendering: pixelated;
 }
 
@@ -93,12 +96,15 @@ body {
   z-index: 2;
 }
 
-/* 🔵 RSSI → BAS GAUCHE */
+/* 🔵 JOUEUR (zone bas gauche) */
 .player-sprite {
   position: absolute;
-  bottom: 35px;
-  left: 40px;
-  width: 130px;
+  bottom: 10px;
+  left: 20px;
+  width: 140px;
+
+  /* 🔥 correction ancrage */
+  transform: translateY(-10px);
   image-rendering: pixelated;
 }
 
@@ -114,8 +120,7 @@ progress {
   height: 6px;
 }
 
-/* ================= FX ================= */
-
+/* FX */
 #projectile-container {
   position: absolute;
   top: 0;
@@ -148,8 +153,7 @@ progress {
   100% { opacity: 0; transform: scale(1.4); }
 }
 
-/* ================= HIT FX ================= */
-
+/* HIT FX */
 .shake {
   animation: shake 0.3s;
 }
@@ -167,8 +171,7 @@ progress {
   filter: brightness(2) saturate(2) hue-rotate(-25deg);
 }
 
-/* ================= TEXTE ================= */
-
+/* TEXTE */
 .question-container {
   margin-top: 8px;
   border: 3px solid black;
