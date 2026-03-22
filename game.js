@@ -30,6 +30,23 @@ const enemyHPBar = document.getElementById("enemy-hp-bar");
 const playerHPText = document.getElementById("player-hp");
 const enemyHPText = document.getElementById("enemy-hp");
 
+/* ================= TRANSITIONS ================= */
+
+function showRoundTransition() {
+  const overlay = document.createElement("div");
+  overlay.className = "round-overlay";
+  overlay.textContent = "⚔️ ROUND " + round;
+
+  document.body.appendChild(overlay);
+
+  setTimeout(() => overlay.remove(), 1200);
+}
+
+function playEvolutionAnimation() {
+  playerImg.classList.add("evolve");
+  setTimeout(() => playerImg.classList.remove("evolve"), 800);
+}
+
 /* ================= SPRITES ================= */
 
 function getPlayerSprite() {
@@ -206,7 +223,7 @@ function nextQuestion() {
   });
 }
 
-/* ================= BONNE REPONSE ================= */
+/* ================= REPONSES ================= */
 
 function handleGood(q) {
   totalCorrect++;
@@ -216,22 +233,13 @@ function handleGood(q) {
   enemyHP -= 20;
   updateHP();
 
-  if (!enemyAnimating) {
-    enemyAnimating = true;
-    enemyImg.src = "assets/isoku_hit.png";
-
-    setTimeout(() => {
-      enemyImg.src = "assets/isoku.png";
-      enemyAnimating = false;
-    }, 300);
-  }
+  enemyImg.src = "assets/isoku_hit.png";
+  setTimeout(() => enemyImg.src = "assets/isoku.png", 300);
 
   document.getElementById("explanation").textContent = q.explanation;
 
   setTimeout(nextStep, 350);
 }
-
-/* ================= MAUVAISE REPONSE ================= */
 
 function handleWrong(q) {
 
@@ -240,15 +248,8 @@ function handleWrong(q) {
   playerHP -= 20;
   updateHP();
 
-  if (!playerAnimating) {
-    playerAnimating = true;
-    playerImg.src = getPlayerHitSprite();
-
-    setTimeout(() => {
-      playerImg.src = getPlayerSprite();
-      playerAnimating = false;
-    }, 300);
-  }
+  playerImg.src = getPlayerHitSprite();
+  setTimeout(() => playerImg.src = getPlayerSprite(), 300);
 
   if (q) {
     document.getElementById("explanation").textContent = q.explanation;
@@ -262,7 +263,6 @@ function handleWrong(q) {
 function nextStep() {
   questionIndex++;
 
-  /* 🔁 boucle infinie des questions */
   if (questionIndex >= questions.length) {
     questionIndex = 0;
   }
@@ -283,12 +283,18 @@ async function winRound() {
   playerImg.src = getPlayerSprite();
   updatePlayerName();
 
-  resetHP(); /* ❤️ reset PV */
+  playEvolutionAnimation();
 
-  await loadQuestions();
+  resetHP();
   updateRoundUI();
 
-  nextQuestion();
+  await loadQuestions();
+
+  showRoundTransition();
+
+  setTimeout(() => {
+    nextQuestion();
+  }, 1200);
 }
 
 /* ================= WIN GAME ================= */
