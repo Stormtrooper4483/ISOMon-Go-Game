@@ -52,12 +52,7 @@ body {
   overflow: hidden;
 }
 
-.enemy-block,
-.player-block {
-  position: static;
-}
-
-/* ================= HUD ================= */
+/* HUD */
 
 .enemy-hud {
   position: absolute;
@@ -83,28 +78,28 @@ body {
   z-index: 2;
 }
 
-/* ================= SPRITES ================= */
+/* SPRITES */
 
-/* 🟢 ISOKU */
+/* ISOKU */
 .enemy-sprite {
   position: absolute;
   top: 0;
   right: 10px;
   width: 170px;
   image-rendering: pixelated;
-  transform: translateY(-40px);
+  transform: translateY(-35px);
 }
 
-/* 🔵 RSSI (FIX AGRANDI) */
+/* RSSI */
 .player-sprite {
   position: absolute;
-  bottom: 5px;   /* 🔥 ajusté pour compenser la taille */
-  left: 0px;     /* 🔥 légèrement décalé */
-  width: 180px;  /* 🔥 taille corrigée */
+  bottom: 5px;
+  left: 0;
+  width: 180px;
   image-rendering: pixelated;
 }
 
-/* ================= BARRE PV ================= */
+/* BARRES PV */
 
 .hp-bar {
   display: flex;
@@ -137,18 +132,41 @@ progress {
   transition: transform 0.4s linear;
 }
 
-.fx {
+/* ================= CAPTURE ================= */
+
+.capture-ball {
   position: absolute;
-  width: 60px;
+  width: 64px;
+  height: 64px;
+  top: 90px;
+  left: 180px;
+
+  object-fit: none;
   image-rendering: pixelated;
   z-index: 40;
-  pointer-events: none;
-  animation: fxFade 0.4s forwards;
 }
 
-@keyframes fxFade {
-  0% { opacity: 1; transform: scale(0.8); }
-  100% { opacity: 0; transform: scale(1.4); }
+/* ================= SPARKLES ================= */
+
+.spark {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: yellow;
+  z-index: 50;
+  image-rendering: pixelated;
+  animation: sparkMove 0.6s ease-out forwards;
+}
+
+@keyframes sparkMove {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) scale(0.5);
+    opacity: 0;
+  }
 }
 
 /* ================= TEXTE ================= */
@@ -167,11 +185,25 @@ progress {
   margin-bottom: 6px;
 }
 
+/* curseur machine à écrire */
+.intro::after {
+  content: "▌";
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
 #explanation {
   font-style: italic;
   color: #333;
   min-height: 20px;
 }
+
+/* REPONSES */
 
 .answer {
   border: 2px solid black;
@@ -190,7 +222,7 @@ progress {
   transform: scale(0.96);
 }
 
-/* ================= BOUTONS ================= */
+/* BOUTONS */
 
 button {
   width: 100%;
@@ -207,7 +239,7 @@ button:active {
   transform: scale(0.97);
 }
 
-/* ================= RESULT ================= */
+/* RESULT */
 
 .hidden {
   display: none;
