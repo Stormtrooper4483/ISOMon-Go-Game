@@ -257,7 +257,7 @@ function handleGood(q) {
 
   document.getElementById("explanation").textContent = q.explanation;
 
-  const delay = Math.max(2000, q.explanation.length * 30);
+  const delay = Math.max(3000, q.explanation.length * 45);
   setTimeout(nextStep, delay);
 }
 
