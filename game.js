@@ -12,6 +12,10 @@ let enemyHP = 100;
 let timer;
 let timeLeft = 40;
 
+/* 🔒 Animation locks */
+let playerAnimating = false;
+let enemyAnimating = false;
+
 /* DOM */
 const startBtn = document.getElementById("start-btn");
 const restartBtn = document.getElementById("restart-btn");
@@ -26,6 +30,18 @@ const enemyHPBar = document.getElementById("enemy-hp-bar");
 
 const playerHPText = document.getElementById("player-hp");
 const enemyHPText = document.getElementById("enemy-hp");
+
+/* ================= FX VISUELS ================= */
+
+function shakeElement(el) {
+  el.classList.add("shake");
+  setTimeout(() => el.classList.remove("shake"), 300);
+}
+
+function flashHit(el) {
+  el.classList.add("hit-flash");
+  setTimeout(() => el.classList.remove("hit-flash"), 200);
+}
 
 /* ================= SPRITES ================= */
 
@@ -156,11 +172,11 @@ function launchAttack(fromPlayer = true) {
 
   setTimeout(() => {
     projectile.remove();
-    showImpact(endX, y);
+    showImpact(endX, y, fromPlayer);
   }, 400);
 }
 
-function showImpact(x, y) {
+function showImpact(x, y, fromPlayer) {
   const container = document.getElementById("projectile-container");
 
   const hit = document.createElement("img");
@@ -182,6 +198,15 @@ function showImpact(x, y) {
     hit.remove();
     flash.remove();
   }, 400);
+
+  /* 🔥 effet sur cible */
+  if (fromPlayer) {
+    shakeElement(enemyImg);
+    flashHit(enemyImg);
+  } else {
+    shakeElement(playerImg);
+    flashHit(playerImg);
+  }
 }
 
 /* ================= QUESTION ================= */
@@ -228,12 +253,20 @@ function handleGood(q) {
   enemyHP -= 20;
   updateHP();
 
-  enemyImg.src = "assets/isoku_hit.png";
-  setTimeout(() => enemyImg.src = "assets/isoku.png", 300);
+  if (!enemyAnimating) {
+    enemyAnimating = true;
+
+    enemyImg.src = "assets/isoku_hit.png";
+
+    setTimeout(() => {
+      enemyImg.src = "assets/isoku.png";
+      enemyAnimating = false;
+    }, 300);
+  }
 
   document.getElementById("explanation").textContent = q.explanation;
 
-  nextStep();
+  setTimeout(nextStep, 350);
 }
 
 /* ================= MAUVAISE REPONSE ================= */
@@ -245,14 +278,22 @@ function handleWrong(q) {
   playerHP -= 20;
   updateHP();
 
-  playerImg.src = getPlayerHitSprite();
-  setTimeout(() => playerImg.src = getPlayerSprite(), 300);
+  if (!playerAnimating) {
+    playerAnimating = true;
+
+    playerImg.src = getPlayerHitSprite();
+
+    setTimeout(() => {
+      playerImg.src = getPlayerSprite();
+      playerAnimating = false;
+    }, 300);
+  }
 
   if (q) {
     document.getElementById("explanation").textContent = q.explanation;
   }
 
-  nextStep();
+  setTimeout(nextStep, 350);
 }
 
 /* ================= STEP ================= */
@@ -263,7 +304,7 @@ function nextStep() {
   if (enemyHP <= 0) return winRound();
   if (playerHP <= 0) return lose();
 
-  setTimeout(nextQuestion, 800);
+  setTimeout(nextQuestion, 500);
 }
 
 /* ================= WIN ROUND ================= */
