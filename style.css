@@ -86,7 +86,7 @@ body {
 
 /* ================= SPRITES ================= */
 
-/* 🟢 ISOKU → HAUT DROITE (FIX FINAL) */
+/* 🟢 ISOKU → HAUT DROITE (AJUSTÉ FINEMENT) */
 .enemy-sprite {
   position: absolute;
   top: 0;
@@ -94,7 +94,7 @@ body {
   width: 170px;
   image-rendering: pixelated;
 
-  transform: translateY(-30px); /* 🔥 correction visuelle */
+  transform: translateY(-40px); /* 🔥 ajustement fin */
 }
 
 /* 🔵 RSSI → BAS GAUCHE */
