@@ -40,23 +40,14 @@ const introText = `
 🛡️ Remporte le badge ISO27001 de la ligue Conformité !
 `;
 
-/* ================= TYPEWRITER ================= */
-
 function typeWriter(text, speed = 18) {
   questionEl.innerHTML = "";
-
   let i = 0;
 
   function type() {
     if (i < text.length) {
       const char = text.charAt(i);
-
-      if (char === "\n") {
-        questionEl.innerHTML += "<br>";
-      } else {
-        questionEl.innerHTML += char;
-      }
-
+      questionEl.innerHTML += (char === "\n") ? "<br>" : char;
       i++;
       setTimeout(type, speed);
     }
@@ -67,6 +58,22 @@ function typeWriter(text, speed = 18) {
 
 /* 👉 affichage immédiat */
 typeWriter(introText);
+
+/* ================= TRANSITIONS ================= */
+
+function showRoundTransition() {
+  const overlay = document.createElement("div");
+  overlay.className = "round-overlay";
+  overlay.textContent = "⚔️ ROUND " + round;
+
+  document.body.appendChild(overlay);
+  setTimeout(() => overlay.remove(), 1200);
+}
+
+function playEvolutionAnimation() {
+  playerImg.classList.add("evolve");
+  setTimeout(() => playerImg.classList.remove("evolve"), 800);
+}
 
 /* ================= SPRITES ================= */
 
@@ -136,7 +143,6 @@ async function startGame() {
 
   startBtn.classList.add("hidden");
   restartBtn.classList.add("hidden");
-
   document.getElementById("result-screen").classList.add("hidden");
 
   playerImg.src = getPlayerSprite();
@@ -239,6 +245,10 @@ function handleGood(q) {
   enemyHP -= 20;
   updateHP();
 
+  /* 💥 HIT ENNEMI */
+  enemyImg.src = "assets/isoku_hit.png";
+  setTimeout(() => enemyImg.src = "assets/isoku.png", 300);
+
   document.getElementById("explanation").textContent = q.explanation;
 
   const delay = Math.max(3000, q.explanation.length * 45);
@@ -251,6 +261,10 @@ function handleWrong(q) {
 
   playerHP -= 20;
   updateHP();
+
+  /* 💥 HIT JOUEUR */
+  playerImg.src = getPlayerHitSprite();
+  setTimeout(() => playerImg.src = getPlayerSprite(), 300);
 
   if (q) {
     document.getElementById("explanation").textContent = q.explanation;
@@ -285,17 +299,24 @@ async function winRound() {
   playerImg.src = getPlayerSprite();
   updatePlayerName();
 
+  /* 🧬 évolution */
+  playEvolutionAnimation();
+
   resetHP();
   updateRoundUI();
 
   await loadQuestions();
 
-  setTimeout(() => nextQuestion(), 800);
+  /* 🎬 transition */
+  setTimeout(() => showRoundTransition(), 600);
+  setTimeout(() => nextQuestion(), 1200);
 }
 
 /* ================= WIN GAME ================= */
 
 function winGame() {
+  enemyImg.src = "assets/pokeball.png";
+
   document.getElementById("final-score").textContent =
     "Score : " + totalCorrect;
 
