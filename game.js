@@ -429,24 +429,20 @@ setTimeout(() => nextQuestion(), 1200);
 
 function winGame() {
 
-  gameOver = true;
+```
+gameOver = true;
 
-  // 🟢 on lance la capture
-  playCaptureAnimation();
+enemyImg.style.opacity = "0";
 
-  // 🟡 on cache légèrement après (safe timing)
-  setTimeout(() => {
-    enemyImg.style.opacity = "0";
-  }, 500);
+playCaptureAnimation();
 
-  setTimeout(() => {
-    document.getElementById("final-score").textContent =
-      "Score : " + totalCorrect;
+setTimeout(() => {
+  document.getElementById("final-score").textContent =
+    "Score : " + totalCorrect;
 
-    document.getElementById("result-screen").classList.remove("hidden");
-    restartBtn.classList.remove("hidden");
-  }, 1500);
-}
+  document.getElementById("result-screen").classList.remove("hidden");
+  restartBtn.classList.remove("hidden");
+}, 1500);
 ```
 
 }
