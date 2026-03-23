@@ -11,9 +11,11 @@ let enemyHP = 100;
 let timer;
 let timeLeft = 40;
 
+let gameOver = false;
+
 /* 🔒 locks animation */
-let playerAnimating = false;
-let enemyAnimating = false;
+const playerLock = { active: false };
+const enemyLock = { active: false };
 
 /* DOM */
 const startBtn = document.getElementById("start-btn");
@@ -32,6 +34,28 @@ const enemyHPText = document.getElementById("enemy-hp");
 
 const questionEl = document.getElementById("question");
 const answersDiv = document.getElementById("answers");
+
+/* ================= PRELOAD ================= */
+
+function preloadImages() {
+  const images = [
+    "assets/isoku.png",
+    "assets/isoku_hit.png",
+    "assets/rssilet_back.png",
+    "assets/rssilet_hit.png",
+    "assets/rssirex_back.png",
+    "assets/rssirex_hit.png",
+    "assets/rssilex_back.png",
+    "assets/rssilex_hit.png"
+  ];
+
+  images.forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+}
+
+preloadImages();
 
 /* ================= INTRO ================= */
 
@@ -61,6 +85,32 @@ function typeWriter(text, speed = 18) {
 }
 
 typeWriter(introText);
+
+/* ================= ANIMATION ================= */
+
+function playHitAnimation(img, hitSrc, idleSrc, lock) {
+
+  if (lock.active) return;
+  lock.active = true;
+
+  img.src = "";
+
+  requestAnimationFrame(() => {
+    img.src = hitSrc;
+
+    // force repaint
+    void img.offsetWidth;
+
+    setTimeout(() => {
+      img.src = idleSrc;
+
+      setTimeout(() => {
+        lock.active = false;
+      }, 50);
+
+    }, 300);
+  });
+}
 
 /* ================= TRANSITIONS ================= */
 
@@ -197,6 +247,9 @@ function updateHP() {
 /* ================= GAME ================= */
 
 async function startGame() {
+
+  gameOver = false;
+
   round = 1;
   totalCorrect = 0;
   questionIndex = 0;
@@ -228,6 +281,8 @@ function updateRoundUI() {
 
 function nextQuestion() {
 
+  if (gameOver) return;
+
   if (playerHP <= 0) return lose();
   if (enemyHP <= 0) return winRound();
 
@@ -246,6 +301,8 @@ function nextQuestion() {
     btn.textContent = ans.text;
 
     btn.onclick = () => {
+      if (gameOver) return;
+
       clearInterval(timer);
       ans.correct ? handleGood(q) : handleWrong(q);
     };
@@ -262,16 +319,12 @@ function handleGood(q) {
   enemyHP -= 20;
   updateHP();
 
-  if (!enemyAnimating) {
-    enemyAnimating = true;
-
-    enemyImg.src = "assets/isoku_hit.png";
-
-    setTimeout(() => {
-      enemyImg.src = "assets/isoku.png";
-      enemyAnimating = false;
-    }, 300);
-  }
+  playHitAnimation(
+    enemyImg,
+    "assets/isoku_hit.png",
+    "assets/isoku.png",
+    enemyLock
+  );
 
   document.getElementById("explanation").textContent = q.explanation;
 
@@ -284,16 +337,12 @@ function handleWrong(q) {
   playerHP -= 20;
   updateHP();
 
-  if (!playerAnimating) {
-    playerAnimating = true;
-
-    playerImg.src = getPlayerHitSprite();
-
-    setTimeout(() => {
-      playerImg.src = getPlayerSprite();
-      playerAnimating = false;
-    }, 300);
-  }
+  playHitAnimation(
+    playerImg,
+    getPlayerHitSprite(),
+    getPlayerSprite(),
+    playerLock
+  );
 
   if (q) {
     document.getElementById("explanation").textContent = q.explanation;
@@ -306,8 +355,11 @@ function handleWrong(q) {
 /* ================= FLOW ================= */
 
 function nextStep() {
+  if (gameOver) return;
+
   questionIndex++;
   if (questionIndex >= questions.length) questionIndex = 0;
+
   setTimeout(nextQuestion, 500);
 }
 
@@ -335,6 +387,8 @@ async function winRound() {
 
 function winGame() {
 
+  gameOver = true;
+
   enemyImg.style.opacity = "0";
 
   playCaptureAnimation();
@@ -349,6 +403,12 @@ function winGame() {
 }
 
 function lose() {
+
+  if (gameOver) return;
+  gameOver = true;
+
+  clearInterval(timer);
+
   alert("💀 ISOKu t’a battu !");
   restartBtn.classList.remove("hidden");
 }
@@ -362,6 +422,12 @@ function startTimer() {
   timerText.textContent = "⏱️ " + timeLeft;
 
   timer = setInterval(() => {
+
+    if (gameOver) {
+      clearInterval(timer);
+      return;
+    }
+
     timeLeft--;
     timerText.textContent = "⏱️ " + timeLeft;
 
@@ -369,6 +435,7 @@ function startTimer() {
       clearInterval(timer);
       handleWrong();
     }
+
   }, 1000);
 }
 
