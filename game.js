@@ -100,19 +100,16 @@ img.src = "";
 requestAnimationFrame(() => {
 img.src = hitSrc;
 
-```
 void img.offsetWidth;
 
 setTimeout(() => {
-  img.src = idleSrc;
+img.src = idleSrc;
 
-  setTimeout(() => {
-    lock.active = false;
-  }, 50);
+setTimeout(() => {
+lock.active = false;
+}, 50);
 
 }, 300);
-```
-
 });
 }
 
@@ -194,6 +191,7 @@ enemyHPText.textContent = enemyHP;
 async function startGame() {
 
 gameOver = false;
+answering = false;
 
 round = 1;
 totalCorrect = 0;
@@ -231,13 +229,19 @@ if (gameOver) return;
 if (playerHP <= 0) return lose();
 if (enemyHP <= 0) return winRound();
 
-answering = false; // ✅ reset propre
+answering = false;
 
 document.getElementById("explanation").textContent = "";
 
 startTimer();
 
 const q = questions[questionIndex];
+
+/* ✅ FIX CRITIQUE */
+if (!q || !q.answers) {
+console.error("Question invalide :", q);
+return;
+}
 
 questionEl.textContent = q.question;
 answersDiv.innerHTML = "";
@@ -247,21 +251,18 @@ const btn = document.createElement("div");
 btn.className = "answer";
 btn.textContent = ans.text;
 
-```
 btn.onclick = () => {
 
-  if (gameOver || answering) return;
+if (gameOver || answering) return;
 
-  answering = true; // 🔒 lock unique
+answering = true;
 
-  clearInterval(timer);
+clearInterval(timer);
 
-  ans.correct ? handleGood(q) : handleWrong(q);
+ans.correct ? handleGood(q) : handleWrong(q);
 };
 
 answersDiv.appendChild(btn);
-```
-
 });
 }
 
@@ -312,7 +313,13 @@ function nextStep() {
 if (gameOver) return;
 
 questionIndex++;
-if (questionIndex >= questions.length) questionIndex = 0;
+
+if (questionIndex >= questions.length) {
+questionIndex = 0;
+}
+
+/* ✅ sécurité */
+if (!questions.length) return;
 
 setTimeout(nextQuestion, 500);
 }
@@ -351,11 +358,8 @@ setTimeout(() => {
 document.getElementById("final-score").textContent =
 "Score : " + totalCorrect;
 
-```
 document.getElementById("result-screen").classList.remove("hidden");
 restartBtn.classList.remove("hidden");
-```
-
 }, 1200);
 }
 
@@ -380,20 +384,18 @@ timerText.textContent = "⏱️ " + timeLeft;
 
 timer = setInterval(() => {
 
-```
 if (gameOver) {
-  clearInterval(timer);
-  return;
+clearInterval(timer);
+return;
 }
 
 timeLeft--;
 timerText.textContent = "⏱️ " + timeLeft;
 
 if (timeLeft <= 0) {
-  clearInterval(timer);
-  handleWrong();
+clearInterval(timer);
+handleWrong();
 }
-```
 
 }, 1000);
 }
