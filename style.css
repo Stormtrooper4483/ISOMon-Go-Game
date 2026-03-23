@@ -1,139 +1,309 @@
 body {
-margin: 0;
-font-family: monospace;
-display: flex;
-justify-content: center;
-align-items: flex-start;
-min-height: 100vh;
-padding-top: 20px;
-background: radial-gradient(circle, #2c2c2c, #0f0f0f);
+  margin: 0;
+  font-family: monospace;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding-top: 20px;
+  background: radial-gradient(circle, #2c2c2c, #0f0f0f);
 }
 
-.game-container { width: 420px; }
+.game-container {
+  width: 420px;
+}
 
 .gamebox {
-background: #d8d8d8;
-border: 6px solid black;
-padding: 10px;
+  background: #d8d8d8;
+  border: 6px solid black;
+  padding: 10px;
+  margin-bottom: 20px;
 }
 
-.title { text-align: center; }
-.logo { max-width: 180px; image-rendering: pixelated; }
+/* LOGO */
+.title {
+  text-align: center;
+  margin-bottom: 6px;
+}
 
+.logo {
+  max-width: 180px;
+  width: 100%;
+  display: block;
+  margin: 0 auto;
+  image-rendering: pixelated;
+}
+
+/* STATUS */
 .status-bar {
-display: flex;
-justify-content: space-between;
-font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
 }
+
+/* ================= COMBAT ================= */
 
 .battle-zone {
-position: relative;
-height: 230px;
-border: 4px solid black;
-background: linear-gradient(#e8f0ff, #cfd8e6);
-overflow: hidden;
+  position: relative;
+  height: 230px;
+  border: 4px solid black;
+  background: linear-gradient(#e8f0ff, #cfd8e6);
+  margin-top: 4px;
+  overflow: hidden;
 }
 
+/* effet arène */
 .battle-zone::after {
-content: "";
-position: absolute;
-bottom: 15px;
-left: 10%;
-width: 80%;
-height: 35px;
-background: radial-gradient(ellipse, rgba(0,0,0,0.25), transparent);
-border-radius: 50%;
+  content: "";
+  position: absolute;
+  bottom: 15px;
+  left: 10%;
+  width: 80%;
+  height: 35px;
+  background: radial-gradient(ellipse, rgba(0,0,0,0.25), transparent);
+  border-radius: 50%;
 }
 
 /* HUD */
-.enemy-hud, .player-hud {
-position: absolute;
-background: #f8f8f8;
-border: 3px solid black;
-padding: 6px;
-font-size: 10px;
-width: 150px;
-z-index: 2;
+
+.enemy-hud {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: #f8f8f8;
+  border: 3px solid black;
+  padding: 6px;
+  font-size: 10px;
+  width: 150px;
+  z-index: 2;
 }
 
-.enemy-hud { top: 15px; left: 15px; }
-.player-hud { bottom: 15px; right: 15px; }
+.player-hud {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background: #f8f8f8;
+  border: 3px solid black;
+  padding: 6px;
+  font-size: 10px;
+  width: 150px;
+  z-index: 2;
+}
 
-/* LABELS */
+/* ================= LABELS ================= */
+
 .label {
-position: absolute;
-font-size: 11px;
-font-weight: bold;
-padding: 2px 6px;
-border: 2px solid black;
-background: white;
-z-index: 3;
+  position: absolute;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border: 2px solid black;
+  background: white;
+  z-index: 3;
 }
 
-.enemy-label { top: 0; right: 10px; color: red; }
-.player-label { bottom: 0; left: 10px; color: blue; }
+.enemy-label {
+  top: 0;
+  right: 10px;
+  color: #b30000;
+}
+
+.player-label {
+  bottom: 0;
+  left: 10px;
+  color: #0066cc;
+}
 
 /* SPRITES */
+
 .enemy-sprite {
-position: absolute;
-top: 0;
-right: 10px;
-width: 170px;
-transform: translateY(-35px);
-image-rendering: pixelated;
+  position: absolute;
+  top: 0;
+  right: 10px;
+  width: 170px;
+  transform: translateY(-35px);
+  image-rendering: pixelated;
+  z-index: 1;
 }
 
 .player-sprite {
-position: absolute;
-bottom: 5px;
-left: 0;
-width: 180px;
-image-rendering: pixelated;
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  width: 180px;
+  image-rendering: pixelated;
+  z-index: 1;
 }
 
-/* OMBRES */
+/* ================= OMBRES ================= */
+
 .shadow {
-position: absolute;
-width: 90px;
-height: 18px;
-background: radial-gradient(ellipse, rgba(0,0,0,0.4), transparent);
-border-radius: 50%;
+  position: absolute;
+  width: 90px;
+  height: 18px;
+  background: radial-gradient(ellipse, rgba(0,0,0,0.4), transparent);
+  border-radius: 50%;
 }
 
-.enemy-shadow { top: 110px; right: 50px; }
-.player-shadow { bottom: 0; left: 40px; }
+.enemy-shadow {
+  top: 110px;
+  right: 50px;
+}
 
-.hp-bar { display: flex; gap: 5px; align-items: center; }
-progress { width: 80px; height: 6px; }
+.player-shadow {
+  bottom: 0px;
+  left: 40px;
+}
 
-/* TEXTE */
+/* BARRES PV */
+
+.hp-bar {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+progress {
+  width: 80px;
+  height: 6px;
+}
+
+/* ================= FX ================= */
+
+#projectile-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* ================= TEXTE ================= */
+
 .question-container {
-margin-top: 8px;
-border: 3px solid black;
-background: white;
-padding: 8px;
+  margin-top: 8px;
+  border: 3px solid black;
+  background: white;
+  padding: 8px;
+  min-height: 120px;
 }
+
+.intro {
+  color: #2e7d32;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.intro::after {
+  content: "▌";
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+#explanation {
+  font-style: italic;
+  color: #333;
+  min-height: 20px;
+}
+
+/* REPONSES */
 
 .answer {
-border: 2px solid black;
-padding: 6px;
-margin: 4px 0;
-cursor: pointer;
+  border: 2px solid black;
+  padding: 6px;
+  margin: 4px 0;
+  cursor: pointer;
+  background: #f5f5f5;
+  transition: all 0.15s ease;
 }
+
+.answer:hover {
+  background: #d0e8ff;
+}
+
+.answer:active {
+  transform: scale(0.96);
+}
+
+/* BOUTONS */
 
 button {
-width: 100%;
-margin-top: 5px;
-padding: 8px;
-border: 2px solid black;
-background: green;
-color: white;
+  width: 100%;
+  margin-top: 5px;
+  padding: 8px;
+  border: 2px solid black;
+  background: linear-gradient(#4CAF50, #2e7d32);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-.hidden { display: none; }
-.hidden-combat { display: none; }
+button:active {
+  transform: scale(0.97);
+}
 
-/* MOBILE FIX */
+/* RESULT */
+
+.hidden {
+  display: none;
+}
+
+.result-screen {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.badge {
+  border: 2px dashed black;
+  padding: 10px;
+}
+
+/* ROUND */
+
+.round-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  color: white;
+  font-size: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  animation: fadeInOut 1.2s;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* EVOLUTION */
+
+.evolve {
+  animation: evolve 0.8s;
+}
+
+@keyframes evolve {
+  0% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.3); filter: brightness(3); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+
+/* ================= FIX MOBILE ================= */
+
 @media (max-width: 480px) {
-.enemy-sprite { right: 0px; }
+  .enemy-sprite {
+    right: 0px; /* décale légèrement ISOKU pour éviter le chevauchement */
+  }
 }
