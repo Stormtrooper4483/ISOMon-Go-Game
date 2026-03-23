@@ -97,13 +97,16 @@ img.src = "";
 
 requestAnimationFrame(() => {
 img.src = hitSrc;
+
 void img.offsetWidth;
 
 setTimeout(() => {
 img.src = idleSrc;
+
 setTimeout(() => {
 lock.active = false;
 }, 50);
+
 }, 300);
 });
 }
@@ -124,9 +127,10 @@ playerImg.classList.add("evolve");
 setTimeout(() => playerImg.classList.remove("evolve"), 800);
 }
 
-/* ================= CAPTURE ================= */
+/* ================= CAPTURE (FIX ICI) ================= */
 
 function playCaptureAnimation() {
+
 const container = document.getElementById("projectile-container");
 
 const ball = document.createElement("img");
@@ -135,11 +139,18 @@ ball.className = "capture-ball";
 
 container.appendChild(ball);
 
-const enemyRect = enemyImg.getBoundingClientRect();
+// ✅ cible fiable
+const enemyBlock = document.querySelector(".enemy-block");
+
+const enemyRect = enemyBlock.getBoundingClientRect();
 const containerRect = container.getBoundingClientRect();
 
-ball.style.left = (enemyRect.left - containerRect.left + 60) + "px";
-ball.style.top = (enemyRect.top - containerRect.top + 60) + "px";
+// ✅ centre du bloc ennemi
+const targetX = enemyRect.left - containerRect.left + enemyRect.width / 2 - 32;
+const targetY = enemyRect.top - containerRect.top + enemyRect.height / 2 - 32;
+
+ball.style.left = targetX + "px";
+ball.style.top = targetY + "px";
 
 const FRAME_WIDTH = 64;
 let frame = 0;
@@ -213,18 +224,12 @@ if (el) el.textContent = getPlayerName();
 /* ================= QUESTIONS ================= */
 
 async function loadQuestions() {
-try {
 const res = await fetch("questions.json");
 const data = await res.json();
 
 questions = data
 .filter(q => q.difficulty === round)
 .sort(() => Math.random() - 0.5);
-
-} catch (e) {
-console.error("Erreur chargement questions:", e);
-questions = [];
-}
 }
 
 /* ================= HP ================= */
@@ -285,11 +290,6 @@ function nextQuestion() {
 
 if (gameOver) return;
 
-if (questions.length === 0) {
-questionEl.textContent = "⚠️ Aucune question chargée";
-return;
-}
-
 if (playerHP <= 0) return lose();
 if (enemyHP <= 0) return winRound();
 
@@ -298,8 +298,6 @@ document.getElementById("explanation").textContent = "";
 startTimer();
 
 const q = questions[questionIndex];
-
-if (!q) return;
 
 questionEl.textContent = q.question;
 answersDiv.innerHTML = "";
@@ -398,12 +396,10 @@ function winGame() {
 
 gameOver = true;
 
-// FIX POKEBALL
-playCaptureAnimation();
-
-setTimeout(() => {
+// on garde ton comportement
 enemyImg.style.opacity = "0";
-}, 500);
+
+playCaptureAnimation();
 
 setTimeout(() => {
 document.getElementById("final-score").textContent =
