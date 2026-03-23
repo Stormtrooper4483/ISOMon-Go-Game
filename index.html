@@ -11,23 +11,18 @@
 <div class="game-container">
   <div class="gamebox" id="capture-area">
 
-    <!-- LOGO -->
     <div class="title">
       <img src="assets/isomon_logo.png" alt="ISOMon GO" class="logo">
     </div>
 
-    <!-- STATUS -->
     <div class="status-bar">
       <div id="round">Round 1</div>
       <div id="timer">⏱️ 40</div>
     </div>
 
-    <!-- COMBAT -->
     <div class="battle-zone">
 
-      <!-- ENNEMI -->
       <div class="enemy-block">
-
         <div class="label enemy-label">🎯 ENNEMI</div>
 
         <div class="enemy-hud">
@@ -42,9 +37,7 @@
         <div class="shadow enemy-shadow"></div>
       </div>
 
-      <!-- JOUEUR -->
       <div class="player-block">
-
         <div class="label player-label">👤 TOI</div>
 
         <img id="player-img" src="assets/rssilet_back.png" class="player-sprite">
@@ -57,13 +50,11 @@
           </div>
           <div id="player-hp">100</div>
         </div>
-
       </div>
 
       <div id="projectile-container"></div>
     </div>
 
-    <!-- TEXTE -->
     <div class="question-container">
       <div id="question" class="intro">
         🎯 Réponds correctement aux questions.<br>
@@ -73,18 +64,16 @@
       <div id="explanation"></div>
     </div>
 
-    <!-- BOUTONS -->
     <div class="buttons">
       <button id="start-btn">Démarrer</button>
       <button id="restart-btn" class="hidden">Rejouer</button>
     </div>
 
-    <!-- RESULT -->
     <div id="result-screen" class="hidden result-screen">
       <h2>🎯 Certification ISO 27001 obtenue !</h2>
       <div class="badge">🛡️ ISO CERTIFIED 🛡️</div>
       <div id="final-score"></div>
-      <button onclick="downloadImage()">📸 Télécharger</button>
+      <button id="download-btn" onclick="downloadImage()">📸 Télécharger</button>
     </div>
 
   </div>
