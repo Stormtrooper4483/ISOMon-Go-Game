@@ -25,7 +25,11 @@
     <!-- COMBAT -->
     <div class="battle-zone">
 
+      <!-- ENNEMI -->
       <div class="enemy-block">
+
+        <div class="label enemy-label">🎯 ENNEMI</div>
+
         <div class="enemy-hud">
           ISOKU ♂ Lv3
           <div class="hp-bar">
@@ -33,21 +37,27 @@
           </div>
           <div id="enemy-hp">100</div>
         </div>
+
         <img id="enemy-img" src="assets/isoku.png" class="enemy-sprite">
+        <div class="shadow enemy-shadow"></div>
       </div>
 
+      <!-- JOUEUR -->
       <div class="player-block">
+
+        <div class="label player-label">👤 TOI</div>
+
         <img id="player-img" src="assets/rssilet_back.png" class="player-sprite">
+        <div class="shadow player-shadow"></div>
 
         <div class="player-hud">
-          <!-- ✅ CORRECTION ICI -->
           <div id="player-name">RSSIlet ♂ Lv1</div>
-
           <div class="hp-bar">
             PV <progress id="player-hp-bar" value="100" max="100"></progress>
           </div>
           <div id="player-hp">100</div>
         </div>
+
       </div>
 
       <div id="projectile-container"></div>
