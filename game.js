@@ -47,7 +47,7 @@ const images = [
 "assets/rssirex_hit.png",
 "assets/rssilex_back.png",
 "assets/rssilex_hit.png",
-"assets/pokeball.png"
+"assets/isoku_ko"
 ];
 
 images.forEach(src => {
@@ -332,8 +332,8 @@ function winGame() {
 
 gameOver = true;
 
-// ✅ remplace ISOKU par la pokéball
-enemyImg.src = "assets/pokeball.png";
+// ✅ remplace ISOKU par isoku KO
+enemyImg.src = "assets/isoku_ko.png";
 enemyImg.classList.add("capture");
 
 setTimeout(() => {
