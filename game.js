@@ -98,7 +98,6 @@ function playHitAnimation(img, hitSrc, idleSrc, lock) {
   requestAnimationFrame(() => {
     img.src = hitSrc;
 
-    // force repaint
     void img.offsetWidth;
 
     setTimeout(() => {
@@ -250,6 +249,12 @@ async function startGame() {
 
   gameOver = false;
 
+  // 🔁 réaffichage des zones
+  document.querySelector(".battle-zone").classList.remove("hidden-combat");
+  document.querySelector(".question-container").classList.remove("hidden-combat");
+
+  document.getElementById("download-btn").style.display = "block";
+
   round = 1;
   totalCorrect = 0;
   questionIndex = 0;
@@ -273,117 +278,7 @@ async function startGame() {
   nextQuestion();
 }
 
-function updateRoundUI() {
-  roundText.textContent = "Round " + round;
-}
-
-/* ================= QUESTION ================= */
-
-function nextQuestion() {
-
-  if (gameOver) return;
-
-  if (playerHP <= 0) return lose();
-  if (enemyHP <= 0) return winRound();
-
-  document.getElementById("explanation").textContent = "";
-
-  startTimer();
-
-  const q = questions[questionIndex];
-
-  questionEl.textContent = q.question;
-  answersDiv.innerHTML = "";
-
-  q.answers.forEach(ans => {
-    const btn = document.createElement("div");
-    btn.className = "answer";
-    btn.textContent = ans.text;
-
-    btn.onclick = () => {
-      if (gameOver) return;
-
-      clearInterval(timer);
-      ans.correct ? handleGood(q) : handleWrong(q);
-    };
-
-    answersDiv.appendChild(btn);
-  });
-}
-
-/* ================= REPONSES ================= */
-
-function handleGood(q) {
-  totalCorrect++;
-
-  enemyHP -= 20;
-  updateHP();
-
-  playHitAnimation(
-    enemyImg,
-    "assets/isoku_hit.png",
-    "assets/isoku.png",
-    enemyLock
-  );
-
-  document.getElementById("explanation").textContent = q.explanation;
-
-  const delay = Math.max(3000, q.explanation.length * 45);
-  setTimeout(nextStep, delay);
-}
-
-function handleWrong(q) {
-
-  playerHP -= 20;
-  updateHP();
-
-  playHitAnimation(
-    playerImg,
-    getPlayerHitSprite(),
-    getPlayerSprite(),
-    playerLock
-  );
-
-  if (q) {
-    document.getElementById("explanation").textContent = q.explanation;
-  }
-
-  const delay = q ? Math.max(3000, q.explanation.length * 45) : 3000;
-  setTimeout(nextStep, delay);
-}
-
 /* ================= FLOW ================= */
-
-function nextStep() {
-  if (gameOver) return;
-
-  questionIndex++;
-  if (questionIndex >= questions.length) questionIndex = 0;
-
-  setTimeout(nextQuestion, 500);
-}
-
-async function winRound() {
-
-  round++;
-
-  if (round > 3) return winGame();
-
-  questionIndex = 0;
-
-  playerImg.src = getPlayerSprite();
-  updatePlayerName();
-
-  playEvolutionAnimation();
-
-  resetHP();
-  updateRoundUI();
-
-  await loadQuestions();
-
-  setTimeout(() => showRoundTransition(), 600);
-  setTimeout(() => nextQuestion(), 1200);
-}
 
 function winGame() {
 
@@ -394,52 +289,22 @@ function winGame() {
   playCaptureAnimation();
 
   setTimeout(() => {
+
+    // 🔥 cache combat + quiz
+    document.querySelector(".battle-zone").classList.add("hidden-combat");
+    document.querySelector(".question-container").classList.add("hidden-combat");
+
+    // 🔥 cache bouton download
+    document.getElementById("download-btn").style.display = "none";
+
     document.getElementById("final-score").textContent =
       "Score : " + totalCorrect;
 
     document.getElementById("result-screen").classList.remove("hidden");
     restartBtn.classList.remove("hidden");
+
   }, 1500);
 }
-
-function lose() {
-
-  if (gameOver) return;
-  gameOver = true;
-
-  clearInterval(timer);
-
-  alert("💀 ISOKu t’a battu !");
-  restartBtn.classList.remove("hidden");
-}
-
-/* ================= TIMER ================= */
-
-function startTimer() {
-  clearInterval(timer);
-  timeLeft = 40;
-
-  timerText.textContent = "⏱️ " + timeLeft;
-
-  timer = setInterval(() => {
-
-    if (gameOver) {
-      clearInterval(timer);
-      return;
-    }
-
-    timeLeft--;
-    timerText.textContent = "⏱️ " + timeLeft;
-
-    if (timeLeft <= 0) {
-      clearInterval(timer);
-      handleWrong();
-    }
-
-  }, 1000);
-}
-
-/* ================= EVENTS ================= */
 
 startBtn.onclick = startGame;
 restartBtn.onclick = startGame;
