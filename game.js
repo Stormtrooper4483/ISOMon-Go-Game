@@ -11,6 +11,10 @@ let enemyHP = 100;
 let timer;
 let timeLeft = 40;
 
+/* 🔒 locks animation */
+let playerAnimating = false;
+let enemyAnimating = false;
+
 /* DOM */
 const startBtn = document.getElementById("start-btn");
 const restartBtn = document.getElementById("restart-btn");
@@ -85,7 +89,6 @@ function playCaptureAnimation() {
 
   container.appendChild(ball);
 
-  /* 📍 position dynamique sur ISOKU */
   const enemyRect = enemyImg.getBoundingClientRect();
   const containerRect = container.getBoundingClientRect();
 
@@ -98,9 +101,7 @@ function playCaptureAnimation() {
   const anim = setInterval(() => {
     ball.style.objectPosition = `-${frame * FRAME_WIDTH}px 0`;
 
-    if (frame === 2) {
-      spawnSparkles(ball);
-    }
+    if (frame === 2) spawnSparkles(ball);
 
     frame++;
 
@@ -261,8 +262,16 @@ function handleGood(q) {
   enemyHP -= 20;
   updateHP();
 
-  enemyImg.src = "assets/isoku_hit.png";
-  setTimeout(() => enemyImg.src = "assets/isoku.png", 300);
+  if (!enemyAnimating) {
+    enemyAnimating = true;
+
+    enemyImg.src = "assets/isoku_hit.png";
+
+    setTimeout(() => {
+      enemyImg.src = "assets/isoku.png";
+      enemyAnimating = false;
+    }, 300);
+  }
 
   document.getElementById("explanation").textContent = q.explanation;
 
@@ -275,8 +284,16 @@ function handleWrong(q) {
   playerHP -= 20;
   updateHP();
 
-  playerImg.src = getPlayerHitSprite();
-  setTimeout(() => playerImg.src = getPlayerSprite(), 300);
+  if (!playerAnimating) {
+    playerAnimating = true;
+
+    playerImg.src = getPlayerHitSprite();
+
+    setTimeout(() => {
+      playerImg.src = getPlayerSprite();
+      playerAnimating = false;
+    }, 300);
+  }
 
   if (q) {
     document.getElementById("explanation").textContent = q.explanation;
