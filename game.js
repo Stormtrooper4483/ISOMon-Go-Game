@@ -12,7 +12,7 @@ let timer;
 let timeLeft = 40;
 
 let gameOver = false;
-let answering = false; // ✅ FIX anti multi-clic
+let answering = false; // ✅ anti multi-clic
 
 /* 🔒 locks animation */
 const playerLock = { active: false };
@@ -231,7 +231,7 @@ if (gameOver) return;
 if (playerHP <= 0) return lose();
 if (enemyHP <= 0) return winRound();
 
-answering = false; // ✅ reset anti spam
+answering = false; // ✅ reset propre
 
 document.getElementById("explanation").textContent = "";
 
@@ -252,13 +252,7 @@ btn.onclick = () => {
 
   if (gameOver || answering) return;
 
-  answering = true; // 🔒 lock
-
-  // (optionnel) désactive visuellement
-  document.querySelectorAll(".answer").forEach(a => {
-    a.style.pointerEvents = "none";
-    a.style.opacity = "0.6";
-  });
+  answering = true; // 🔒 lock unique
 
   clearInterval(timer);
 
