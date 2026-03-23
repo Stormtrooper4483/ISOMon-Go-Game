@@ -12,6 +12,7 @@ let timer;
 let timeLeft = 40;
 
 let gameOver = false;
+let answering = false; // ✅ FIX anti multi-clic
 
 /* 🔒 locks animation */
 const playerLock = { active: false };
@@ -99,16 +100,19 @@ img.src = "";
 requestAnimationFrame(() => {
 img.src = hitSrc;
 
+```
 void img.offsetWidth;
 
 setTimeout(() => {
-img.src = idleSrc;
+  img.src = idleSrc;
 
-setTimeout(() => {
-lock.active = false;
-}, 50);
+  setTimeout(() => {
+    lock.active = false;
+  }, 50);
 
 }, 300);
+```
+
 });
 }
 
@@ -227,6 +231,8 @@ if (gameOver) return;
 if (playerHP <= 0) return lose();
 if (enemyHP <= 0) return winRound();
 
+answering = false; // ✅ reset anti spam
+
 document.getElementById("explanation").textContent = "";
 
 startTimer();
@@ -241,14 +247,27 @@ const btn = document.createElement("div");
 btn.className = "answer";
 btn.textContent = ans.text;
 
+```
 btn.onclick = () => {
-if (gameOver) return;
 
-clearInterval(timer);
-ans.correct ? handleGood(q) : handleWrong(q);
+  if (gameOver || answering) return;
+
+  answering = true; // 🔒 lock
+
+  // (optionnel) désactive visuellement
+  document.querySelectorAll(".answer").forEach(a => {
+    a.style.pointerEvents = "none";
+    a.style.opacity = "0.6";
+  });
+
+  clearInterval(timer);
+
+  ans.correct ? handleGood(q) : handleWrong(q);
 };
 
 answersDiv.appendChild(btn);
+```
+
 });
 }
 
@@ -326,21 +345,23 @@ setTimeout(() => showRoundTransition(), 600);
 setTimeout(() => nextQuestion(), 1200);
 }
 
-/* ================= WIN GAME (FIX CLEAN) ================= */
+/* ================= WIN GAME ================= */
 
 function winGame() {
 
 gameOver = true;
 
-// ✅ remplace ISOKU par isoku KO
 enemyImg.src = "assets/isoku_ko.png";
 
 setTimeout(() => {
 document.getElementById("final-score").textContent =
 "Score : " + totalCorrect;
 
+```
 document.getElementById("result-screen").classList.remove("hidden");
 restartBtn.classList.remove("hidden");
+```
+
 }, 1200);
 }
 
@@ -365,18 +386,20 @@ timerText.textContent = "⏱️ " + timeLeft;
 
 timer = setInterval(() => {
 
+```
 if (gameOver) {
-clearInterval(timer);
-return;
+  clearInterval(timer);
+  return;
 }
 
 timeLeft--;
 timerText.textContent = "⏱️ " + timeLeft;
 
 if (timeLeft <= 0) {
-clearInterval(timer);
-handleWrong();
+  clearInterval(timer);
+  handleWrong();
 }
+```
 
 }, 1000);
 }
