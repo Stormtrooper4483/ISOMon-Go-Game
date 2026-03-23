@@ -49,13 +49,10 @@ const images = [
 "assets/rssilex_hit.png"
 ];
 
-```
 images.forEach(src => {
-  const img = new Image();
-  img.src = src;
+const img = new Image();
+img.src = src;
 });
-```
-
 }
 
 preloadImages();
@@ -75,19 +72,16 @@ function typeWriter(text, speed = 18) {
 questionEl.innerHTML = "";
 let i = 0;
 
-```
 function type() {
-  if (i < text.length) {
-    const char = text.charAt(i);
-    questionEl.innerHTML += (char === "\n") ? "<br>" : char;
-    i++;
-    setTimeout(type, speed);
-  }
+if (i < text.length) {
+const char = text.charAt(i);
+questionEl.innerHTML += (char === "\n") ? "<br>" : char;
+i++;
+setTimeout(type, speed);
+}
 }
 
 type();
-```
-
 }
 
 typeWriter(introText);
@@ -96,29 +90,22 @@ typeWriter(introText);
 
 function playHitAnimation(img, hitSrc, idleSrc, lock) {
 
-```
 if (lock.active) return;
 lock.active = true;
 
 img.src = "";
 
 requestAnimationFrame(() => {
-  img.src = hitSrc;
+img.src = hitSrc;
+void img.offsetWidth;
 
-  // force repaint
-  void img.offsetWidth;
-
-  setTimeout(() => {
-    img.src = idleSrc;
-
-    setTimeout(() => {
-      lock.active = false;
-    }, 50);
-
-  }, 300);
+setTimeout(() => {
+img.src = idleSrc;
+setTimeout(() => {
+lock.active = false;
+}, 50);
+}, 300);
 });
-```
-
 }
 
 /* ================= TRANSITIONS ================= */
@@ -128,11 +115,8 @@ const overlay = document.createElement("div");
 overlay.className = "round-overlay";
 overlay.textContent = "⚔️ ROUND " + round;
 
-```
 document.body.appendChild(overlay);
 setTimeout(() => overlay.remove(), 1200);
-```
-
 }
 
 function playEvolutionAnimation() {
@@ -145,7 +129,6 @@ setTimeout(() => playerImg.classList.remove("evolve"), 800);
 function playCaptureAnimation() {
 const container = document.getElementById("projectile-container");
 
-```
 const ball = document.createElement("img");
 ball.src = "assets/pokeball.png";
 ball.className = "capture-ball";
@@ -162,47 +145,42 @@ const FRAME_WIDTH = 64;
 let frame = 0;
 
 const anim = setInterval(() => {
-  ball.style.objectPosition = `-${frame * FRAME_WIDTH}px 0`;
+ball.style.objectPosition = `-${frame * FRAME_WIDTH}px 0`;
 
-  if (frame === 2) spawnSparkles(ball);
+if (frame === 2) spawnSparkles(ball);
 
-  frame++;
+frame++;
 
-  if (frame > 3) {
-    clearInterval(anim);
-    setTimeout(() => ball.remove(), 400);
-  }
+if (frame > 3) {
+clearInterval(anim);
+setTimeout(() => ball.remove(), 400);
+}
 }, 120);
-```
-
 }
 
 function spawnSparkles(ball) {
 const container = document.getElementById("projectile-container");
 
-```
 for (let i = 0; i < 8; i++) {
-  const spark = document.createElement("div");
-  spark.className = "spark";
+const spark = document.createElement("div");
+spark.className = "spark";
 
-  const angle = Math.random() * Math.PI * 2;
-  const distance = 30 + Math.random() * 20;
+const angle = Math.random() * Math.PI * 2;
+const distance = 30 + Math.random() * 20;
 
-  const x = Math.cos(angle) * distance;
-  const y = Math.sin(angle) * distance;
+const x = Math.cos(angle) * distance;
+const y = Math.sin(angle) * distance;
 
-  spark.style.left = ball.offsetLeft + 32 + "px";
-  spark.style.top = ball.offsetTop + 32 + "px";
+spark.style.left = ball.offsetLeft + 32 + "px";
+spark.style.top = ball.offsetTop + 32 + "px";
 
-  spark.style.setProperty("--dx", x + "px");
-  spark.style.setProperty("--dy", y + "px");
+spark.style.setProperty("--dx", x + "px");
+spark.style.setProperty("--dy", y + "px");
 
-  container.appendChild(spark);
+container.appendChild(spark);
 
-  setTimeout(() => spark.remove(), 600);
+setTimeout(() => spark.remove(), 600);
 }
-```
-
 }
 
 /* ================= SPRITES ================= */
@@ -235,15 +213,18 @@ if (el) el.textContent = getPlayerName();
 /* ================= QUESTIONS ================= */
 
 async function loadQuestions() {
+try {
 const res = await fetch("questions.json");
 const data = await res.json();
 
-```
 questions = data
-  .filter(q => q.difficulty === round)
-  .sort(() => Math.random() - 0.5);
-```
+.filter(q => q.difficulty === round)
+.sort(() => Math.random() - 0.5);
 
+} catch (e) {
+console.error("Erreur chargement questions:", e);
+questions = [];
+}
 }
 
 /* ================= HP ================= */
@@ -258,21 +239,17 @@ function updateHP() {
 playerHP = Math.max(0, playerHP);
 enemyHP = Math.max(0, enemyHP);
 
-```
 playerHPBar.value = playerHP;
 enemyHPBar.value = enemyHP;
 
 playerHPText.textContent = playerHP;
 enemyHPText.textContent = enemyHP;
-```
-
 }
 
 /* ================= GAME ================= */
 
 async function startGame() {
 
-```
 gameOver = false;
 
 round = 1;
@@ -296,8 +273,6 @@ await loadQuestions();
 updateRoundUI();
 
 nextQuestion();
-```
-
 }
 
 function updateRoundUI() {
@@ -308,8 +283,12 @@ roundText.textContent = "Round " + round;
 
 function nextQuestion() {
 
-```
 if (gameOver) return;
+
+if (questions.length === 0) {
+questionEl.textContent = "⚠️ Aucune question chargée";
+return;
+}
 
 if (playerHP <= 0) return lose();
 if (enemyHP <= 0) return winRound();
@@ -320,25 +299,25 @@ startTimer();
 
 const q = questions[questionIndex];
 
+if (!q) return;
+
 questionEl.textContent = q.question;
 answersDiv.innerHTML = "";
 
 q.answers.forEach(ans => {
-  const btn = document.createElement("div");
-  btn.className = "answer";
-  btn.textContent = ans.text;
+const btn = document.createElement("div");
+btn.className = "answer";
+btn.textContent = ans.text;
 
-  btn.onclick = () => {
-    if (gameOver) return;
+btn.onclick = () => {
+if (gameOver) return;
 
-    clearInterval(timer);
-    ans.correct ? handleGood(q) : handleWrong(q);
-  };
+clearInterval(timer);
+ans.correct ? handleGood(q) : handleWrong(q);
+};
 
-  answersDiv.appendChild(btn);
+answersDiv.appendChild(btn);
 });
-```
-
 }
 
 /* ================= REPONSES ================= */
@@ -346,46 +325,40 @@ q.answers.forEach(ans => {
 function handleGood(q) {
 totalCorrect++;
 
-```
 enemyHP -= 20;
 updateHP();
 
 playHitAnimation(
-  enemyImg,
-  "assets/isoku_hit.png",
-  "assets/isoku.png",
-  enemyLock
+enemyImg,
+"assets/isoku_hit.png",
+"assets/isoku.png",
+enemyLock
 );
 
 document.getElementById("explanation").textContent = q.explanation;
 
 const delay = Math.max(3000, q.explanation.length * 45);
 setTimeout(nextStep, delay);
-```
-
 }
 
 function handleWrong(q) {
 
-```
 playerHP -= 20;
 updateHP();
 
 playHitAnimation(
-  playerImg,
-  getPlayerHitSprite(),
-  getPlayerSprite(),
-  playerLock
+playerImg,
+getPlayerHitSprite(),
+getPlayerSprite(),
+playerLock
 );
 
 if (q) {
-  document.getElementById("explanation").textContent = q.explanation;
+document.getElementById("explanation").textContent = q.explanation;
 }
 
 const delay = q ? Math.max(3000, q.explanation.length * 45) : 3000;
 setTimeout(nextStep, delay);
-```
-
 }
 
 /* ================= FLOW ================= */
@@ -393,18 +366,14 @@ setTimeout(nextStep, delay);
 function nextStep() {
 if (gameOver) return;
 
-```
 questionIndex++;
 if (questionIndex >= questions.length) questionIndex = 0;
 
 setTimeout(nextQuestion, 500);
-```
-
 }
 
 async function winRound() {
 
-```
 round++;
 
 if (round > 3) return winGame();
@@ -423,33 +392,30 @@ await loadQuestions();
 
 setTimeout(() => showRoundTransition(), 600);
 setTimeout(() => nextQuestion(), 1200);
-```
-
 }
 
 function winGame() {
 
-```
 gameOver = true;
 
-enemyImg.style.opacity = "0";
-
+// FIX POKEBALL
 playCaptureAnimation();
 
 setTimeout(() => {
-  document.getElementById("final-score").textContent =
-    "Score : " + totalCorrect;
+enemyImg.style.opacity = "0";
+}, 500);
 
-  document.getElementById("result-screen").classList.remove("hidden");
-  restartBtn.classList.remove("hidden");
+setTimeout(() => {
+document.getElementById("final-score").textContent =
+"Score : " + totalCorrect;
+
+document.getElementById("result-screen").classList.remove("hidden");
+restartBtn.classList.remove("hidden");
 }, 1500);
-```
-
 }
 
 function lose() {
 
-```
 if (gameOver) return;
 gameOver = true;
 
@@ -457,8 +423,6 @@ clearInterval(timer);
 
 alert("💀 ISOKu t’a battu !");
 restartBtn.classList.remove("hidden");
-```
-
 }
 
 /* ================= TIMER ================= */
@@ -467,27 +431,24 @@ function startTimer() {
 clearInterval(timer);
 timeLeft = 40;
 
-```
 timerText.textContent = "⏱️ " + timeLeft;
 
 timer = setInterval(() => {
 
-  if (gameOver) {
-    clearInterval(timer);
-    return;
-  }
+if (gameOver) {
+clearInterval(timer);
+return;
+}
 
-  timeLeft--;
-  timerText.textContent = "⏱️ " + timeLeft;
+timeLeft--;
+timerText.textContent = "⏱️ " + timeLeft;
 
-  if (timeLeft <= 0) {
-    clearInterval(timer);
-    handleWrong();
-  }
+if (timeLeft <= 0) {
+clearInterval(timer);
+handleWrong();
+}
 
 }, 1000);
-```
-
 }
 
 /* ================= EVENTS ================= */
