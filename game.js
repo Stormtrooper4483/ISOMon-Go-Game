@@ -402,13 +402,13 @@ function winGame() {
 
 gameOver = true;
 
-// ✅ capture AVANT disparition
+// ✅ capture SANS toucher au sprite
 playCaptureAnimation();
 
-// ✅ disparition après impact
+// ✅ disparition propre APRÈS animation
 setTimeout(() => {
 enemyImg.style.opacity = "0";
-}, 300);
+}, 1200);
 
 setTimeout(() => {
 document.getElementById("final-score").textContent =
