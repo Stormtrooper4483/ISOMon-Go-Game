@@ -330,12 +330,7 @@ totalCorrect++;
 enemyHP -= 20;
 updateHP();
 
-playHitAnimation(
-enemyImg,
-"assets/isoku_hit.png",
-"assets/isoku.png",
-enemyLock
-);
+playHitAnimation(enemyImg, "assets/isoku_hit.png", "assets/isoku.png", enemyLock);
 
 document.getElementById("explanation").textContent = q.explanation;
 
@@ -348,12 +343,7 @@ function handleWrong(q) {
 playerHP -= 20;
 updateHP();
 
-playHitAnimation(
-playerImg,
-getPlayerHitSprite(),
-getPlayerSprite(),
-playerLock
-);
+playHitAnimation(playerImg, getPlayerHitSprite(), getPlayerSprite(), playerLock);
 
 if (q) {
 document.getElementById("explanation").textContent = q.explanation;
@@ -396,19 +386,20 @@ setTimeout(() => showRoundTransition(), 600);
 setTimeout(() => nextQuestion(), 1200);
 }
 
-/* ================= FIX CAPTURE ================= */
+/* ================= FIX FINAL ================= */
 
 function winGame() {
 
 gameOver = true;
 
-// ✅ capture SANS toucher au sprite
+clearInterval(timer);
+answersDiv.innerHTML = "";
+
 playCaptureAnimation();
 
-// ✅ disparition propre APRÈS animation
 setTimeout(() => {
 enemyImg.style.opacity = "0";
-}, 1200);
+}, 800);
 
 setTimeout(() => {
 document.getElementById("final-score").textContent =
