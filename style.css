@@ -47,9 +47,21 @@ body {
   position: relative;
   height: 230px;
   border: 4px solid black;
-  background: linear-gradient(#e0e0e0, #cfcfcf);
+  background: linear-gradient(#e8f0ff, #cfd8e6);
   margin-top: 4px;
   overflow: hidden;
+}
+
+/* effet arène */
+.battle-zone::after {
+  content: "";
+  position: absolute;
+  bottom: 15px;
+  left: 10%;
+  width: 80%;
+  height: 35px;
+  background: radial-gradient(ellipse, rgba(0,0,0,0.25), transparent);
+  border-radius: 50%;
 }
 
 /* HUD */
@@ -78,9 +90,32 @@ body {
   z-index: 2;
 }
 
+/* ================= LABELS ================= */
+
+.label {
+  position: absolute;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border: 2px solid black;
+  background: white;
+  z-index: 3;
+}
+
+.enemy-label {
+  top: 0;
+  right: 10px;
+  color: #b30000;
+}
+
+.player-label {
+  bottom: 0;
+  left: 10px;
+  color: #0066cc;
+}
+
 /* SPRITES */
 
-/* ISOKU (haut droite) */
 .enemy-sprite {
   position: absolute;
   top: 0;
@@ -91,7 +126,6 @@ body {
   z-index: 1;
 }
 
-/* RSSI (bas gauche) */
 .player-sprite {
   position: absolute;
   bottom: 5px;
@@ -99,6 +133,26 @@ body {
   width: 180px;
   image-rendering: pixelated;
   z-index: 1;
+}
+
+/* ================= OMBRES ================= */
+
+.shadow {
+  position: absolute;
+  width: 90px;
+  height: 18px;
+  background: radial-gradient(ellipse, rgba(0,0,0,0.4), transparent);
+  border-radius: 50%;
+}
+
+.enemy-shadow {
+  top: 110px;
+  right: 50px;
+}
+
+.player-shadow {
+  bottom: 0px;
+  left: 40px;
 }
 
 /* BARRES PV */
@@ -126,57 +180,6 @@ progress {
   z-index: 20;
 }
 
-.projectile {
-  position: absolute;
-  width: 40px;
-  image-rendering: pixelated;
-  z-index: 30;
-  transition: transform 0.4s linear;
-}
-
-/* ================= CAPTURE ================= */
-
-.capture-ball {
-  position: absolute;
-  width: 64px;
-  height: 64px;
-
-  object-fit: none;
-  image-rendering: pixelated;
-
-  z-index: 100;
-
-  animation: pop 0.2s ease;
-}
-
-@keyframes pop {
-  0% { transform: scale(0.5); }
-  100% { transform: scale(1); }
-}
-
-/* ================= SPARKLES ================= */
-
-.spark {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background: yellow;
-  z-index: 120;
-  image-rendering: pixelated;
-  animation: sparkMove 0.6s ease-out forwards;
-}
-
-@keyframes sparkMove {
-  0% {
-    transform: translate(0, 0) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(var(--dx), var(--dy)) scale(0.5);
-    opacity: 0;
-  }
-}
-
 /* ================= TEXTE ================= */
 
 .question-container {
@@ -193,7 +196,6 @@ progress {
   margin-bottom: 6px;
 }
 
-/* curseur typing */
 .intro::after {
   content: "▌";
   animation: blink 1s infinite;
@@ -261,7 +263,7 @@ button:active {
   padding: 10px;
 }
 
-/* ================= ROUND ================= */
+/* ROUND */
 
 .round-overlay {
   position: fixed;
@@ -286,7 +288,7 @@ button:active {
   100% { opacity: 0; }
 }
 
-/* ================= EVOLUTION ================= */
+/* EVOLUTION */
 
 .evolve {
   animation: evolve 0.8s;
