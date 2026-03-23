@@ -334,7 +334,6 @@ gameOver = true;
 
 // ✅ remplace ISOKU par isoku KO
 enemyImg.src = "assets/isoku_ko.png";
-enemyImg.classList.add("capture");
 
 setTimeout(() => {
 document.getElementById("final-score").textContent =
