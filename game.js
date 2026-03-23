@@ -47,7 +47,7 @@ const images = [
 "assets/rssirex_hit.png",
 "assets/rssilex_back.png",
 "assets/rssilex_hit.png",
-"assets/isoku_ko"
+"assets/isoku_ko.png"
 ];
 
 images.forEach(src => {
