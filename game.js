@@ -46,7 +46,8 @@ const images = [
 "assets/rssirex_back.png",
 "assets/rssirex_hit.png",
 "assets/rssilex_back.png",
-"assets/rssilex_hit.png"
+"assets/rssilex_hit.png",
+"assets/pokeball.png"
 ];
 
 images.forEach(src => {
@@ -125,73 +126,6 @@ setTimeout(() => overlay.remove(), 1200);
 function playEvolutionAnimation() {
 playerImg.classList.add("evolve");
 setTimeout(() => playerImg.classList.remove("evolve"), 800);
-}
-
-/* ================= CAPTURE (FIX ICI) ================= */
-
-function playCaptureAnimation() {
-
-const container = document.getElementById("projectile-container");
-
-const ball = document.createElement("img");
-ball.src = "assets/pokeball.png";
-ball.className = "capture-ball";
-
-container.appendChild(ball);
-
-// ✅ cible fiable
-const enemyBlock = document.querySelector(".enemy-block");
-
-const enemyRect = enemyBlock.getBoundingClientRect();
-const containerRect = container.getBoundingClientRect();
-
-// ✅ centre du bloc ennemi
-const targetX = enemyRect.left - containerRect.left + enemyRect.width / 2 - 32;
-const targetY = enemyRect.top - containerRect.top + enemyRect.height / 2 - 32;
-
-ball.style.left = targetX + "px";
-ball.style.top = targetY + "px";
-
-const FRAME_WIDTH = 64;
-let frame = 0;
-
-const anim = setInterval(() => {
-ball.style.objectPosition = `-${frame * FRAME_WIDTH}px 0`;
-
-if (frame === 2) spawnSparkles(ball);
-
-frame++;
-
-if (frame > 3) {
-clearInterval(anim);
-setTimeout(() => ball.remove(), 400);
-}
-}, 120);
-}
-
-function spawnSparkles(ball) {
-const container = document.getElementById("projectile-container");
-
-for (let i = 0; i < 8; i++) {
-const spark = document.createElement("div");
-spark.className = "spark";
-
-const angle = Math.random() * Math.PI * 2;
-const distance = 30 + Math.random() * 20;
-
-const x = Math.cos(angle) * distance;
-const y = Math.sin(angle) * distance;
-
-spark.style.left = ball.offsetLeft + 32 + "px";
-spark.style.top = ball.offsetTop + 32 + "px";
-
-spark.style.setProperty("--dx", x + "px");
-spark.style.setProperty("--dy", y + "px");
-
-container.appendChild(spark);
-
-setTimeout(() => spark.remove(), 600);
-}
 }
 
 /* ================= SPRITES ================= */
@@ -392,14 +326,15 @@ setTimeout(() => showRoundTransition(), 600);
 setTimeout(() => nextQuestion(), 1200);
 }
 
+/* ================= WIN GAME (FIX CLEAN) ================= */
+
 function winGame() {
 
 gameOver = true;
 
-// on garde ton comportement
-enemyImg.style.opacity = "0";
-
-playCaptureAnimation();
+// ✅ remplace ISOKU par la pokéball
+enemyImg.src = "assets/pokeball.png";
+enemyImg.classList.add("capture");
 
 setTimeout(() => {
 document.getElementById("final-score").textContent =
@@ -407,7 +342,7 @@ document.getElementById("final-score").textContent =
 
 document.getElementById("result-screen").classList.remove("hidden");
 restartBtn.classList.remove("hidden");
-}, 1500);
+}, 1200);
 }
 
 function lose() {
